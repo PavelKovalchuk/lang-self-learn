@@ -7,8 +7,6 @@ import styles from 'pages/index.module.scss';
 interface IPropsHomePage {}
 
 const HomePage: NextPage<IPropsHomePage> = (props) => {
-  console.log('props', props);
-
   return (
     <div className={styles.container}>
       <Head>
