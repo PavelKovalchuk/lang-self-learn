@@ -10,7 +10,7 @@ const Layout: FC<IPropsLayout> = (props) => {
   return (
     <Fragment>
       <MainNavigation />
-      <main>{props.children}</main>
+      <main className={styles.main}>{props.children}</main>
       <footer className={styles.footer}>
         <div>
           Footer
