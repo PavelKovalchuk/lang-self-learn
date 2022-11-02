@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import Logo from 'components/layout/Logo';
 
-import classes from './main-navigation.module.scss';
+import classes from './mainNavigation.module.scss';
 import { IPropsMainNavigation } from './model';
 
 const MainNavigation: FC<IPropsMainNavigation> = (props) => {

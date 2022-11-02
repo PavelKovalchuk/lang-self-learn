@@ -5,8 +5,14 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Layout from 'components/layout/Layout';
+import { IRegularVerb } from 'types';
+import dynamic from 'next/dynamic';
 
-interface IPropsConjugateRegularVerbsPage {}
+interface IPropsConjugateRegularVerbsPage {
+  verbs: IRegularVerb[];
+}
+
+const RegularVerbs = dynamic(() => import('components/exercises/RegularVerbs'), { ssr: false });
 
 const ConjugateRegularVerbsPage: NextPage<IPropsConjugateRegularVerbsPage> = (props) => {
   return (
@@ -19,14 +25,41 @@ const ConjugateRegularVerbsPage: NextPage<IPropsConjugateRegularVerbsPage> = (pr
       <Container fluid>
         <Row>
           <Col sm={12}>
-            <div>
-              <p>Conjugate Regular Verbs</p>
-            </div>
+            <RegularVerbs verbs={props.verbs} />
           </Col>
         </Row>
       </Container>
     </Layout>
   );
 };
+
+const verbsMock = [
+  {
+    verb: 'hablar',
+    translation: 'speak',
+    variants: [
+      {
+        pronoun: 'Yo',
+        verb: 'hablo',
+      },
+      {
+        pronoun: 'Tú',
+        verb: 'hablas',
+      },
+      {
+        pronoun: 'Él',
+        verb: 'habla',
+      },
+    ],
+  },
+];
+
+export function getStaticProps() {
+  return {
+    props: {
+      verbs: verbsMock,
+    },
+  };
+}
 
 export default ConjugateRegularVerbsPage;
