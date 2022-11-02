@@ -2,10 +2,10 @@ import { FC } from 'react';
 import Link from 'next/link';
 // import { useSession, signOut } from 'next-auth/client';
 
-import Logo from './logo';
-import classes from './main-navigation.module.scss';
+import Logo from 'components/layout/Logo';
 
-interface IPropsMainNavigation {}
+import classes from './main-navigation.module.scss';
+import { IPropsMainNavigation } from './model';
 
 const MainNavigation: FC<IPropsMainNavigation> = (props) => {
   // const [session, loading] = useSession();

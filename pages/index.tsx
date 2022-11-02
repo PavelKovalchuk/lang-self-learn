@@ -3,10 +3,9 @@ import { NextPage } from 'next';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import Head from 'next/head';
 
-import Layout from 'layout/layout';
+import Layout from 'components/layout/Layout';
 
 import styles from 'pages/index.module.scss';
 

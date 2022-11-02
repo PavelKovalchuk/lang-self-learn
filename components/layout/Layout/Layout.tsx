@@ -1,13 +1,10 @@
 import { FC, Fragment, ReactNode } from 'react';
 import Image from 'next/image';
 
-import MainNavigation from './main-navigation';
+import MainNavigation from 'components/layout/MainNavigation';
 
-import styles from 'layout/layout.module.scss';
-
-interface IPropsLayout {
-  children: ReactNode;
-}
+import styles from './layout.module.scss';
+import { IPropsLayout } from './model';
 
 const Layout: FC<IPropsLayout> = (props) => {
   return (
