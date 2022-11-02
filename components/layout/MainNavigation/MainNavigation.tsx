@@ -18,7 +18,7 @@ const MainNavigation: FC<IPropsMainNavigation> = (props) => {
       <nav>
         <ul>
           <li>
-            <Link href="/posts">Sample Page</Link>
+            <Link href="/spanish">Spanish</Link>
           </li>
         </ul>
       </nav>
