@@ -2,12 +2,3 @@
 package.json
 public
 tsconfig.json
-cypress.json
-cypress
-gatsby-node.js
-gatsby-config.js
-lint-staged.config.js
-pipeline-helpers
-jenkins
-helpers
-webhint

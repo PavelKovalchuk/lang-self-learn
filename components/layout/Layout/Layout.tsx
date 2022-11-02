@@ -1,4 +1,4 @@
-import { FC, Fragment, ReactNode } from 'react';
+import { FC } from 'react';
 import Image from 'next/image';
 
 import MainNavigation from 'components/layout/MainNavigation';
@@ -8,7 +8,7 @@ import { IPropsLayout } from './model';
 
 const Layout: FC<IPropsLayout> = (props) => {
   return (
-    <Fragment>
+    <>
       <MainNavigation />
       <main className={styles.main}>{props.children}</main>
       <footer className={styles.footer}>
@@ -19,7 +19,7 @@ const Layout: FC<IPropsLayout> = (props) => {
           </span>
         </div>
       </footer>
-    </Fragment>
+    </>
   );
 };
 
