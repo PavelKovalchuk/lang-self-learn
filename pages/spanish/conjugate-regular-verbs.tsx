@@ -36,19 +36,23 @@ const ConjugateRegularVerbsPage: NextPage<IPropsConjugateRegularVerbsPage> = (pr
 const verbsMock = [
   {
     verb: 'hablar',
+    id: '1',
     translation: 'speak',
     variants: [
       {
         pronoun: 'Yo',
         verb: 'hablo',
+        id: '1.1',
       },
       {
         pronoun: 'Tú',
         verb: 'hablas',
+        id: '1.2',
       },
       {
         pronoun: 'Él',
         verb: 'habla',
+        id: '1.3',
       },
     ],
   },
