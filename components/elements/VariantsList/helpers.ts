@@ -8,7 +8,8 @@ const getButtonVariants = (isCurrent: boolean, answerData: IVerbAnswer | undefin
   if (answerData) {
     if (answerData.isCorrect) {
       return 'success';
-    } else if (answerData.isCorrect === false) {
+    }
+    if (answerData.isCorrect === false) {
       return 'danger';
     }
   }

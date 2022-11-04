@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -29,10 +29,11 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
 
   const isFinishedTest = useMemo(() => {
     return answers.length === verbData.variants.length;
-  }, [answers]);
+  }, [answers, verbData.variants.length]);
 
   useEffect(() => {
     setShuffledData(Helpers.getShuffledData(verbData.variants));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     if (answers.length === verbData.variants.length) {
       onFinishTestHandler();
     }
-  }, [answers.length]);
+  }, [answers.length, verbData.variants.length, onFinishTestHandler]);
 
   const onClickPronounHandler = useCallback(
     (pairId: string, pronoun: string) => () => {
@@ -86,7 +87,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   );
 
   const onClickAnswerHandler = useCallback(
-    (answerId: string) => (): MouseEventHandler<HTMLButtonElement> | undefined => {
+    (answerId: string) => () => {
       const newAnswers = answers
         .filter((item) => {
           return item.answerId !== answerId;
@@ -96,8 +97,6 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
         });
 
       setAnswers(newAnswers);
-
-      return;
     },
     [answers]
   );

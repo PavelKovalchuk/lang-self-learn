@@ -2,9 +2,10 @@ import { FC } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
+import { IVerbAnswer } from 'types';
+
 // import styles from './variantsList.module.scss';
 import { IPropsVariantsList } from './model';
-import { IVerbAnswer } from 'types';
 import Helpers from './helpers';
 
 const VariantsList: FC<IPropsVariantsList> = ({

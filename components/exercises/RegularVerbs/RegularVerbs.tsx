@@ -1,10 +1,10 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { ChoosePairCard } from 'components/cards';
 
-import styles from './regularVerbs.module.scss';
+// import styles from './regularVerbs.module.scss';
 import { IPropsRegularVerbs } from './model';
 
 const RegularVerbs: FC<IPropsRegularVerbs> = (props) => {

@@ -7,7 +7,7 @@ import Logo from 'components/layout/Logo';
 import classes from './mainNavigation.module.scss';
 import { IPropsMainNavigation } from './model';
 
-const MainNavigation: FC<IPropsMainNavigation> = (props) => {
+const MainNavigation: FC<IPropsMainNavigation> = () => {
   // const [session, loading] = useSession();
 
   return (

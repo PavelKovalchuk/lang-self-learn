@@ -9,7 +9,7 @@ import Layout from 'components/layout/Layout';
 
 interface IPropsSpanishHomePage {}
 
-const SpanishHomePage: NextPage<IPropsSpanishHomePage> = (props) => {
+const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
   return (
     <Layout>
       <Head>

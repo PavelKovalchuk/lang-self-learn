@@ -10,7 +10,7 @@ import styles from 'pages/index.module.scss';
 
 interface IPropsHomePage {}
 
-const HomePage: NextPage<IPropsHomePage> = (props) => {
+const HomePage: NextPage<IPropsHomePage> = () => {
   return (
     <Layout>
       <Head>

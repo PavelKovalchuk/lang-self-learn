@@ -30,14 +30,12 @@ const AnswerList: FC<IPropsAnswerList> = ({
 
                 return (
                   <ListGroup.Item key={item.answerId}>
-                    <span className="ms-2 me-auto">
-                      {item.pronoun} {item.verb}
-                    </span>
+                    <span className="ms-2 me-auto">{`${item.pronoun} ${item.verb}`}</span>
 
                     {isFinishedTest && !item.isCorrect && variantByPronoun ? (
                       <span className="ms-2 me-auto">
                         <Alert variant="info">
-                          {variantByPronoun.pronoun} {variantByPronoun.verb}
+                          {`${variantByPronoun.pronoun} ${variantByPronoun.verb}`}
                         </Alert>
                       </span>
                     ) : null}
