@@ -1,25 +1,23 @@
-import { FC, MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Badge from 'react-bootstrap/Badge';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Alert from 'react-bootstrap/Alert';
-import { EmojiSunglasses, EmojiFrown } from 'react-bootstrap-icons';
+
+import { AnswerList, VariantsList } from 'components/elements';
+import { IShuffledData, IVerbAnswer } from 'types';
 
 // import styles from './choosePairCard.module.scss';
-import { IAnswer, IPropsChoosePairCard, IShuffledData } from './model';
+import { IPropsChoosePairCard } from './model';
 import Helpers from './helpers';
 import { DefaultAnswer } from './constants';
 
 const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
-  const [answers, setAnswers] = useState<IAnswer[]>([]);
-  const [currentAnswer, setCurrentAnswer] = useState<IAnswer | null>(null);
+  const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
+  const [currentAnswer, setCurrentAnswer] = useState<IVerbAnswer | null>(null);
   const [shuffledData, setShuffledData] = useState<IShuffledData | null>(null);
 
   const onFinishTestHandler = useCallback(() => {
-    const results: IAnswer[] = answers.map((answer) => {
+    const results: IVerbAnswer[] = answers.map((answer) => {
       return {
         ...answer,
         isCorrect: answer.verbIdPair === answer.pronounIdPair,
@@ -92,9 +90,6 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     setAnswers([]);
   }, []);
 
-  console.log('answers', answers);
-  console.log('--------- ChoosePairCard props.shuffledData', shuffledData);
-
   return (
     <Row>
       <Col sm={12}>
@@ -104,88 +99,35 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
       </Col>
 
       {answers.length ? (
-        <Col sm={12}>
-          <h4>Selected Pairs</h4>
-          <ListGroup>
-            {answers.map((item) => {
-              const variantByPronoun = verbData.variants.find((variant) => {
-                return variant.pronoun === item.pronoun;
-              });
-
-              return (
-                <ListGroup.Item key={item.answerId}>
-                  <span className="ms-2 me-auto">
-                    {item.pronoun} {item.verb}
-                  </span>
-
-                  {isFinishedTest && !item.isCorrect && variantByPronoun ? (
-                    <span className="ms-2 me-auto">
-                      <Alert variant="info">
-                        {variantByPronoun.pronoun} {variantByPronoun.verb}
-                      </Alert>
-                    </span>
-                  ) : null}
-
-                  {isFinishedTest ? (
-                    <Badge bg={item.isCorrect ? 'success' : 'danger'} pill>
-                      {item.isCorrect ? <EmojiSunglasses size={24} /> : <EmojiFrown size={24} />}
-                    </Badge>
-                  ) : null}
-                </ListGroup.Item>
-              );
-            })}
-          </ListGroup>
-        </Col>
+        <AnswerList
+          answers={answers}
+          variants={verbData.variants}
+          isFinishedTest={isFinishedTest}
+        />
       ) : null}
 
       <Col sm={12}>
         <div>
           {shuffledData?.pronouns?.length ? (
-            <ButtonGroup aria-label="pronouns" vertical>
-              {shuffledData.pronouns.map((item) => {
-                const answerData: IAnswer | undefined = answers.find(
-                  (answer) => answer.pronoun === item.text
-                );
-                const isSelected = Boolean(answerData);
-                const isCurrent = currentAnswer?.pronoun === item.text;
-                const variant = Helpers.getButtonVariants(isCurrent, answerData);
-
-                return (
-                  <Button
-                    key={item.text}
-                    variant={variant}
-                    onClick={onClickPronounHandler(item.pairId, item.text)}
-                    disabled={isSelected}
-                  >
-                    {item.text}
-                  </Button>
-                );
-              })}
-            </ButtonGroup>
+            <VariantsList
+              variantType="pronoun"
+              ariaLabelGroup="pronouns"
+              pairsData={shuffledData.pronouns}
+              onClickHandler={onClickPronounHandler}
+              currentAnswer={currentAnswer}
+              answers={answers}
+            />
           ) : null}
 
           {shuffledData?.verbs?.length ? (
-            <ButtonGroup aria-label="verbs" vertical>
-              {shuffledData.verbs.map((item) => {
-                const answerData: IAnswer | undefined = answers.find(
-                  (answer) => answer.verb === item.text
-                );
-                const isSelected = Boolean(answerData);
-                const isCurrent = currentAnswer?.verb === item.text;
-                const variant = Helpers.getButtonVariants(isCurrent, answerData);
-
-                return (
-                  <Button
-                    key={item.text}
-                    variant={variant}
-                    onClick={onClickVerbHandler(item.pairId, item.text)}
-                    disabled={isSelected}
-                  >
-                    {item.text}
-                  </Button>
-                );
-              })}
-            </ButtonGroup>
+            <VariantsList
+              variantType="verb"
+              ariaLabelGroup="verbs"
+              pairsData={shuffledData.verbs}
+              onClickHandler={onClickVerbHandler}
+              currentAnswer={currentAnswer}
+              answers={answers}
+            />
           ) : null}
         </div>
       </Col>

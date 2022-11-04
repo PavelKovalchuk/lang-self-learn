@@ -1,1 +1,3 @@
-export { default } from './ChoosePairCard';
+import ChoosePairCard from './ChoosePairCard';
+
+export { ChoosePairCard };

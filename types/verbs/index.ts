@@ -10,3 +10,22 @@ export interface IRegularVerbVariant {
   verb: string;
   id: string;
 }
+
+export interface IVerbAnswer {
+  verb: string;
+  pronoun: string;
+  verbIdPair: string;
+  pronounIdPair: string;
+  answerId: string;
+  isCorrect: boolean | null;
+}
+
+export interface IShuffledData {
+  pronouns: IPairData[];
+  verbs: IPairData[];
+}
+
+export interface IPairData {
+  text: string;
+  pairId: string;
+}

@@ -2,7 +2,7 @@ import { FC, MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import ChoosePairCard from 'components/cards';
+import { ChoosePairCard } from 'components/cards';
 
 import styles from './regularVerbs.module.scss';
 import { IPropsRegularVerbs } from './model';

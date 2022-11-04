@@ -1,6 +1,6 @@
-import { IAnswer } from './model';
+import { IVerbAnswer } from 'types';
 
-export const DefaultAnswer: IAnswer = {
+export const DefaultAnswer: IVerbAnswer = {
   verb: '',
   verbIdPair: '',
   pronoun: '',
