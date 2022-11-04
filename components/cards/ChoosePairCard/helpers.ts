@@ -20,7 +20,7 @@ const getShuffledData = (variants: IRegularVerbVariant[]): IShuffledData => {
 
 const getCalculatedMark = (correctAnswers: number, numberVariants: number): number => {
   const percentage = (correctAnswers / numberVariants) * 100;
-  if (percentage < 30 && percentage > 0) {
+  if (percentage < 30 && percentage >= 0) {
     return 1;
   }
   if (percentage < 50 && percentage > 30) {
