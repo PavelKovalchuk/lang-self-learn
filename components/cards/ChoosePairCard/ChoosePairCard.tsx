@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, MouseEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -85,6 +85,23 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     []
   );
 
+  const onClickAnswerHandler = useCallback(
+    (answerId: string) => (): MouseEventHandler<HTMLButtonElement> | undefined => {
+      const newAnswers = answers
+        .filter((item) => {
+          return item.answerId !== answerId;
+        })
+        .map((item, index) => {
+          return { ...item, answerId: String(index + 1) };
+        });
+
+      setAnswers(newAnswers);
+
+      return;
+    },
+    [answers]
+  );
+
   const onClickResetHandler = useCallback(() => {
     setCurrentAnswer(null);
     setAnswers([]);
@@ -103,6 +120,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
           answers={answers}
           variants={verbData.variants}
           isFinishedTest={isFinishedTest}
+          onRemoveItemHandler={onClickAnswerHandler}
         />
       ) : null}
 

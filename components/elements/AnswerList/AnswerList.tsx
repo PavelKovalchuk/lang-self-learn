@@ -1,20 +1,21 @@
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
-import { EmojiSunglasses, EmojiFrown } from 'react-bootstrap-icons';
+import Button from 'react-bootstrap/Button';
+import { EmojiSunglasses, EmojiFrown, XSquareFill } from 'react-bootstrap-icons';
 
 // import styles from './answerList.module.scss';
 import { IPropsAnswerList } from './model';
 
-const AnswerList: FC<IPropsAnswerList> = ({ answers, variants }) => {
-  const isFinishedTest = useMemo(() => {
-    return answers.length === variants.length;
-  }, [answers]);
-
-  console.log('answers', answers);
+const AnswerList: FC<IPropsAnswerList> = ({
+  answers,
+  variants,
+  isFinishedTest,
+  onRemoveItemHandler,
+}) => {
   return (
     <Row>
       <Col sm={12}>
@@ -45,6 +46,12 @@ const AnswerList: FC<IPropsAnswerList> = ({ answers, variants }) => {
                       <Badge bg={item.isCorrect ? 'success' : 'danger'} pill>
                         {item.isCorrect ? <EmojiSunglasses size={24} /> : <EmojiFrown size={24} />}
                       </Badge>
+                    ) : null}
+
+                    {!isFinishedTest ? (
+                      <Button variant="dark" onClick={onRemoveItemHandler(item.answerId)}>
+                        <XSquareFill size={24} />
+                      </Button>
                     ) : null}
                   </ListGroup.Item>
                 );
