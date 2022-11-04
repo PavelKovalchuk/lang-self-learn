@@ -13,6 +13,7 @@
     "react/destructuring-assignment": 0,
     "import/prefer-default-export": 1,
     "comma-dangle": 0,
-    "object-curly-newline": 0
+    "object-curly-newline": 0,
+    "react-hooks/exhaustive-deps": 0
   }
 }

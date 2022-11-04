@@ -16,6 +16,10 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   const [currentAnswer, setCurrentAnswer] = useState<IVerbAnswer | null>(null);
   const [shuffledData, setShuffledData] = useState<IShuffledData | null>(null);
 
+  const isFinishedTest = useMemo(() => {
+    return answers.length === verbData.variants.length;
+  }, [answers, verbData.variants.length]);
+
   const onFinishTestHandler = useCallback(() => {
     const results: IVerbAnswer[] = answers.map((answer) => {
       return {
@@ -27,13 +31,8 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     setAnswers(results);
   }, [answers]);
 
-  const isFinishedTest = useMemo(() => {
-    return answers.length === verbData.variants.length;
-  }, [answers, verbData.variants.length]);
-
   useEffect(() => {
     setShuffledData(Helpers.getShuffledData(verbData.variants));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -49,10 +48,10 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   }, [currentAnswer]);
 
   useEffect(() => {
-    if (answers.length === verbData.variants.length) {
+    if (isFinishedTest) {
       onFinishTestHandler();
     }
-  }, [answers.length, verbData.variants.length, onFinishTestHandler]);
+  }, [isFinishedTest]);
 
   const onClickPronounHandler = useCallback(
     (pairId: string, pronoun: string) => () => {
