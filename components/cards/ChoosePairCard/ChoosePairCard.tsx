@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-import { AnswerList, VariantsList } from 'components/elements';
+import { AnswerList, CardMark, VariantsList } from 'components/elements';
 import { IShuffledData, IVerbAnswer } from 'types';
 
 // import styles from './choosePairCard.module.scss';
@@ -15,20 +15,35 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<IVerbAnswer | null>(null);
   const [shuffledData, setShuffledData] = useState<IShuffledData | null>(null);
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   const isFinishedTest = useMemo(() => {
     return answers.length === verbData.variants.length;
   }, [answers, verbData.variants.length]);
 
+  const mark = useMemo(() => {
+    if (!isFinishedTest) {
+      return 0;
+    }
+    return Helpers.getCalculatedMark(correctAnswers, verbData.variants.length);
+  }, [correctAnswers, verbData.variants.length, isFinishedTest]);
+
   const onFinishTestHandler = useCallback(() => {
+    let corrects = 0;
     const results: IVerbAnswer[] = answers.map((answer) => {
+      const isCorrect = answer.verbIdPair === answer.pronounIdPair;
+      if (isCorrect) {
+        corrects += 1;
+      }
+
       return {
         ...answer,
-        isCorrect: answer.verbIdPair === answer.pronounIdPair,
+        isCorrect,
       };
     });
 
     setAnswers(results);
+    setCorrectAnswers(corrects);
   }, [answers]);
 
   useEffect(() => {
@@ -113,13 +128,21 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
         </Button>
       </Col>
 
+      {isFinishedTest ? (
+        <Col sm={12}>
+          <CardMark mark={mark} correctAnswer={correctAnswers} allAnswer={answers.length} />
+        </Col>
+      ) : null}
+
       {answers.length ? (
-        <AnswerList
-          answers={answers}
-          variants={verbData.variants}
-          isFinishedTest={isFinishedTest}
-          onRemoveItemHandler={onClickAnswerHandler}
-        />
+        <Col sm={12}>
+          <AnswerList
+            answers={answers}
+            variants={verbData.variants}
+            isFinishedTest={isFinishedTest}
+            onRemoveItemHandler={onClickAnswerHandler}
+          />
+        </Col>
       ) : null}
 
       <Col sm={12}>
