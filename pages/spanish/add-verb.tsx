@@ -10,6 +10,7 @@ import { AddPronounForm, AddVerbForm } from 'components/forms';
 interface IPropsAddVerbPage {}
 
 const UserId = 1;
+const Language = 'es';
 
 const AddVerbPage: NextPage<IPropsAddVerbPage> = () => {
   return (
@@ -22,7 +23,7 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = () => {
       <Container fluid>
         <Row>
           <Col sm={12}>
-            <AddPronounForm userId={UserId} />
+            <AddPronounForm userId={UserId} language={Language} />
           </Col>
           <Col sm={12}>
             <AddVerbForm />
