@@ -71,6 +71,10 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
     });
   }, []);
 
+  const resetAllPairsHandler = useCallback(() => {
+    setPronouns([]);
+  }, []);
+
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -101,10 +105,20 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
           </Col>
         </Row>
 
-        <Row className="mb-3 mt-3">
-          <Col sm={4}>
-            <Button variant="dark" type="button" onClick={addNewPairHandler}>
+        <Row className="mb-4 mt-3 ">
+          <Col sm={12} md={4}>
+            <Button variant="dark" type="button" className="w-100" onClick={addNewPairHandler}>
               Add a new pair
+            </Button>
+          </Col>
+          <Col sm={12} md={4}>
+            <Button variant="dark" type="submit" className="w-100">
+              Submit
+            </Button>
+          </Col>
+          <Col sm={12} md={4}>
+            <Button variant="dark" type="button" onClick={resetAllPairsHandler} className="w-100">
+              Reset All
             </Button>
           </Col>
         </Row>
@@ -131,10 +145,6 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             deletePronounHandler={deletePronounHandler}
           />
         )}
-
-        <Button variant="dark" type="submit">
-          Submit
-        </Button>
       </Form>
       <ToastModal
         type={toastModalResult.type}

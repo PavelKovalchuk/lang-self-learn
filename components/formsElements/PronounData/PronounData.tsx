@@ -31,7 +31,7 @@ const PronounData: FC<IPropsPronounData> = ({
   }, []);
 
   return (
-    <Row id={`pronoun-data-${id}`}>
+    <Row id={`pronoun-data-${id}`} className="mb-3">
       <Col sm={5}>
         <Form.Control
           name="pronoun"
@@ -42,7 +42,6 @@ const PronounData: FC<IPropsPronounData> = ({
           onChange={onChangePronoun}
           onBlur={savePronounHandler(id, pronoun, translation)}
         />
-        <Form.Text className="text-muted">Add a pronoun</Form.Text>
       </Col>
       <Col sm={5}>
         <Form.Control
@@ -54,10 +53,9 @@ const PronounData: FC<IPropsPronounData> = ({
           onChange={onChangeTranslation}
           onBlur={savePronounHandler(id, pronoun, translation)}
         />
-        <Form.Text className="text-muted">Add a translation</Form.Text>
       </Col>
       <Col sm={2}>
-        <Button variant="dark" type="button" onClick={deletePronounHandler(id)}>
+        <Button variant="dark" className="w-100" type="button" onClick={deletePronounHandler(id)}>
           Delete
         </Button>
       </Col>

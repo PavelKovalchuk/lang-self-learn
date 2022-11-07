@@ -22,8 +22,10 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = () => {
 
       <Container fluid>
         <Row>
-          <Col sm={12}>
+          <Col sm={12} md={6} className="me-auto ms-auto mb-4">
+            <hr className="bg-dark mb-4 mt-4" />
             <AddPronounForm userId={UserId} language={Language} />
+            <hr className="bg-dark mb-4 mt-4" />
           </Col>
           <Col sm={12}>
             <AddVerbForm />
