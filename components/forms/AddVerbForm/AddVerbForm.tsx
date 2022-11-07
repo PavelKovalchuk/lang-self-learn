@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +14,11 @@ const AddVerbForm: FC<IPropsAddVerbForm> = () => {
 
   return (
     <Form>
+      <Row>
+        <Col sm={12}>
+          <h2>Add a verb data to your dictionary</h2>
+        </Col>
+      </Row>
       <Row>
         <Col sm={5}>
           <Form.Control name="pronoun" type="text" placeholder="Pronoun" aria-label="pronoun" />

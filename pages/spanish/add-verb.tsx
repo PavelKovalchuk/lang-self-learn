@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Layout from 'components/layout/Layout';
-import { AddVerbForm } from 'components/forms';
+import { AddPronounForm, AddVerbForm } from 'components/forms';
 
 interface IPropsAddVerbPage {}
 
@@ -19,6 +19,9 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = () => {
 
       <Container fluid>
         <Row>
+          <Col sm={12}>
+            <AddPronounForm />
+          </Col>
           <Col sm={12}>
             <AddVerbForm />
           </Col>
