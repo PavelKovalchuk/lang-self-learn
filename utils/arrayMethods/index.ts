@@ -7,3 +7,11 @@ export function shuffleArray(arr: any[]): any[] {
 
   return copy;
 }
+
+export function sortArrayById(array: any[], key: string): any[] {
+  return array.sort(function (a, b) {
+    const x = parseInt(a[key]);
+    const y = parseInt(b[key]);
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+}

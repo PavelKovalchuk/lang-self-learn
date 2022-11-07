@@ -29,3 +29,9 @@ export interface IPairData {
   text: string;
   pairId: string;
 }
+
+export interface IAddPronounData {
+  pronoun: string;
+  translation: string;
+  id: string;
+}

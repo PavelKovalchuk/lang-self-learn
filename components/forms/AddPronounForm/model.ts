@@ -1,1 +1,3 @@
-export interface IPropsAddPronounForm {}
+export interface IPropsAddPronounForm {
+  userId: number;
+}
