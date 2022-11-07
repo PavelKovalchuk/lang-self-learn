@@ -1,12 +1,13 @@
 import { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
+import Link from 'next/link';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import Layout from 'components/layout/Layout';
 import { IRegularVerb } from 'types';
-import dynamic from 'next/dynamic';
 
 interface IPropsConjugateRegularVerbsPage {
   verbs: IRegularVerb[];
@@ -24,6 +25,10 @@ const ConjugateRegularVerbsPage: NextPage<IPropsConjugateRegularVerbsPage> = (pr
 
       <Container fluid>
         <Row>
+          <Col sm={12}>
+            <Link href="/spanish/add-verb">Add verb</Link>
+          </Col>
+
           <Col sm={12}>
             <RegularVerbs verbs={props.verbs} />
           </Col>
