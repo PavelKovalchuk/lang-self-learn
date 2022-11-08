@@ -40,7 +40,14 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             { ...pronounToEdit, pronoun, translation },
           ];
         }
-        return [...prevPronouns, { pronoun, translation, id: String(prevPronouns.length + 1) }];
+        return [
+          ...prevPronouns,
+          {
+            pronoun: pronoun.trim(),
+            translation: translation.trim(),
+            id: String(prevPronouns.length + 1),
+          },
+        ];
       });
     },
     []
@@ -81,9 +88,13 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
       event.stopPropagation();
 
       const { result }: IBaseApiResponse = await postRequest(HTTP_REQUEST_URL.PRONOUN, {
-        userId,
-        language,
-        pronouns,
+        params: {
+          language,
+        },
+        data: {
+          userId,
+          pronouns,
+        },
       });
 
       if (result === 'ok') {
