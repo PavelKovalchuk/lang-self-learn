@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import { postRequest, sortArrayById } from 'utils';
-import { IAddPronounData, IBaseApiResponse } from 'types';
+import { IPronounData, IBaseApiResponse } from 'types';
 import { HTTP_REQUEST_URL } from 'variables';
 import { PronounData } from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
@@ -15,7 +15,7 @@ import { IPropsAddPronounForm } from './model';
 import { DefaultPronoun, DefaultToastMessage } from './constants';
 
 const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
-  const [pronouns, setPronouns] = useState<IAddPronounData[]>([]);
+  const [pronouns, setPronouns] = useState<IPronounData[]>([]);
   const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
     DefaultToastMessage
   );

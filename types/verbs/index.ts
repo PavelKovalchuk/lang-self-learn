@@ -30,7 +30,7 @@ export interface IPairData {
   pairId: string;
 }
 
-export interface IAddPronounData {
+export interface IPronounData {
   pronoun: string;
   translation: string;
   id: string;

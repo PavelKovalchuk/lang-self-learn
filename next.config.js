@@ -15,6 +15,7 @@ module.exports = (phase) => {
         mongodb_password: 'dsN6kdxUS8WepQin',
         mongodb_clustername: 'cluster0',
         mongodb_database: 'lang-self-learn',
+        domain: 'http://localhost:3000',
       },
     };
   }
@@ -26,6 +27,7 @@ module.exports = (phase) => {
       mongodb_password: 'dsN6kdxUS8WepQin',
       mongodb_clustername: 'cluster0',
       mongodb_database: 'lang-self-learn',
+      domain: 'http://localhost:3000',
     },
   };
 };
