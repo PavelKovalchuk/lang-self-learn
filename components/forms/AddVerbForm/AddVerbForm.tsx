@@ -1,16 +1,90 @@
-import { FC, FormEvent, useCallback } from 'react';
+import { FC, FormEvent, useCallback, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+import { IIndefiniteVerbData, IVerbData } from 'types';
+
+import { IndefiniteVerbData, PronounVerbData } from 'components/formsElements';
+
 // import styles from './addVerbForm.module.scss';
 import { IPropsAddVerbForm } from './model';
+import { DefaultIndefiniteData } from './constants';
 
-const AddVerbForm: FC<IPropsAddVerbForm> = () => {
-  // const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
+const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronouns }) => {
+  const [verbs, setVerbs] = useState<IVerbData[]>([]);
+  const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
+  const [indefinite, setIndefinite] = useState<IIndefiniteVerbData>(DefaultIndefiniteData);
 
-  // Add new component - for the pair
+  console.log('AddVerbForm: pronouns', pronouns);
+  console.log('AddVerbForm: verbs', verbs);
+  console.log('AddVerbForm: indefinite', indefinite);
+
+  const saveIndefiniteHandler = useCallback(
+    (verb: string, translation: string) => () => {
+      if (!verb.trim() || !translation.trim()) {
+        return;
+      }
+
+      setIndefinite({
+        verb,
+        translation,
+        id: verb,
+      });
+    },
+    []
+  );
+
+  const saveVerbHandler = useCallback(
+    (id: string, verb: string, verbTranslation: string) => () => {
+      if (!id || !verb.trim() || !verbTranslation.trim()) {
+        return;
+      }
+
+      const pronounData = pronouns.find((item) => item.id === id);
+
+      if (!pronounData) {
+        return;
+      }
+
+      setVerbs((prevVerbs) => {
+        const verbToEdit = prevVerbs.find((item) => {
+          return item.id === id;
+        });
+        if (verbToEdit) {
+          return [
+            ...prevVerbs.filter((item) => item.id !== id),
+            { ...verbToEdit, verb, verbTranslation },
+          ];
+        }
+        return [
+          ...prevVerbs,
+          {
+            pronoun: pronounData.pronoun,
+            pronounTranslation: pronounData.translation,
+            verb: verb.trim(),
+            verbTranslation: verbTranslation.trim(),
+            id: String(prevVerbs.length + 1),
+          },
+        ];
+      });
+    },
+    []
+  );
+
+  const resetAllPairsHandler = useCallback(() => {
+    setVerbs([]);
+    setIsToClearAll(true);
+    setIndefinite(DefaultIndefiniteData);
+  }, []);
+
+  useEffect(() => {
+    // reset the flag after the reset all btn clicked
+    if (!verbs.length) {
+      setIsToClearAll(false);
+    }
+  }, [verbs.length]);
 
   const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,38 +115,34 @@ const AddVerbForm: FC<IPropsAddVerbForm> = () => {
           <h2>Add a verb data to your dictionary</h2>
         </Col>
       </Row>
-
+      // TODO: add a type of the verbs set
       <Row className="mb-4 mt-3 ">
-        <Col sm={12} md={4}>
-          <Button variant="dark" type="button" className="w-100">
-            Add a new pair
+        <Col sm={12} md={6}>
+          <Button variant="dark" type="button" className="w-100" onClick={resetAllPairsHandler}>
+            Reset All
           </Button>
         </Col>
-        <Col sm={12} md={4}>
+        <Col sm={12} md={6}>
           <Button variant="dark" type="submit" className="w-100">
             Submit
           </Button>
         </Col>
-        <Col sm={12} md={4}>
-          <Button variant="dark" type="button" className="w-100">
-            Reset All
-          </Button>
-        </Col>
       </Row>
-
-      <Row>
-        <Col sm={5}>
-          <Form.Control name="pronoun" type="text" placeholder="Pronoun" aria-label="pronoun" />
-        </Col>
-        <Col sm={5}>
-          <Form.Control name="verb" type="text" placeholder="Verb" aria-label="verb" />
-        </Col>
-        <Col sm={2}>
-          <Button variant="dark" type="button">
-            Delete
-          </Button>
-        </Col>
-      </Row>
+      <IndefiniteVerbData saveIndefiniteHandler={saveIndefiniteHandler} isToClear={isToClearAll} />
+      {pronouns.length
+        ? pronouns.map((pronoun) => {
+            return (
+              <PronounVerbData
+                key={pronoun.id}
+                id={pronoun.id}
+                pronoun={pronoun.pronoun}
+                pronounTranslation={pronoun.translation}
+                saveVerbHandler={saveVerbHandler}
+                isToClear={isToClearAll}
+              />
+            );
+          })
+        : null}
     </Form>
   );
 };

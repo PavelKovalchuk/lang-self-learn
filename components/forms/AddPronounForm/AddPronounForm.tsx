@@ -115,7 +115,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             <h2>Add a pronoun data to your dictionary</h2>
           </Col>
         </Row>
-
+        // TODO: add a type of the pronouns
         <Row className="mb-4 mt-3 ">
           <Col sm={12} md={4}>
             <Button variant="dark" type="button" className="w-100" onClick={addNewPairHandler}>
@@ -123,17 +123,16 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             </Button>
           </Col>
           <Col sm={12} md={4}>
-            <Button variant="dark" type="submit" className="w-100">
-              Submit
-            </Button>
-          </Col>
-          <Col sm={12} md={4}>
             <Button variant="dark" type="button" onClick={resetAllPairsHandler} className="w-100">
               Reset All
             </Button>
           </Col>
+          <Col sm={12} md={4}>
+            <Button variant="dark" type="submit" className="w-100">
+              Submit
+            </Button>
+          </Col>
         </Row>
-
         {pronouns.length ? (
           sortArrayById(pronouns, 'id').map((item) => {
             return (

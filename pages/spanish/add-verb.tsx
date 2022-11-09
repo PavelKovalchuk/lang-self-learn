@@ -18,9 +18,7 @@ interface IPropsAddVerbPage {
 const UserId = 1;
 const Language = 'es';
 
-const AddVerbPage: NextPage<IPropsAddVerbPage> = (props) => {
-  console.log('AddVerbPage: savedPronouns', props.savedPronouns);
-
+const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ savedPronouns }) => {
   return (
     <Layout>
       <Head>
@@ -30,16 +28,16 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = (props) => {
 
       <Container fluid>
         <Row>
-          <Col sm={12} md={6} className="me-auto ms-auto mb-4">
+          <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
             <AddPronounForm userId={UserId} language={Language} />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={6} className="me-auto ms-auto mb-4">
+          <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            <AddVerbForm />
+            <AddVerbForm pronouns={savedPronouns} />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>

@@ -1,3 +1,5 @@
 import PronounData from './PronounData';
+import PronounVerbData from './PronounVerbData';
+import IndefiniteVerbData from './IndefiniteVerbData';
 
-export { PronounData };
+export { PronounData, PronounVerbData, IndefiniteVerbData };

@@ -35,3 +35,17 @@ export interface IPronounData {
   translation: string;
   id: string;
 }
+
+export interface IVerbData {
+  pronoun: string;
+  pronounTranslation: string;
+  verb: string;
+  verbTranslation: string;
+  id: string;
+}
+
+export interface IIndefiniteVerbData {
+  verb: string;
+  translation: string;
+  id: string;
+}
