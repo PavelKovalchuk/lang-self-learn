@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { WithId, Document } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { IBaseApiResponse, IPronounData } from 'types';
+import { IBaseApiResponse, IPronounData, IPronounDataDocument, IWordTranslationData } from 'types';
 import { connectToDatabase } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
@@ -28,15 +29,17 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const client = await connectToDatabase();
   const db = client.db();
 
-  const payload: { pronouns: IPronounData[] } = { pronouns: [] };
+  let payload: WithId<IPronounDataDocument>[] = [];
+
+  // TODO: return all
 
   try {
     const result = await db
-      .collection(`pronouns-${language}`)
+      .collection<IPronounDataDocument>(`pronouns-${language}`)
       .find({ userId: parseInt(String(userId)) })
       .toArray();
 
-    payload.pronouns = result[0].pronouns;
+    payload = result;
   } catch (error) {
     client.close();
     res.status(500).json({ result: 'error', message: 'Retrieving data failed!' });

@@ -23,14 +23,10 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronouns }) => {
 
   const saveIndefiniteHandler = useCallback(
     (verb: string, translation: string) => () => {
-      if (!verb.trim() || !translation.trim()) {
-        return;
-      }
-
       setIndefinite({
-        verb,
-        translation,
-        id: verb,
+        verb: verb.trim(),
+        translation: translation.trim(),
+        id: verb.trim(),
       });
     },
     []

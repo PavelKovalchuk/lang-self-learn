@@ -36,6 +36,12 @@ export interface IPronounData {
   id: string;
 }
 
+export interface IWordTranslationData {
+  word: string;
+  translation: string;
+  id: string;
+}
+
 export interface IVerbData {
   pronoun: string;
   pronounTranslation: string;
@@ -48,4 +54,12 @@ export interface IIndefiniteVerbData {
   verb: string;
   translation: string;
   id: string;
+}
+
+// Documents
+export interface IPronounDataDocument {
+  _id: string;
+  userId: number;
+  pronouns: IPronounData[];
+  pronounGroup: IWordTranslationData;
 }
