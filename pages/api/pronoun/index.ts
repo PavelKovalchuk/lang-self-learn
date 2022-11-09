@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId, Document } from 'mongodb';
+import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { IBaseApiResponse, IPronounData, IPronounDataDocument, IWordTranslationData } from 'types';
+import { IBaseApiResponse, IPronounDataDocument } from 'types';
 import { connectToDatabase } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
@@ -30,8 +30,6 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const db = client.db();
 
   let payload: WithId<IPronounDataDocument>[] = [];
-
-  // TODO: return all
 
   try {
     const result = await db

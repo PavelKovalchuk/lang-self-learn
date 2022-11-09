@@ -26,7 +26,7 @@ const ConjugateRegularVerbsPage: NextPage<IPropsConjugateRegularVerbsPage> = (pr
       <Container fluid>
         <Row>
           <Col sm={12}>
-            <Link href="/spanish/add-verb">Add verb</Link>
+            <Link href="/spanish/add-verb">Add verb if you do not have any</Link>
           </Col>
 
           <Col sm={12}>

@@ -32,12 +32,12 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
           </Col>
           <Col sm={4}>
             <div>
-              <h2>Conjugate Irregular Verbs</h2>
+              <Link href="/spanish/add-verb">Add verb</Link>
             </div>
           </Col>
           <Col sm={4}>
             <div>
-              <h2>Block 3</h2>
+              <Link href="/spanish/add-pronouns">Add Pronouns</Link>
             </div>
           </Col>
         </Row>
