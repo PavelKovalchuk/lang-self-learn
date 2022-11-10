@@ -11,26 +11,27 @@ import { getRequest } from 'utils';
 import Layout from 'components/layout/Layout';
 import { AddVerbForm } from 'components/forms';
 
-interface IPropsAddVerbPage {
+interface IPropsAddVerbsGroupsPage {
   pronounsGroups: IPronounDataDocument[];
 }
 
 const UserId = 1;
 const Language = 'es';
 
-const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups }) => {
+const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups }) => {
   return (
     <Layout>
       <Head>
-        <title>Add Verb</title>
-        <meta name="description" content="AddVerbPage" />
+        <title>Add Verbs Groups</title>
+        <meta name="description" content="Add Verbs Groups" />
       </Head>
 
       <Container fluid>
         <Row>
           <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            <AddVerbForm pronounsGroups={pronounsGroups} />
+            AddVerbsGroupsPage
+            {/* <AddVerbForm pronounsGroups={pronounsGroups} /> */}
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>
@@ -39,7 +40,7 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups }) => {
   );
 };
 
-export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbPage>> {
+/* export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbPage>> {
   const { result, message, payload }: IBaseApiResponse = await getRequest(
     HTTP_REQUEST_URL.PRONOUN,
     {
@@ -55,6 +56,6 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVe
       pronounsGroups: payload,
     },
   };
-}
+} */
 
-export default AddVerbPage;
+export default AddVerbsGroupsPage;

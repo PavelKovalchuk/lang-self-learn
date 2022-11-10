@@ -18,13 +18,15 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
       </Head>
 
       <Container fluid>
-        <Row>
+        <Row className="mb-4">
           <Col sm={12}>
             <div>
               <h1>Spanish HomePage</h1>
               <p>Get started</p>
             </div>
           </Col>
+        </Row>
+        <Row className="mb-4">
           <Col sm={4}>
             <div>
               <Link href="/spanish/conjugate-regular-verbs">Conjugate Regular Verbs</Link>
@@ -39,6 +41,19 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
             <div>
               <Link href="/spanish/add-pronouns">Add Pronouns</Link>
             </div>
+          </Col>
+        </Row>
+        <Row className="mb-4">
+          <Col sm={4}>
+            <div>
+              <Link href="/spanish/add-verbs-groups">Add Verbs Groups</Link>
+            </div>
+          </Col>
+          <Col sm={4}>
+            <div></div>
+          </Col>
+          <Col sm={4}>
+            <div></div>
           </Col>
         </Row>
       </Container>
