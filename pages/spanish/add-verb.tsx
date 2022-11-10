@@ -12,13 +12,13 @@ import { HTTP_REQUEST_URL } from 'variables';
 import { getRequest } from 'utils';
 
 interface IPropsAddVerbPage {
-  savedPronouns: IPronounDataDocument[];
+  pronounsGroups: IPronounDataDocument[];
 }
 
 const UserId = 1;
 const Language = 'es';
 
-const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ savedPronouns }) => {
+const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups }) => {
   return (
     <Layout>
       <Head>
@@ -30,8 +30,7 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ savedPronouns }) => {
         <Row>
           <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            // TODO: add dropdown for all groups of pronouns
-            <AddVerbForm pronouns={savedPronouns[1].pronouns} />
+            <AddVerbForm pronounsGroups={pronounsGroups} />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>
@@ -53,7 +52,7 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVe
 
   return {
     props: {
-      savedPronouns: payload,
+      pronounsGroups: payload,
     },
   };
 }

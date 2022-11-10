@@ -1,5 +1,5 @@
-import { IPronounData } from 'types';
+import { IPronounDataDocument } from 'types';
 
 export interface IPropsAddVerbForm {
-  pronouns: IPronounData[];
+  pronounsGroups: IPronounDataDocument[];
 }
