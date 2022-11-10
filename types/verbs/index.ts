@@ -56,6 +56,13 @@ export interface IIndefiniteVerbData {
   id: string;
 }
 
+export interface IGroupData {
+  word: string;
+  translation: string;
+  label: string;
+  id: string;
+}
+
 // Documents
 export interface IPronounDataDocument {
   _id: string;

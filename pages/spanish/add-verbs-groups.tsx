@@ -9,7 +9,7 @@ import { HTTP_REQUEST_URL } from 'variables';
 import { getRequest } from 'utils';
 
 import Layout from 'components/layout/Layout';
-import { AddVerbForm } from 'components/forms';
+import { AddGroupForm, AddVerbForm } from 'components/forms';
 
 interface IPropsAddVerbsGroupsPage {
   pronounsGroups: IPronounDataDocument[];
@@ -30,8 +30,7 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups
         <Row>
           <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            AddVerbsGroupsPage
-            {/* <AddVerbForm pronounsGroups={pronounsGroups} /> */}
+            <AddGroupForm userId={UserId} language={Language} />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>
