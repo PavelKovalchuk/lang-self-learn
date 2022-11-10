@@ -46,7 +46,7 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
         <Row className="mb-4">
           <Col sm={4}>
             <div>
-              <Link href="/spanish/add-verbs-groups">Add Verbs Groups</Link>
+              <Link href="/spanish/verbs-groups">Verbs Groups</Link>
             </div>
           </Col>
           <Col sm={4}>
