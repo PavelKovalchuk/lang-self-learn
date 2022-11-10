@@ -30,7 +30,11 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups
         <Row>
           <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            <AddGroupForm userId={UserId} language={Language} />
+            <AddGroupForm
+              userId={UserId}
+              language={Language}
+              groupAPI={HTTP_REQUEST_URL.VERBS_GROUPS}
+            />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>

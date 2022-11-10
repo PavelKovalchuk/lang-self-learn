@@ -6,21 +6,20 @@ import Form from 'react-bootstrap/Form';
 
 import { postRequest, sortArrayById } from 'utils';
 import { IBaseApiResponse, IGroupData } from 'types';
-import { HTTP_REQUEST_URL } from 'variables';
 import { WordTranslationLabelData } from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
 
 // import styles from './addPronounForm.module.scss';
 import { IPropsAddGroupForm } from './model';
-import { DefaultGroup } from './constants';
+import { DefaultGroup, DefaultToastMessage } from './constants';
 import Helpers from './helpers';
 
-const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language }) => {
+const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI }) => {
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
   const [groups, setGroups] = useState<IGroupData[]>([]);
-  /* const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
+  const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
     DefaultToastMessage
-  ); */
+  );
 
   useEffect(() => {
     // reset the flag after the reset all btn clicked
@@ -89,19 +88,18 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language }) => {
     setIsToClearAll(true);
   }, []);
 
-  /* const handleSubmit = useCallback(
+  const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       event.stopPropagation();
 
-      const { result }: IBaseApiResponse = await postRequest(HTTP_REQUEST_URL.PRONOUN, {
+      const { result }: IBaseApiResponse = await postRequest(groupAPI, {
         params: {
           language,
         },
         data: {
           userId,
-          pronounGroup,
-          pronouns,
+          groups,
         },
       });
 
@@ -112,12 +110,16 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language }) => {
         setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
       }
     },
-    [pronouns, pronounGroup]
-  ); */
+    [groups]
+  );
+
+  const onCloseToastModal = useCallback(() => {
+    setToastModalResult({ ...DefaultToastMessage });
+  }, []);
 
   return (
     <>
-      <Form noValidate onSubmit={() => {}}>
+      <Form noValidate onSubmit={handleSubmit}>
         <Row>
           <Col sm={12}>
             <h2>Add a verbs groups data to your dictionary</h2>
@@ -173,6 +175,14 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language }) => {
           />
         )}
       </Form>
+
+      <ToastModal
+        type={toastModalResult.type}
+        title={toastModalResult.title}
+        message={toastModalResult.message}
+        isShown={Boolean(toastModalResult.message)}
+        onClose={onCloseToastModal}
+      />
     </>
   );
 };
