@@ -1,4 +1,5 @@
 import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -7,19 +8,20 @@ import Form from 'react-bootstrap/Form';
 import { IIndefiniteVerbData, IVerbData } from 'types';
 
 import { IndefiniteVerbData, PronounVerbData } from 'components/formsElements';
+import { ButtonsList, SimpleDropdown } from 'components/elements';
 
 // import styles from './addVerbForm.module.scss';
 import { IPropsAddVerbForm } from './model';
 import { DefaultIndefiniteData } from './constants';
-import { SimpleDropdown } from 'components/elements';
 
-const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups }) => {
+const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups }) => {
   const [verbs, setVerbs] = useState<IVerbData[]>([]);
+  const [selectedVerbsGroupsIds, setSelectedVerbsGroupsIds] = useState<string[]>([]);
   const [pronounsGroupId, setPronounsGroupId] = useState<string>('');
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
   const [indefinite, setIndefinite] = useState<IIndefiniteVerbData>(DefaultIndefiniteData);
 
-  console.log('AddVerbForm: verbs', verbs);
+  console.log('AddVerbForm: verbsGroups', verbsGroups);
 
   const currentPronouns = useMemo(() => {
     return pronounsGroups.find((item) => item._id === pronounsGroupId)?.pronouns || [];
@@ -43,9 +45,22 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups }) => {
     []
   );
 
-  const onDropdownClickHandler = useCallback(
+  const onPronounsClickHandler = useCallback(
     (id: string) => () => {
       setPronounsGroupId(id);
+    },
+    []
+  );
+
+  const onVerbsGroupsClickHandler = useCallback(
+    (id: string) => () => {
+      setSelectedVerbsGroupsIds((prevState) => {
+        const filteredItems = prevState.filter((item) => item !== id);
+        if (filteredItems.length !== prevState.length) {
+          return [...filteredItems];
+        }
+        return [...prevState, id];
+      });
     },
     []
   );
@@ -123,7 +138,6 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups }) => {
           <h2>Add a verb data to your dictionary</h2>
         </Col>
       </Row>
-      // TODO: add a type of the verbs set
       <Row className="mb-4 mt-3 ">
         <Col sm={12} md={4}>
           <Button variant="dark" type="button" className="w-100" onClick={resetAllPairsHandler}>
@@ -131,20 +145,20 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups }) => {
           </Button>
         </Col>
         <Col sm={12} md={4}>
-          <SimpleDropdown
-            id="selectPronounsGroup"
-            title="Select Pronouns Group"
-            onDropdownClickHandler={onDropdownClickHandler}
-            activeItemId={pronounsGroupId}
-            items={
-              pronounsGroups?.length
-                ? pronounsGroups.map((item) => ({
-                    id: item._id,
-                    title: item.pronounGroup.word,
-                  }))
-                : []
-            }
-          />
+          {pronounsGroups?.length ? (
+            <SimpleDropdown
+              id="selectPronounsGroup"
+              title="Select Pronouns Group"
+              onDropdownClickHandler={onPronounsClickHandler}
+              activeItemId={pronounsGroupId}
+              items={pronounsGroups.map((item) => ({
+                id: item._id,
+                title: item.pronounGroup.word,
+              }))}
+            />
+          ) : (
+            <Link href="/spanish/add-pronouns">Create Pronouns Groups</Link>
+          )}
         </Col>
         <Col sm={12} md={4}>
           <Button variant="dark" type="submit" className="w-100">
@@ -152,6 +166,25 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups }) => {
           </Button>
         </Col>
       </Row>
+      {verbsGroups?.[0].groups.length ? (
+        <Row>
+          <Col sm={12}>
+            <ButtonsList
+              ariaLabelGroup="Select categories"
+              onClickHandler={onVerbsGroupsClickHandler}
+              items={verbsGroups[0].groups.map((item) => {
+                return {
+                  text: item.word,
+                  id: item.id,
+                };
+              })}
+              selectedIds={selectedVerbsGroupsIds}
+            />
+          </Col>
+        </Row>
+      ) : (
+        <Link href="/spanish/verbs-groups">Create Verbs Groups</Link>
+      )}
       <IndefiniteVerbData saveIndefiniteHandler={saveIndefiniteHandler} isToClear={isToClearAll} />
       {currentPronouns?.length
         ? currentPronouns.map((pronoun) => {

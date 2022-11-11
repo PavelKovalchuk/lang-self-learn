@@ -1,3 +1,5 @@
+import { Document } from 'mongodb';
+
 export interface IRegularVerb {
   id: string;
   verb: string;
@@ -63,16 +65,21 @@ export interface IGroupData {
   id: string;
 }
 
+export interface IButtonsListItemData {
+  text: string;
+  id: string;
+}
+
 // Documents
-export interface IPronounDataDocument {
-  _id: string;
+export interface IBaseUserDataDocument {
   userId: number;
+}
+
+export interface IPronounDataDocument extends Document, IBaseUserDataDocument {
   pronouns: IPronounData[];
   pronounGroup: IWordTranslationData;
 }
 
-export interface IGroupsDataDocument {
-  _id: string;
-  userId: number;
+export interface IGroupsDataDocument extends Document, IBaseUserDataDocument {
   groups: IGroupData[];
 }
