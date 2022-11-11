@@ -4,21 +4,21 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { IBaseApiResponse, IPronounDataDocument } from 'types';
+import { IBaseApiResponse, IGroupsDataDocument } from 'types';
 import { HTTP_REQUEST_URL } from 'variables';
 import { getRequest } from 'utils';
 
 import Layout from 'components/layout/Layout';
-import { AddGroupForm, AddVerbForm } from 'components/forms';
+import { AddGroupForm } from 'components/forms';
 
 interface IPropsAddVerbsGroupsPage {
-  pronounsGroups: IPronounDataDocument[];
+  verbsGroups: IGroupsDataDocument[];
 }
 
 const UserId = 1;
 const Language = 'es';
 
-const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups }) => {
+const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ verbsGroups }) => {
   return (
     <Layout>
       <Head>
@@ -34,6 +34,7 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups
               userId={UserId}
               language={Language}
               groupAPI={HTTP_REQUEST_URL.VERBS_GROUPS}
+              groupsData={verbsGroups}
             />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
@@ -43,22 +44,22 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ pronounsGroups
   );
 };
 
-/* export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbPage>> {
+export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbsGroupsPage>> {
   const { result, message, payload }: IBaseApiResponse = await getRequest(
-    HTTP_REQUEST_URL.PRONOUN,
+    HTTP_REQUEST_URL.VERBS_GROUPS,
     {
       language: Language,
       userId: String(UserId),
     }
   );
 
-  console.log('--- getStaticProps: result', result, message, payload);
+  console.log('--- AddVerbsGroupsPage getStaticProps: result', result, message, payload);
 
   return {
     props: {
-      pronounsGroups: payload,
+      verbsGroups: payload,
     },
   };
-} */
+}
 
 export default AddVerbsGroupsPage;

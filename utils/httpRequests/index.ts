@@ -22,6 +22,23 @@ export const postRequest = async (
   return data;
 };
 
+export const putRequest = async (
+  url: string,
+  body: { [key: string]: any }
+): Promise<IBaseApiResponse> => {
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+
+  return data;
+};
+
 export const getRequest = async (
   url: string,
   params: { [key: string]: any }

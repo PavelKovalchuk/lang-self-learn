@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import { postRequest, sortArrayById } from 'utils';
+import { putRequest, sortArrayById } from 'utils';
 import { IBaseApiResponse, IGroupData } from 'types';
 import { WordTranslationLabelData } from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
@@ -14,7 +14,7 @@ import { IPropsAddGroupForm } from './model';
 import { DefaultGroup, DefaultToastMessage } from './constants';
 import Helpers from './helpers';
 
-const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI }) => {
+const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, groupsData }) => {
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
   const [groups, setGroups] = useState<IGroupData[]>([]);
   const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
@@ -27,6 +27,12 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI }) =>
       setIsToClearAll(false);
     }
   }, [groups.length]);
+
+  useEffect(() => {
+    if (groupsData.length) {
+      setGroups(groupsData[0].groups);
+    }
+  }, []);
 
   const isActiveSubmit = useMemo(() => {
     return Helpers.checkActiveSubmit(groups);
@@ -93,7 +99,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI }) =>
       event.preventDefault();
       event.stopPropagation();
 
-      const { result }: IBaseApiResponse = await postRequest(groupAPI, {
+      const { result, payload }: IBaseApiResponse = await putRequest(groupAPI, {
         params: {
           language,
         },
@@ -103,8 +109,8 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI }) =>
         },
       });
 
-      if (result === 'ok') {
-        resetAllHandler();
+      if (result === 'ok' && payload?.result?.groups) {
+        setGroups(payload.result.groups);
         setToastModalResult({ ...DefaultToastMessage, type: 'success', message: 'Congrats!' });
       } else {
         setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });

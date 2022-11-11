@@ -70,3 +70,9 @@ export interface IPronounDataDocument {
   pronouns: IPronounData[];
   pronounGroup: IWordTranslationData;
 }
+
+export interface IGroupsDataDocument {
+  _id: string;
+  userId: number;
+  groups: IGroupData[];
+}
