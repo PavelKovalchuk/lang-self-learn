@@ -9,7 +9,7 @@ import Layout from 'components/layout/Layout';
 
 interface IPropsSpanishHomePage {}
 
-const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
+const SpanishHomePage: NextPage<IPropsSpanishHomePage> = ({}) => {
   return (
     <Layout>
       <Head>
@@ -29,7 +29,7 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
         <Row className="mb-4">
           <Col sm={4}>
             <div>
-              <Link href="/spanish/conjugate-regular-verbs">Conjugate Regular Verbs</Link>
+              <Link href="/spanish/conjugate-verbs">Conjugate Verbs</Link>
             </div>
           </Col>
           <Col sm={4}>

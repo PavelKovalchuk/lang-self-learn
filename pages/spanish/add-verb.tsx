@@ -31,7 +31,12 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups, verbsGroups 
         <Row>
           <Col sm={12} md={8} className="me-auto ms-auto mb-4">
             <hr className="bg-dark mb-4 mt-4" />
-            <AddVerbForm pronounsGroups={pronounsGroups} verbsGroups={verbsGroups} />
+            <AddVerbForm
+              userId={UserId}
+              language={Language}
+              pronounsGroups={pronounsGroups}
+              verbsGroups={verbsGroups}
+            />
             <hr className="bg-dark mb-4 mt-4" />
           </Col>
         </Row>

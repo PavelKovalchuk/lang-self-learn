@@ -18,15 +18,31 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   const isFinishedTest = useMemo(() => {
-    return answers.length === verbData.variants.length;
-  }, [answers, verbData.variants.length]);
+    return answers.length === verbData.verbs.length;
+  }, [answers, verbData.verbs.length]);
 
   const mark = useMemo(() => {
     if (!isFinishedTest) {
       return 0;
     }
-    return Helpers.getCalculatedMark(correctAnswers, verbData.variants.length);
-  }, [correctAnswers, verbData.variants.length, isFinishedTest]);
+    return Helpers.getCalculatedMark(correctAnswers, verbData.verbs.length);
+  }, [correctAnswers, verbData.verbs.length, isFinishedTest]);
+
+  useEffect(() => {
+    setShuffledData(Helpers.getShuffledData(verbData.verbs));
+  }, []);
+
+  useEffect(() => {
+    if (!currentAnswer) {
+      return;
+    }
+    if (currentAnswer.pronoun && currentAnswer.verb) {
+      setAnswers((prevAnswers) => {
+        return [...prevAnswers, { ...currentAnswer, answerId: String(prevAnswers.length + 1) }];
+      });
+      setCurrentAnswer(null);
+    }
+  }, [currentAnswer]);
 
   const onFinishTestHandler = useCallback(() => {
     let corrects = 0;
@@ -45,22 +61,6 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     setAnswers(results);
     setCorrectAnswers(corrects);
   }, [answers]);
-
-  useEffect(() => {
-    setShuffledData(Helpers.getShuffledData(verbData.variants));
-  }, []);
-
-  useEffect(() => {
-    if (!currentAnswer) {
-      return;
-    }
-    if (currentAnswer.pronoun && currentAnswer.verb) {
-      setAnswers((prevAnswers) => {
-        return [...prevAnswers, { ...currentAnswer, answerId: String(prevAnswers.length + 1) }];
-      });
-      setCurrentAnswer(null);
-    }
-  }, [currentAnswer]);
 
   useEffect(() => {
     if (isFinishedTest) {
@@ -123,7 +123,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   return (
     <Row>
       <Col sm={12}>
-        <Button variant="primary" onClick={onClickResetHandler} disabled={!answers.length}>
+        <Button variant="dark" onClick={onClickResetHandler} disabled={!answers.length}>
           Reset
         </Button>
       </Col>
@@ -138,7 +138,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
         <Col sm={12}>
           <AnswerList
             answers={answers}
-            variants={verbData.variants}
+            variants={verbData.verbs}
             isFinishedTest={isFinishedTest}
             onRemoveItemHandler={onClickAnswerHandler}
           />

@@ -1,6 +1,6 @@
-import { IPronounDataDocument, IGroupsDataDocument } from 'types';
+import { IPronounDataDocument, IGroupsDataDocument, IBaseAppUserData } from 'types';
 
-export interface IPropsAddVerbForm {
+export interface IPropsAddVerbForm extends IBaseAppUserData {
   pronounsGroups: IPronounDataDocument[];
   verbsGroups: IGroupsDataDocument[];
 }

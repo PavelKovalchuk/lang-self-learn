@@ -1,7 +1,6 @@
 import { IBaseApiResponse } from 'types';
 
 const convertObjToListParams = (params: { [key: string]: string }) => {
-  console.log('--- params', new URLSearchParams(params).toString());
   return new URLSearchParams(params).toString();
 };
 

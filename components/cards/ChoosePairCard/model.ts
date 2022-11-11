@@ -1,5 +1,5 @@
-import { IRegularVerb } from 'types';
+import { IVerbsDataDocument } from 'types';
 
 export interface IPropsChoosePairCard {
-  verbData: IRegularVerb;
+  verbData: IVerbsDataDocument;
 }

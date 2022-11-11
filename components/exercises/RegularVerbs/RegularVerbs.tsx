@@ -7,12 +7,12 @@ import { ChoosePairCard } from 'components/cards';
 // import styles from './regularVerbs.module.scss';
 import { IPropsRegularVerbs } from './model';
 
-const RegularVerbs: FC<IPropsRegularVerbs> = (props) => {
+const RegularVerbs: FC<IPropsRegularVerbs> = ({ verbs }) => {
   return (
     <Row>
       <Col sm={12}>
-        {props.verbs.map((verb) => {
-          return <ChoosePairCard key={verb.id} verbData={verb} />;
+        {verbs.map((verb) => {
+          return <ChoosePairCard key={verb._id} verbData={verb} />;
         })}
       </Col>
     </Row>

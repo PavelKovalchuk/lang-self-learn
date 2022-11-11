@@ -1,16 +1,8 @@
-import { Document } from 'mongodb';
-
 export interface IRegularVerb {
   id: string;
   verb: string;
   translation: string;
-  variants: IRegularVerbVariant[];
-}
-
-export interface IRegularVerbVariant {
-  pronoun: string;
-  verb: string;
-  id: string;
+  variants: IVerbData[];
 }
 
 export interface IVerbAnswer {
@@ -71,15 +63,26 @@ export interface IButtonsListItemData {
 }
 
 // Documents
+export interface IBaseDocument {
+  _id: string;
+}
+
 export interface IBaseUserDataDocument {
   userId: number;
 }
 
-export interface IPronounDataDocument extends Document, IBaseUserDataDocument {
+export interface IPronounDataDocument extends IBaseDocument, IBaseUserDataDocument {
   pronouns: IPronounData[];
   pronounGroup: IWordTranslationData;
 }
 
-export interface IGroupsDataDocument extends Document, IBaseUserDataDocument {
+export interface IGroupsDataDocument extends IBaseDocument, IBaseUserDataDocument {
   groups: IGroupData[];
+}
+
+export interface IVerbsDataDocument extends IBaseDocument, IBaseUserDataDocument {
+  indefinite: IIndefiniteVerbData;
+  verbs: IVerbData[];
+  selectedVerbsGroupsIds: string[];
+  pronounsGroupId: string;
 }

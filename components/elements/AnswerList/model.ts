@@ -1,11 +1,11 @@
 import { MouseEventHandler } from 'react';
-import { IRegularVerbVariant, IVerbAnswer } from 'types';
+import { IVerbAnswer, IVerbData } from 'types';
 
 /* eslint-disable no-unused-vars */
 
 export interface IPropsAnswerList {
   answers: IVerbAnswer[];
-  variants: IRegularVerbVariant[];
+  variants: IVerbData[];
   isFinishedTest: boolean;
   onRemoveItemHandler: (answerId: string) => MouseEventHandler<HTMLButtonElement> | undefined;
 }

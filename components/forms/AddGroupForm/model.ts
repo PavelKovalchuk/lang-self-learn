@@ -1,8 +1,6 @@
-import { IGroupsDataDocument } from 'types';
+import { IBaseAppUserData, IGroupsDataDocument } from 'types';
 
-export interface IPropsAddGroupForm {
-  userId: number;
-  language: string;
+export interface IPropsAddGroupForm extends IBaseAppUserData {
   groupAPI: string;
   groupsData: IGroupsDataDocument[];
 }

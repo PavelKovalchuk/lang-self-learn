@@ -1,7 +1,7 @@
-import { IRegularVerbVariant, IShuffledData } from 'types';
+import { IVerbData, IShuffledData } from 'types';
 import { shuffleArray } from 'utils';
 
-const getShuffledData = (variants: IRegularVerbVariant[]): IShuffledData => {
+const getShuffledData = (variants: IVerbData[]): IShuffledData => {
   return {
     pronouns: shuffleArray(
       variants.map((variant) => ({

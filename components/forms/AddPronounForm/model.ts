@@ -1,4 +1,3 @@
-export interface IPropsAddPronounForm {
-  userId: number;
-  language: string;
-}
+import { IBaseAppUserData } from 'types';
+
+export interface IPropsAddPronounForm extends IBaseAppUserData {}

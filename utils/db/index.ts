@@ -3,6 +3,7 @@ import { MongoClient } from 'mongodb';
 export const BaseCollectionNames = {
   VERBS_GROUPS: 'verbs-groups-',
   PRONOUNS: 'pronouns-',
+  VERBS: 'verbs-',
 };
 
 export async function connectToDatabase(): Promise<MongoClient> {
