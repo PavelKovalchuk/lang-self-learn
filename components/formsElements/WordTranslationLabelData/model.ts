@@ -6,6 +6,7 @@ export interface IPropsWordTranslationLabelData {
   translationSaved: string;
   labelSaved: string;
   isToClear: boolean;
+  isToRestore: boolean;
   deleteItemHandler: (id: string) => () => void;
   saveItemHandler: (word: string, translation: string, label: string, id: string) => () => void;
 }

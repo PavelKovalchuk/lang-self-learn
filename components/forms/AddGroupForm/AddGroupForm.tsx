@@ -16,10 +16,16 @@ import Helpers from './helpers';
 
 const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, groupsData }) => {
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
+  const [isToRestore, setIsToRestore] = useState<boolean>(false);
+  const [isTouched, setIsTouched] = useState<boolean>(false);
   const [groups, setGroups] = useState<IGroupData[]>([]);
   const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
     DefaultToastMessage
   );
+
+  const isSavedGroupsExists = useMemo(() => {
+    return Boolean(groupsData?.[0]?.groups?.length);
+  }, [groupsData]);
 
   useEffect(() => {
     // reset the flag after the reset all btn clicked
@@ -29,7 +35,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
   }, [groups.length]);
 
   useEffect(() => {
-    if (groupsData.length) {
+    if (isSavedGroupsExists) {
       setGroups(groupsData[0].groups);
     }
   }, []);
@@ -40,6 +46,14 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
 
   const saveGroupHandler = useCallback(
     (word: string, translation: string, label: string, id: string) => () => {
+      if (isToRestore) {
+        setIsToRestore(false);
+      }
+
+      if (!isTouched) {
+        setIsTouched(true);
+      }
+
       setGroups((prevGroups) => {
         const groupToEdit = prevGroups.find((item) => {
           return item.id === id;
@@ -61,11 +75,15 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
         ];
       });
     },
-    []
+    [isToRestore, isTouched]
   );
 
   const deleteGroupHandler = useCallback(
     (id: string) => () => {
+      if (!isTouched) {
+        setIsTouched(true);
+      }
+
       setGroups((prevGroups) => {
         return [
           ...prevGroups
@@ -74,7 +92,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
         ];
       });
     },
-    []
+    [isTouched]
   );
 
   const addNewRowHandler = useCallback(() => {
@@ -90,6 +108,15 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
   }, []);
 
   const resetAllHandler = useCallback(() => {
+    setIsTouched(false);
+
+    if (isSavedGroupsExists) {
+      setGroups(groupsData[0].groups);
+      setIsToRestore(true);
+
+      return;
+    }
+
     setGroups([]);
     setIsToClearAll(true);
   }, []);
@@ -110,6 +137,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
       });
 
       if (result === 'ok' && payload?.result?.groups) {
+        setIsTouched(false);
         setGroups(payload.result.groups);
         setToastModalResult({ ...DefaultToastMessage, type: 'success', message: 'Congrats!' });
       } else {
@@ -139,8 +167,14 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
             </Button>
           </Col>
           <Col sm={12} md={4}>
-            <Button variant="dark" type="button" onClick={resetAllHandler} className="w-100">
-              Reset All
+            <Button
+              variant="dark"
+              type="button"
+              disabled={!isTouched}
+              onClick={resetAllHandler}
+              className="w-100"
+            >
+              {isSavedGroupsExists ? 'Restore All' : 'Reset All'}
             </Button>
           </Col>
           <Col sm={12} md={4}>
@@ -164,6 +198,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
                 wordSaved={item.word}
                 labelSaved={item.label}
                 translationSaved={item.translation}
+                isToRestore={isToRestore}
               />
             );
           })
@@ -177,6 +212,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
             labelSaved={DefaultGroup.label}
             translationSaved={DefaultGroup.translation}
             isToClear={isToClearAll}
+            isToRestore={isToRestore}
             deleteItemHandler={deleteGroupHandler}
           />
         )}

@@ -17,6 +17,7 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
   labelSaved,
   translationSaved,
   isToClear,
+  isToRestore,
 }) => {
   const [word, setWord] = useState<string>('');
   const [translation, setTranslation] = useState<string>('');
@@ -35,6 +36,14 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
       setLabel('');
     }
   }, [isToClear]);
+
+  useEffect(() => {
+    if (isToRestore) {
+      setWord(wordSaved);
+      setTranslation(translationSaved);
+      setLabel(labelSaved);
+    }
+  }, [isToRestore]);
 
   const onChangeWord = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setWord(e.currentTarget.value);
