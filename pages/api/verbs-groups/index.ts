@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { WithId, Document } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { IBaseApiResponse, IGroupsDataDocument } from 'types';
-import { BaseCollectionNames, connectToDatabase } from 'utils/db';
+import { BaseCollectionNames, connectToDatabase, getFindByUser } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
   const { params, data } = req.body;
@@ -22,7 +23,6 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResp
   }
 
   client.close();
-
   res.status(201).json({ result: 'ok', message: 'Success' });
 };
 
@@ -48,7 +48,6 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   }
 
   client.close();
-
   res.status(201).json({ result: 'ok', message: 'Success', payload });
 };
 
@@ -56,13 +55,12 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { language, userId } = req.query;
   const client = await connectToDatabase();
   const db = client.db();
-
   let payload: WithId<IGroupsDataDocument>[] = [];
 
   try {
     const result = await db
       .collection<IGroupsDataDocument>(`${BaseCollectionNames.VERBS_GROUPS}${language}`)
-      .find({ userId: parseInt(String(userId), 10) })
+      .find(getFindByUser(userId))
       .toArray();
 
     payload = result;
@@ -73,7 +71,6 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   }
 
   client.close();
-
   res.status(200).json({ result: 'ok', message: 'Success', payload });
 };
 

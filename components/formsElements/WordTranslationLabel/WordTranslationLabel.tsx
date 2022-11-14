@@ -2,7 +2,8 @@ import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+
+import { SimpleButton } from 'components/elements';
 
 // import styles from './wordTranslationLabel.module.scss';
 import { IPropsWordTranslationLabel } from './model';
@@ -93,9 +94,7 @@ const WordTranslationLabel: FC<IPropsWordTranslationLabel> = ({
         />
       </Col>
       <Col sm={2}>
-        <Button variant="dark" className="w-100" type="button" onClick={deleteItemHandler(id)}>
-          Delete
-        </Button>
+        <SimpleButton title="Delete" onClick={deleteItemHandler(id)} />
       </Col>
     </Row>
   );

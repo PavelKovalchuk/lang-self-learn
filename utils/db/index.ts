@@ -13,3 +13,7 @@ export async function connectToDatabase(): Promise<MongoClient> {
 
   return client;
 }
+
+export const getFindByUser = (userId: string | string[] | undefined): { userId: number } => {
+  return { userId: parseInt(String(userId), 10) };
+};

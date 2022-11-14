@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 import { IBaseApiResponse, IVerbsDataDocument } from 'types';
-import { BaseCollectionNames, connectToDatabase } from 'utils/db';
+import { BaseCollectionNames, connectToDatabase, getFindByUser } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
   const { params, data } = req.body;
@@ -57,13 +58,12 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { language, userId } = req.query;
   const client = await connectToDatabase();
   const db = client.db();
-
   let payload: WithId<IVerbsDataDocument>[] = [];
 
   try {
     const result = await db
       .collection<IVerbsDataDocument>(`${BaseCollectionNames.VERBS}${language}`)
-      .find({ userId: parseInt(String(userId), 10) })
+      .find(getFindByUser(userId))
       .toArray();
 
     payload = result;
@@ -74,7 +74,6 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   }
 
   client.close();
-
   res.status(200).json({ result: 'ok', message: 'Success', payload });
 };
 

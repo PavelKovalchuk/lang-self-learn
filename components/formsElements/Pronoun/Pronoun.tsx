@@ -1,8 +1,9 @@
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+
+import { SimpleButton } from 'components/elements';
 
 // import styles from './pronoun.module.scss';
 import { IPropsPronoun } from './model';
@@ -55,9 +56,7 @@ const Pronoun: FC<IPropsPronoun> = ({
         />
       </Col>
       <Col sm={2}>
-        <Button variant="dark" className="w-100" type="button" onClick={deletePronounHandler(id)}>
-          Delete
-        </Button>
+        <SimpleButton title="Delete" onClick={deletePronounHandler(id)} />
       </Col>
     </Row>
   );
