@@ -46,19 +46,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   }, [currentAnswer]);
 
   const onFinishTestHandler = useCallback(() => {
-    let corrects = 0;
-    const results: IVerbAnswer[] = answers.map((answer) => {
-      const isCorrect = answer.verbIdPair === answer.pronounIdPair;
-      if (isCorrect) {
-        corrects += 1;
-      }
-
-      return {
-        ...answer,
-        isCorrect,
-      };
-    });
-
+    const { corrects, results } = Helpers.getFinishedAnswers(answers);
     setAnswers(results);
     setCorrectAnswers(corrects);
   }, [answers]);
@@ -103,15 +91,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
 
   const onClickAnswerHandler = useCallback(
     (answerId: string) => () => {
-      const newAnswers = answers
-        .filter((item) => {
-          return item.answerId !== answerId;
-        })
-        .map((item, index) => {
-          return { ...item, answerId: String(index + 1) };
-        });
-
-      setAnswers(newAnswers);
+      setAnswers(Helpers.analyzeAnswers(answers, answerId));
     },
     [answers]
   );

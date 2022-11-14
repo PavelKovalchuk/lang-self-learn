@@ -68,13 +68,9 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
 
   const onVerbsGroupsClickHandler = useCallback(
     (id: string) => () => {
-      setSelectedVerbsGroupsIds((prevState) => {
-        const filteredItems = prevState.filter((item) => item !== id);
-        if (filteredItems.length !== prevState.length) {
-          return [...filteredItems];
-        }
-        return [...prevState, id];
-      });
+      setSelectedVerbsGroupsIds((prevState) =>
+        Helpers.getSelectedVerbsGroupsIdsToSave(id, prevState)
+      );
     },
     []
   );
@@ -91,27 +87,9 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
         return;
       }
 
-      setVerbs((prevVerbs) => {
-        const verbToEdit = prevVerbs.find((item) => {
-          return item.id === id;
-        });
-        if (verbToEdit) {
-          return [
-            ...prevVerbs.filter((item) => item.id !== id),
-            { ...verbToEdit, verb, verbTranslation },
-          ];
-        }
-        return [
-          ...prevVerbs,
-          {
-            pronoun: pronounData.pronoun,
-            pronounTranslation: pronounData.translation,
-            verb: verb.trim(),
-            verbTranslation: verbTranslation.trim(),
-            id: String(prevVerbs.length + 1),
-          },
-        ];
-      });
+      setVerbs((prevVerbs) =>
+        Helpers.getPronounsToSave({ id, verb, verbTranslation }, pronounData, prevVerbs)
+      );
     },
     [currentPronouns]
   );
@@ -165,12 +143,12 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
           </Col>
         </Row>
         <Row className="mb-4 mt-3 ">
-          <Col sm={12} md={4}>
+          <Col sm={12} md={6}>
             <Button variant="dark" type="button" className="w-100" onClick={resetAllHandler}>
               Reset All
             </Button>
           </Col>
-          <Col sm={12} md={4}>
+          <Col sm={12} md={6}>
             {pronounsGroups?.length ? (
               <SimpleDropdown
                 id="selectPronounsGroup"
@@ -185,11 +163,6 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
             ) : (
               <Link href="/spanish/add-pronouns">Create Pronouns Groups</Link>
             )}
-          </Col>
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
-              Submit
-            </Button>
           </Col>
         </Row>
         {verbsGroups?.[0].groups.length ? (
@@ -229,6 +202,14 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
               );
             })
           : null}
+
+        <Row>
+          <Col sm={{ span: 6, offset: 3 }}>
+            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
+              Submit
+            </Button>
+          </Col>
+        </Row>
       </Form>
 
       <ToastModal

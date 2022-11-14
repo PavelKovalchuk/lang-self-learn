@@ -45,7 +45,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
   }, [groups]);
 
   const saveGroupHandler = useCallback(
-    (word: string, translation: string, label: string, id: string) => () => {
+    (params: { word: string; translation: string; label: string; id: string }) => () => {
       if (isToRestore) {
         setIsToRestore(false);
       }
@@ -54,26 +54,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
         setIsTouched(true);
       }
 
-      setGroups((prevGroups) => {
-        const groupToEdit = prevGroups.find((item) => {
-          return item.id === id;
-        });
-        if (groupToEdit) {
-          return [
-            ...prevGroups.filter((item) => item.id !== id),
-            { ...groupToEdit, word, translation, label },
-          ];
-        }
-        return [
-          ...prevGroups,
-          {
-            word: word.trim(),
-            translation: translation.trim(),
-            label: label.trim(),
-            id: String(prevGroups.length + 1),
-          },
-        ];
-      });
+      setGroups((prevGroups) => Helpers.getGroupsToSave(params, prevGroups));
     },
     [isToRestore, isTouched]
   );
@@ -84,27 +65,13 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
         setIsTouched(true);
       }
 
-      setGroups((prevGroups) => {
-        return [
-          ...prevGroups
-            .filter((item) => item.id !== id)
-            .map((item, index) => ({ ...item, id: String(index + 1) })),
-        ];
-      });
+      setGroups((prevGroups) => Helpers.getGroupsToRemove(id, prevGroups));
     },
     [isTouched]
   );
 
   const addNewRowHandler = useCallback(() => {
-    setGroups((prevGroups) => {
-      if (!prevGroups.length) {
-        return [
-          { ...DefaultGroup, id: '1' },
-          { ...DefaultGroup, id: '2' },
-        ];
-      }
-      return [...prevGroups, { ...DefaultGroup, id: String(prevGroups.length + 1) }];
-    });
+    setGroups((prevGroups) => Helpers.getNewRowData(prevGroups));
   }, []);
 
   const resetAllHandler = useCallback(() => {

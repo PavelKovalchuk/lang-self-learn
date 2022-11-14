@@ -55,52 +55,22 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
         return;
       }
 
-      setPronouns((prevPronouns) => {
-        const pronounToEdit = prevPronouns.find((item) => {
-          return item.id === id;
-        });
-        if (pronounToEdit) {
-          return [
-            ...prevPronouns.filter((item) => item.id !== id),
-            { ...pronounToEdit, pronoun, translation },
-          ];
-        }
-        return [
-          ...prevPronouns,
-          {
-            pronoun: pronoun.trim(),
-            translation: translation.trim(),
-            id: String(prevPronouns.length + 1),
-          },
-        ];
-      });
+      setPronouns((prevPronouns) =>
+        Helpers.getPronounsToSave({ id, pronoun, translation }, prevPronouns)
+      );
     },
     []
   );
 
   const deletePronounHandler = useCallback(
     (id: string) => () => {
-      setPronouns((prevPronouns) => {
-        return [
-          ...prevPronouns
-            .filter((item) => item.id !== id)
-            .map((item, index) => ({ ...item, id: String(index + 1) })),
-        ];
-      });
+      setPronouns((prevPronouns) => Helpers.getPronounsToRemove(id, prevPronouns));
     },
     []
   );
 
   const addNewPairHandler = useCallback(() => {
-    setPronouns((prevPronouns) => {
-      if (!prevPronouns.length) {
-        return [
-          { ...DefaultPronoun, id: '1' },
-          { ...DefaultPronoun, id: '2' },
-        ];
-      }
-      return [...prevPronouns, { ...DefaultPronoun, id: String(prevPronouns.length + 1) }];
-    });
+    setPronouns((prevPronouns) => Helpers.getNewRowData(prevPronouns));
   }, []);
 
   const resetAllHandler = useCallback(() => {

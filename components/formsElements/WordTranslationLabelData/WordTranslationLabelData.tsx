@@ -67,7 +67,7 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
           aria-label={wordAriaLabel}
           value={word}
           onChange={onChangeWord}
-          onBlur={saveItemHandler(word, translation, label, id)}
+          onBlur={saveItemHandler({ word, translation, label, id })}
         />
       </Col>
       <Col sm={4}>
@@ -78,7 +78,7 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
           aria-label="translation"
           value={translation}
           onChange={onChangeTranslation}
-          onBlur={saveItemHandler(word, translation, label, id)}
+          onBlur={saveItemHandler({ word, translation, label, id })}
         />
       </Col>
       <Col sm={2}>
@@ -89,7 +89,7 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
           aria-label="label"
           value={label}
           onChange={onChangeLabel}
-          onBlur={saveItemHandler(word, translation, label, id)}
+          onBlur={saveItemHandler({ word, translation, label, id })}
         />
       </Col>
       <Col sm={2}>
