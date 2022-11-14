@@ -11,9 +11,13 @@
     "no-restricted-exports": 0,
     "no-unused-vars": 1,
     "react/destructuring-assignment": 0,
-    "import/prefer-default-export": 1,
     "comma-dangle": 0,
     "object-curly-newline": 0,
-    "react-hooks/exhaustive-deps": 0
+    "react-hooks/exhaustive-deps": 0,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "indent": 0,
+    "operator-linebreak": 0,
+    "react/jsx-indent": 0
   }
 }

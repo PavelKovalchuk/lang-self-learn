@@ -3,8 +3,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-import { AnswerList, CardMark, VariantsList } from 'components/elements';
 import { IShuffledData, IVerbAnswer } from 'types';
+
+import { AnswerList, CardMark, VariantsList } from 'components/elements';
 
 // import styles from './choosePairCard.module.scss';
 import { IPropsChoosePairCard } from './model';

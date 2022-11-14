@@ -45,7 +45,7 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ verbsGroups })
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbsGroupsPage>> {
-  const { result, message, payload }: IBaseApiResponse = await getRequest(
+  const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
     HTTP_REQUEST_URL.VERBS_GROUPS,
     {
       language: Language,
@@ -53,11 +53,9 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVe
     }
   );
 
-  console.log('--- AddVerbsGroupsPage getStaticProps: result', result, message, payload);
-
   return {
     props: {
-      verbsGroups: payload,
+      verbsGroups: verbsGroupsPayload,
     },
   };
 }

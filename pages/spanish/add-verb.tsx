@@ -46,30 +46,20 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups, verbsGroups 
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbPage>> {
-  const {
-    result: pronounsResult,
-    message: pronounsMessage,
-    payload: pronounsPayload,
-  }: IBaseApiResponse = await getRequest(HTTP_REQUEST_URL.PRONOUN, {
-    language: Language,
-    userId: String(UserId),
-  });
+  const { payload: pronounsPayload }: IBaseApiResponse = await getRequest(
+    HTTP_REQUEST_URL.PRONOUN,
+    {
+      language: Language,
+      userId: String(UserId),
+    }
+  );
 
-  const {
-    result: verbsGroupsResult,
-    message: verbsGroupsMessage,
-    payload: verbsGroupsPayload,
-  }: IBaseApiResponse = await getRequest(HTTP_REQUEST_URL.VERBS_GROUPS, {
-    language: Language,
-    userId: String(UserId),
-  });
-
-  console.log('--- getStaticProps: pronouns', pronounsResult, pronounsMessage, pronounsPayload);
-  console.log(
-    '--- getStaticProps: verbsGroups',
-    verbsGroupsResult,
-    verbsGroupsMessage,
-    verbsGroupsPayload
+  const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
+    HTTP_REQUEST_URL.VERBS_GROUPS,
+    {
+      language: Language,
+      userId: String(UserId),
+    }
   );
 
   return {

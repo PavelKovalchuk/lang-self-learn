@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId, Document } from 'mongodb';
+import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { IBaseApiResponse, IVerbsDataDocument } from 'types';
 import { BaseCollectionNames, connectToDatabase } from 'utils/db';
@@ -63,7 +63,7 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   try {
     const result = await db
       .collection<IVerbsDataDocument>(`${BaseCollectionNames.VERBS}${language}`)
-      .find({ userId: parseInt(String(userId)) })
+      .find({ userId: parseInt(String(userId), 10) })
       .toArray();
 
     payload = result;

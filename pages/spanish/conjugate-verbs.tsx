@@ -6,10 +6,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import Layout from 'components/layout/Layout';
-import { IBaseApiResponse, IRegularVerb, IVerbsDataDocument } from 'types';
+import { IBaseApiResponse, IVerbsDataDocument } from 'types';
 import { getRequest } from 'utils';
 import { HTTP_REQUEST_URL } from 'variables';
+
+import Layout from 'components/layout/Layout';
 
 interface IPropsConjugateVerbsPage {
   verbs: IVerbsDataDocument[];
@@ -44,16 +45,10 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs }) => {
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsConjugateVerbsPage>> {
-  const {
-    result: verbsResult,
-    message: verbsMessage,
-    payload: verbsPayload,
-  }: IBaseApiResponse = await getRequest(HTTP_REQUEST_URL.VERBS, {
+  const { payload: verbsPayload }: IBaseApiResponse = await getRequest(HTTP_REQUEST_URL.VERBS, {
     language: Language,
     userId: String(UserId),
   });
-
-  console.log('--- getStaticProps: verbsGroups', verbsResult, verbsMessage, verbsPayload);
 
   return {
     props: {

@@ -16,7 +16,7 @@ interface IPropsAddPronounsPage {
 const UserId = 1;
 const Language = 'es';
 
-const AddPronounsPage: NextPage<IPropsAddPronounsPage> = ({}) => {
+const AddPronounsPage: NextPage<IPropsAddPronounsPage> = () => {
   return (
     <Layout>
       <Head>

@@ -43,7 +43,6 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
     payload.result = result.value;
   } catch (error) {
     client.close();
-    console.error('--- handlePut: error', error);
     res.status(500).json({ result: 'error', message: 'Storing data failed!' });
     return;
   }
@@ -63,7 +62,7 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   try {
     const result = await db
       .collection<IGroupsDataDocument>(`${BaseCollectionNames.VERBS_GROUPS}${language}`)
-      .find({ userId: parseInt(String(userId)) })
+      .find({ userId: parseInt(String(userId), 10) })
       .toArray();
 
     payload = result;

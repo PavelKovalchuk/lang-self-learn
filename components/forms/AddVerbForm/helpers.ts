@@ -1,4 +1,4 @@
-import { IIndefiniteVerbData, IVerbData, IWordTranslationData } from 'types';
+import { IIndefiniteVerbData, IVerbData } from 'types';
 
 interface ICheckActiveSubmitParam {
   verbs: IVerbData[];

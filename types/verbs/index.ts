@@ -1,10 +1,3 @@
-export interface IRegularVerb {
-  id: string;
-  verb: string;
-  translation: string;
-  variants: IVerbData[];
-}
-
 export interface IVerbAnswer {
   verb: string;
   pronoun: string;

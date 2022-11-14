@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 export interface IPropsWordTranslationData {
   id: string;
   wordAriaLabel: string;

@@ -36,7 +36,7 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   try {
     const result = await db
       .collection<IPronounDataDocument>(`${BaseCollectionNames.PRONOUNS}${language}`)
-      .find({ userId: parseInt(String(userId)) })
+      .find({ userId: parseInt(String(userId), 10) })
       .toArray();
 
     payload = result;

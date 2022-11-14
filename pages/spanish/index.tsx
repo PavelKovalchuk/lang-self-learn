@@ -9,7 +9,7 @@ import Layout from 'components/layout/Layout';
 
 interface IPropsSpanishHomePage {}
 
-const SpanishHomePage: NextPage<IPropsSpanishHomePage> = ({}) => {
+const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
   return (
     <Layout>
       <Head>
@@ -50,10 +50,10 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = ({}) => {
             </div>
           </Col>
           <Col sm={4}>
-            <div></div>
+            <div />
           </Col>
           <Col sm={4}>
-            <div></div>
+            <div />
           </Col>
         </Row>
       </Container>
