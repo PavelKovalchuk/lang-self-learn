@@ -16,6 +16,7 @@ import { IBaseToastModalData, ToastModal } from 'components/ui';
 // import styles from './addVerbForm.module.scss';
 import { IPropsAddVerbForm } from './model';
 import { DefaultIndefiniteData, DefaultToastMessage } from './constants';
+import Helpers from './helpers';
 
 const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userId, language }) => {
   const [verbs, setVerbs] = useState<IVerbData[]>([]);
@@ -26,6 +27,15 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
   const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
     DefaultToastMessage
   );
+
+  const isActiveSubmit = useMemo(() => {
+    return Helpers.checkActiveSubmit({
+      verbs,
+      selectedVerbsGroupsIds,
+      pronounsGroupId,
+      indefinite,
+    });
+  }, [verbs, selectedVerbsGroupsIds, pronounsGroupId, indefinite]);
 
   const currentPronouns = useMemo(() => {
     return pronounsGroups.find((item) => item._id === pronounsGroupId)?.pronouns || [];
@@ -152,7 +162,6 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
         <Row>
           <Col sm={12}>
             <h2>Add a verb data to your dictionary</h2>
-            // TODO: handle disable submit
           </Col>
         </Row>
         <Row className="mb-4 mt-3 ">
@@ -178,7 +187,7 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
             )}
           </Col>
           <Col sm={12} md={4}>
-            <Button variant="dark" type="submit" className="w-100">
+            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
               Submit
             </Button>
           </Col>
