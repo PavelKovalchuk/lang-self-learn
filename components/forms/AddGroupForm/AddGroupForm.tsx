@@ -1,13 +1,16 @@
 import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import { putRequest, sortArrayById } from 'utils';
+import { sortArrayById } from 'utils';
 import { IBaseApiResponse, IGroupData } from 'types';
-import { WordTranslationLabelData } from 'components/formsElements';
+import {
+  FormActions,
+  FormSubmit,
+  FormTitle,
+  WordTranslationLabelData,
+} from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { SimpleButton } from 'components/elements';
 
 // import styles from './addPronounForm.module.scss';
 import { IPropsAddGroupForm } from './model';
@@ -93,14 +96,11 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
       event.preventDefault();
       event.stopPropagation();
 
-      const { result, payload }: IBaseApiResponse = await putRequest(groupAPI, {
-        params: {
-          language,
-        },
-        data: {
-          userId,
-          groups,
-        },
+      const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
+        language,
+        userId,
+        groupAPI,
+        groups,
       });
 
       if (result === 'ok' && payload?.result?.groups) {
@@ -121,35 +121,19 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
   return (
     <>
       <Form noValidate onSubmit={handleSubmit}>
-        <Row>
-          <Col sm={12}>
-            <h2>Add a verbs groups data to your dictionary</h2>
-          </Col>
-        </Row>
+        <FormTitle title="Add a verbs groups data to your dictionary" />
 
-        <Row className="mb-4 mt-3 ">
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="button" className="w-100" onClick={addNewRowHandler}>
-              Add a new row
-            </Button>
-          </Col>
-          <Col sm={12} md={4}>
-            <Button
-              variant="dark"
-              type="button"
+        <FormActions>
+          {[
+            <SimpleButton key="new-row" title="Add a new row" onClick={addNewRowHandler} />,
+            <SimpleButton
+              key="reset"
+              title={isSavedGroupsExists ? 'Restore All' : 'Reset All'}
               disabled={!isTouched}
               onClick={resetAllHandler}
-              className="w-100"
-            >
-              {isSavedGroupsExists ? 'Restore All' : 'Reset All'}
-            </Button>
-          </Col>
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
-              Submit
-            </Button>
-          </Col>
-        </Row>
+            />,
+          ]}
+        </FormActions>
 
         {groups.length ? (
           sortArrayById(groups, 'id').map((item) => {
@@ -183,6 +167,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
             deleteItemHandler={deleteGroupHandler}
           />
         )}
+        <FormSubmit title="Submit" isActiveSubmit={isActiveSubmit} />
       </Form>
 
       <ToastModal

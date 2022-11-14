@@ -2,15 +2,18 @@ import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import { IBaseApiResponse, IIndefiniteVerbData, IVerbData } from 'types';
-import { postRequest } from 'utils';
-import { HTTP_REQUEST_URL } from 'variables';
 
-import { IndefiniteVerbData, PronounVerbData } from 'components/formsElements';
-import { ButtonsList, SimpleDropdown } from 'components/elements';
+import {
+  FormActions,
+  FormSubmit,
+  FormTitle,
+  IndefiniteVerbData,
+  PronounVerbData,
+} from 'components/formsElements';
+import { ButtonsList, SimpleButton, SimpleDropdown } from 'components/elements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
 
 // import styles from './addVerbForm.module.scss';
@@ -107,17 +110,13 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
       event.preventDefault();
       event.stopPropagation();
 
-      const { result }: IBaseApiResponse = await postRequest(HTTP_REQUEST_URL.VERBS, {
-        params: {
-          language,
-        },
-        data: {
-          userId,
-          indefinite,
-          verbs,
-          selectedVerbsGroupsIds,
-          pronounsGroupId,
-        },
+      const { result }: IBaseApiResponse = await Helpers.makeSubmitRequest({
+        language,
+        userId,
+        indefinite,
+        verbs,
+        selectedVerbsGroupsIds,
+        pronounsGroupId,
       });
 
       if (result === 'ok') {
@@ -137,20 +136,14 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
   return (
     <>
       <Form noValidate onSubmit={handleSubmit}>
-        <Row>
-          <Col sm={12}>
-            <h2>Add a verb data to your dictionary</h2>
-          </Col>
-        </Row>
-        <Row className="mb-4 mt-3 ">
-          <Col sm={12} md={6}>
-            <Button variant="dark" type="button" className="w-100" onClick={resetAllHandler}>
-              Reset All
-            </Button>
-          </Col>
-          <Col sm={12} md={6}>
-            {pronounsGroups?.length ? (
+        <FormTitle title="Add a verb data to your dictionary" />
+
+        <FormActions>
+          {[
+            <SimpleButton key="reset-all" title="Reset All" onClick={resetAllHandler} />,
+            pronounsGroups?.length ? (
               <SimpleDropdown
+                key="selectPronounsGroup"
                 id="selectPronounsGroup"
                 title="Select Pronouns Group"
                 onDropdownClickHandler={onPronounsClickHandler}
@@ -162,9 +155,10 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
               />
             ) : (
               <Link href="/spanish/add-pronouns">Create Pronouns Groups</Link>
-            )}
-          </Col>
-        </Row>
+            ),
+          ]}
+        </FormActions>
+
         {verbsGroups?.[0].groups.length ? (
           <Row>
             <Col sm={12}>
@@ -184,10 +178,12 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
         ) : (
           <Link href="/spanish/verbs-groups">Create Verbs Groups</Link>
         )}
+
         <IndefiniteVerbData
           saveIndefiniteHandler={saveIndefiniteHandler}
           isToClear={isToClearAll}
         />
+
         {currentPronouns?.length
           ? currentPronouns.map((pronoun) => {
               return (
@@ -203,13 +199,7 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
             })
           : null}
 
-        <Row>
-          <Col sm={{ span: 6, offset: 3 }}>
-            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
-              Submit
-            </Button>
-          </Col>
-        </Row>
+        <FormSubmit title="Submit" isActiveSubmit={isActiveSubmit} />
       </Form>
 
       <ToastModal

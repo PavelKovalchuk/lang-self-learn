@@ -1,14 +1,19 @@
 import { FC, FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-import { postRequest, sortArrayById } from 'utils';
+import { sortArrayById } from 'utils';
 import { IPronounData, IBaseApiResponse, IWordTranslationData } from 'types';
-import { HTTP_REQUEST_URL } from 'variables';
-import { PronounData, WordTranslationData } from 'components/formsElements';
+import {
+  FormActions,
+  FormSubmit,
+  FormTitle,
+  PronounData,
+  WordTranslationData,
+} from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { SimpleButton } from 'components/elements';
 
 // import styles from './addPronounForm.module.scss';
 import { IPropsAddPronounForm } from './model';
@@ -84,15 +89,11 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
       event.preventDefault();
       event.stopPropagation();
 
-      const { result }: IBaseApiResponse = await postRequest(HTTP_REQUEST_URL.PRONOUN, {
-        params: {
-          language,
-        },
-        data: {
-          userId,
-          pronounGroup,
-          pronouns,
-        },
+      const { result }: IBaseApiResponse = await Helpers.makeSubmitRequest({
+        language,
+        userId,
+        pronounGroup,
+        pronouns,
       });
 
       if (result === 'ok') {
@@ -108,11 +109,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
   return (
     <>
       <Form noValidate onSubmit={handleSubmit}>
-        <Row>
-          <Col sm={12}>
-            <h2>Add a pronoun data to your dictionary</h2>
-          </Col>
-        </Row>
+        <FormTitle title="Add a pronoun data to your dictionary" />
 
         <Row className="mb-3">
           <Col sm={12}>
@@ -126,23 +123,12 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
           </Col>
         </Row>
 
-        <Row className="mb-4 mt-3 ">
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="button" className="w-100" onClick={addNewPairHandler}>
-              Add a new pair
-            </Button>
-          </Col>
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="button" onClick={resetAllHandler} className="w-100">
-              Reset All
-            </Button>
-          </Col>
-          <Col sm={12} md={4}>
-            <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
-              Submit
-            </Button>
-          </Col>
-        </Row>
+        <FormActions>
+          {[
+            <SimpleButton key="new-row" title="Add a new pair" onClick={addNewPairHandler} />,
+            <SimpleButton key="reset-all" title="Reset All" onClick={resetAllHandler} />,
+          ]}
+        </FormActions>
 
         {pronouns.length ? (
           sortArrayById(pronouns, 'id').map((item) => {
@@ -166,6 +152,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             deletePronounHandler={deletePronounHandler}
           />
         )}
+        <FormSubmit title="Submit" isActiveSubmit={isActiveSubmit} />
       </Form>
 
       <ToastModal

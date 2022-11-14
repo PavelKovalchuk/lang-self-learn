@@ -1,4 +1,5 @@
-import { IGroupData } from 'types';
+import { IBaseApiResponse, IGroupData } from 'types';
+import { putRequest } from 'utils';
 import { DefaultGroup } from './constants';
 
 const checkActiveSubmit = (groups: IGroupData[]): boolean => {
@@ -79,11 +80,36 @@ const getNewRowData = (prevGroups: IGroupData[]): IGroupData[] => {
   return [...prevGroups, { ...DefaultGroup, id: String(prevGroups.length + 1) }];
 };
 
+const makeSubmitRequest = async ({
+  language,
+  userId,
+  groupAPI,
+  groups,
+}: {
+  language: string;
+  userId: number;
+  groupAPI: string;
+  groups: IGroupData[];
+}): Promise<IBaseApiResponse> => {
+  const result = await putRequest(groupAPI, {
+    params: {
+      language,
+    },
+    data: {
+      userId,
+      groups,
+    },
+  });
+
+  return result;
+};
+
 const Helpers = {
   checkActiveSubmit,
   getGroupsToSave,
   getGroupsToRemove,
   getNewRowData,
+  makeSubmitRequest,
 };
 
 export default Helpers;

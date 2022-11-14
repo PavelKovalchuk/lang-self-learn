@@ -1,4 +1,6 @@
-import { IPronounData, IWordTranslationData } from 'types';
+import { IBaseApiResponse, IPronounData, IWordTranslationData } from 'types';
+import { postRequest } from 'utils';
+import { HTTP_REQUEST_URL } from 'variables';
 import { DefaultPronoun } from './constants';
 
 const checkActiveSubmit = (pronouns: IPronounData[], pronounGroup: IWordTranslationData) => {
@@ -73,11 +75,37 @@ const getNewRowData = (prevPronouns: IPronounData[]): IPronounData[] => {
   return [...prevPronouns, { ...DefaultPronoun, id: String(prevPronouns.length + 1) }];
 };
 
+const makeSubmitRequest = async ({
+  language,
+  userId,
+  pronounGroup,
+  pronouns,
+}: {
+  language: string;
+  userId: number;
+  pronounGroup: IWordTranslationData;
+  pronouns: IPronounData[];
+}): Promise<IBaseApiResponse> => {
+  const result = await postRequest(HTTP_REQUEST_URL.PRONOUN, {
+    params: {
+      language,
+    },
+    data: {
+      userId,
+      pronounGroup,
+      pronouns,
+    },
+  });
+
+  return result;
+};
+
 const Helpers = {
   checkActiveSubmit,
   getPronounsToSave,
   getPronounsToRemove,
   getNewRowData,
+  makeSubmitRequest,
 };
 
 export default Helpers;

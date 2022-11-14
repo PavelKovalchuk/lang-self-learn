@@ -1,4 +1,6 @@
-import { IIndefiniteVerbData, IPronounData, IVerbData } from 'types';
+import { IBaseApiResponse, IIndefiniteVerbData, IPronounData, IVerbData } from 'types';
+import { postRequest } from 'utils';
+import { HTTP_REQUEST_URL } from 'variables';
 
 interface ICheckActiveSubmitParam {
   verbs: IVerbData[];
@@ -83,10 +85,42 @@ const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string
   return [...prevData, id];
 };
 
+const makeSubmitRequest = async ({
+  language,
+  userId,
+  indefinite,
+  verbs,
+  selectedVerbsGroupsIds,
+  pronounsGroupId,
+}: {
+  language: string;
+  userId: number;
+  indefinite: IIndefiniteVerbData;
+  verbs: IVerbData[];
+  selectedVerbsGroupsIds: string[];
+  pronounsGroupId: string;
+}): Promise<IBaseApiResponse> => {
+  const result = await postRequest(HTTP_REQUEST_URL.VERBS, {
+    params: {
+      language,
+    },
+    data: {
+      userId,
+      indefinite,
+      verbs,
+      selectedVerbsGroupsIds,
+      pronounsGroupId,
+    },
+  });
+
+  return result;
+};
+
 const Helpers = {
   checkActiveSubmit,
   getPronounsToSave,
   getSelectedVerbsGroupsIdsToSave,
+  makeSubmitRequest,
 };
 
 export default Helpers;

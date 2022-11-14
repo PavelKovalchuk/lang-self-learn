@@ -22,6 +22,6 @@
     "max-params": ["warn", 3],
     "implicit-arrow-linebreak": 0,
     "function-paren-newline": 0,
-    "max-lines": ["warn", { "max": 150, "skipBlankLines": true, "skipComments": true }]
+    "max-lines": ["warn", { "max": 220, "skipBlankLines": true, "skipComments": true }]
   }
 }
