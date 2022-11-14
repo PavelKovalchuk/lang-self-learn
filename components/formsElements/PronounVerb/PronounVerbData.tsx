@@ -1,29 +1,30 @@
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-// import styles from './pronounData.module.scss';
-import { IPropsPronounData } from './model';
+// import styles from './pronounVerb.module.scss';
+import { IPropsPronounVerb } from './model';
 
-const PronounData: FC<IPropsPronounData> = ({
+const PronounVerb: FC<IPropsPronounVerb> = ({
   id,
-  pronounSaved,
-  translationSaved,
-  savePronounHandler,
-  deletePronounHandler,
+  pronoun,
+  pronounTranslation,
+  saveVerbHandler,
+  isToClear,
 }) => {
-  const [pronoun, setPronoun] = useState<string>('');
+  const [verb, setVerb] = useState<string>('');
   const [translation, setTranslation] = useState<string>('');
 
   useEffect(() => {
-    setPronoun(pronounSaved);
-    setTranslation(translationSaved);
-  }, []);
+    if (isToClear) {
+      setVerb('');
+      setTranslation('');
+    }
+  }, [isToClear]);
 
-  const onChangePronoun = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setPronoun(e.currentTarget.value);
+  const onChangeVerb = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setVerb(e.currentTarget.value);
   }, []);
 
   const onChangeTranslation = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -32,15 +33,25 @@ const PronounData: FC<IPropsPronounData> = ({
 
   return (
     <Row id={`pronoun-data-${id}`} className="mb-3">
-      <Col sm={5}>
+      <Col sm={2}>
         <Form.Control
           name="pronoun"
           type="text"
           placeholder="Pronoun"
           aria-label="pronoun"
-          value={pronoun}
-          onChange={onChangePronoun}
-          onBlur={savePronounHandler(id, pronoun, translation)}
+          value={`${pronoun} [${pronounTranslation}]`}
+          readOnly
+        />
+      </Col>
+      <Col sm={5}>
+        <Form.Control
+          name="verb"
+          type="text"
+          placeholder="Verb"
+          aria-label="verb"
+          value={verb}
+          onChange={onChangeVerb}
+          onBlur={saveVerbHandler(id, verb, translation)}
         />
       </Col>
       <Col sm={5}>
@@ -51,16 +62,11 @@ const PronounData: FC<IPropsPronounData> = ({
           aria-label="translation"
           value={translation}
           onChange={onChangeTranslation}
-          onBlur={savePronounHandler(id, pronoun, translation)}
+          onBlur={saveVerbHandler(id, verb, translation)}
         />
-      </Col>
-      <Col sm={2}>
-        <Button variant="dark" className="w-100" type="button" onClick={deletePronounHandler(id)}>
-          Delete
-        </Button>
       </Col>
     </Row>
   );
 };
 
-export default PronounData;
+export default PronounVerb;

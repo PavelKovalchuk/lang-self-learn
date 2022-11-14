@@ -1,6 +1,8 @@
-import { IBaseApiResponse, IIndefiniteVerbData, IPronounData, IVerbData } from 'types';
+import { IBaseApiResponse, IPronounData, IVerbData } from 'types';
 import { postRequest } from 'utils';
 import { HTTP_REQUEST_URL } from 'variables';
+
+import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
 
 interface ICheckActiveSubmitParam {
   verbs: IVerbData[];

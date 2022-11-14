@@ -4,16 +4,17 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import { sortArrayById } from 'utils';
-import { IPronounData, IBaseApiResponse, IWordTranslationData } from 'types';
+import { IPronounData, IBaseApiResponse } from 'types';
 import {
   FormActions,
   FormSubmit,
   FormTitle,
-  PronounData,
-  WordTranslationData,
+  Pronoun,
+  WordTranslation,
 } from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
 import { SimpleButton } from 'components/elements';
+import { IWordTranslationData } from 'components/formsElements/WordTranslation';
 
 // import styles from './addPronounForm.module.scss';
 import { IPropsAddPronounForm } from './model';
@@ -113,7 +114,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
 
         <Row className="mb-3">
           <Col sm={12}>
-            <WordTranslationData
+            <WordTranslation
               id="pronouns-group"
               wordPlaceholder="Pronouns Group Name"
               wordAriaLabel="PronounsGroupName"
@@ -133,7 +134,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
         {pronouns.length ? (
           sortArrayById(pronouns, 'id').map((item) => {
             return (
-              <PronounData
+              <Pronoun
                 key={`${item.id}-${item.pronoun}`}
                 id={item.id}
                 pronounSaved={item.pronoun}
@@ -144,7 +145,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
             );
           })
         ) : (
-          <PronounData
+          <Pronoun
             id={DefaultPronoun.id}
             pronounSaved={DefaultPronoun.pronoun}
             translationSaved={DefaultPronoun.translation}

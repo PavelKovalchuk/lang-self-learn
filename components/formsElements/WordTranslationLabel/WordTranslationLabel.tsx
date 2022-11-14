@@ -4,10 +4,10 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-// import styles from './wordTranslationLabelData.module.scss';
-import { IPropsWordTranslationLabelData } from './model';
+// import styles from './wordTranslationLabel.module.scss';
+import { IPropsWordTranslationLabel } from './model';
 
-const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
+const WordTranslationLabel: FC<IPropsWordTranslationLabel> = ({
   id,
   saveItemHandler,
   deleteItemHandler,
@@ -101,4 +101,4 @@ const WordTranslationLabelData: FC<IPropsWordTranslationLabelData> = ({
   );
 };
 
-export default WordTranslationLabelData;
+export default WordTranslationLabel;

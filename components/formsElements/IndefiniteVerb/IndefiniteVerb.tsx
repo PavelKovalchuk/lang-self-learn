@@ -3,10 +3,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-// import styles from './indefiniteVerbData.module.scss';
-import { IPropsIndefiniteVerbData } from './model';
+// import styles from './indefiniteVerb.module.scss';
+import { IPropsIndefiniteVerb } from './model';
 
-const IndefiniteVerbData: FC<IPropsIndefiniteVerbData> = ({ isToClear, saveIndefiniteHandler }) => {
+const IndefiniteVerb: FC<IPropsIndefiniteVerb> = ({ isToClear, saveIndefiniteHandler }) => {
   const [indefinite, setIndefinite] = useState<string>('');
   const [translation, setTranslation] = useState<string>('');
 
@@ -53,4 +53,4 @@ const IndefiniteVerbData: FC<IPropsIndefiniteVerbData> = ({ isToClear, saveIndef
   );
 };
 
-export default IndefiniteVerbData;
+export default IndefiniteVerb;

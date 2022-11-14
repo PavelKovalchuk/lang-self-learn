@@ -3,12 +3,7 @@ import Form from 'react-bootstrap/Form';
 
 import { sortArrayById } from 'utils';
 import { IBaseApiResponse, IGroupData } from 'types';
-import {
-  FormActions,
-  FormSubmit,
-  FormTitle,
-  WordTranslationLabelData,
-} from 'components/formsElements';
+import { FormActions, FormSubmit, FormTitle, WordTranslationLabel } from 'components/formsElements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
 import { SimpleButton } from 'components/elements';
 
@@ -138,7 +133,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
         {groups.length ? (
           sortArrayById(groups, 'id').map((item) => {
             return (
-              <WordTranslationLabelData
+              <WordTranslationLabel
                 key={`${item.id}-${item.word}`}
                 id={item.id}
                 wordPlaceholder="Verbs Group Name"
@@ -154,7 +149,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
             );
           })
         ) : (
-          <WordTranslationLabelData
+          <WordTranslationLabel
             id={DefaultGroup.id}
             wordPlaceholder="Verbs Group Name"
             wordAriaLabel="Verbs Group Name"

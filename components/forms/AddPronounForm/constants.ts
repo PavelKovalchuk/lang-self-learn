@@ -1,5 +1,6 @@
 import { IBaseToastModalData } from 'components/ui';
-import { IPronounData, IWordTranslationData } from 'types';
+import { IWordTranslationData } from 'components/formsElements/WordTranslation';
+import { IPronounData } from 'types';
 
 export const DefaultPronoun: IPronounData = {
   pronoun: '',

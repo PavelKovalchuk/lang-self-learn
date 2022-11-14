@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 
-export interface IPropsWordTranslationData {
+export interface IWordTranslationFields {
+  word: string;
+  translation: string;
+  id: string;
+}
+
+export interface IPropsWordTranslation {
   id: string;
   wordAriaLabel: string;
   wordPlaceholder: string;

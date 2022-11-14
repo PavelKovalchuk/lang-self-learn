@@ -4,17 +4,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import { IBaseApiResponse, IIndefiniteVerbData, IVerbData } from 'types';
+import { IBaseApiResponse, IVerbData } from 'types';
 
 import {
   FormActions,
   FormSubmit,
   FormTitle,
-  IndefiniteVerbData,
-  PronounVerbData,
+  IndefiniteVerb,
+  PronounVerb,
 } from 'components/formsElements';
 import { ButtonsList, SimpleButton, SimpleDropdown } from 'components/elements';
 import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
 
 // import styles from './addVerbForm.module.scss';
 import { IPropsAddVerbForm } from './model';
@@ -179,15 +180,12 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
           <Link href="/spanish/verbs-groups">Create Verbs Groups</Link>
         )}
 
-        <IndefiniteVerbData
-          saveIndefiniteHandler={saveIndefiniteHandler}
-          isToClear={isToClearAll}
-        />
+        <IndefiniteVerb saveIndefiniteHandler={saveIndefiniteHandler} isToClear={isToClearAll} />
 
         {currentPronouns?.length
           ? currentPronouns.map((pronoun) => {
               return (
-                <PronounVerbData
+                <PronounVerb
                   key={pronoun.id}
                   id={pronoun.id}
                   pronoun={pronoun.pronoun}

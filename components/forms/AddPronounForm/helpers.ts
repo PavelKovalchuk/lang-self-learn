@@ -1,6 +1,9 @@
-import { IBaseApiResponse, IPronounData, IWordTranslationData } from 'types';
+import { IBaseApiResponse, IPronounData } from 'types';
 import { postRequest } from 'utils';
 import { HTTP_REQUEST_URL } from 'variables';
+
+import { IWordTranslationData } from 'components/formsElements/WordTranslation';
+
 import { DefaultPronoun } from './constants';
 
 const checkActiveSubmit = (pronouns: IPronounData[], pronounGroup: IWordTranslationData) => {

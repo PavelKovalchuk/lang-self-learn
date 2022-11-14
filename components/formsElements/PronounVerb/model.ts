@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-export interface IPropsPronounVerbData {
+export interface IPropsPronounVerb {
   id: string;
   pronoun: string;
   pronounTranslation: string;

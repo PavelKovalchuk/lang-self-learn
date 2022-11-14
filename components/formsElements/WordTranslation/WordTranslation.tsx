@@ -3,10 +3,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-// import styles from './wordTranslationData.module.scss';
-import { IPropsWordTranslationData } from './model';
+// import styles from './wordTranslation.module.scss';
+import { IPropsWordTranslation } from './model';
 
-const WordTranslationData: FC<IPropsWordTranslationData> = ({
+const WordTranslation: FC<IPropsWordTranslation> = ({
   id,
   saveWordHandler,
   wordAriaLabel,
@@ -59,4 +59,4 @@ const WordTranslationData: FC<IPropsWordTranslationData> = ({
   );
 };
 
-export default WordTranslationData;
+export default WordTranslation;
