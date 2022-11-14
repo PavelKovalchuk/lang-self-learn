@@ -1,0 +1,19 @@
+@import '~styles/base';
+
+.pronoun-to-verb-carousel {
+  &.carousel {
+    .carousel-item {
+      .item-wrapper {
+        width: 90%;
+        margin: 0 auto;
+      }
+    }
+
+    .carousel-control-prev {
+      width: 5%;
+    }
+    .carousel-control-next {
+      width: 5%;
+    }
+  }
+}

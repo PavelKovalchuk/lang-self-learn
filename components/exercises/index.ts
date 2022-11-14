@@ -1,3 +1,3 @@
-import RegularVerbs from './RegularVerbs';
+import PronounToVerb from './PronounToVerb';
 
-export { RegularVerbs };
+export { PronounToVerb };

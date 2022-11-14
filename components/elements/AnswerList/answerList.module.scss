@@ -1,1 +1,18 @@
 @import '~styles/base';
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+}
+
+.resultCorrect {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-grey-100);
+  padding: 0 10px;
+}

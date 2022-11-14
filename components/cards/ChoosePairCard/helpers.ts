@@ -1,5 +1,8 @@
-import { IVerbData, IShuffledData, IVerbAnswer } from 'types';
+import { IVerbData, IVerbAnswer } from 'types';
 import { shuffleArray } from 'utils';
+import { DefaultAnswer } from './constants';
+
+import { IShuffledData } from './model';
 
 const getShuffledData = (variants: IVerbData[]): IShuffledData => {
   return {
@@ -64,11 +67,53 @@ const analyzeAnswers = (answers: IVerbAnswer[], answerId: string): IVerbAnswer[]
     });
 };
 
+const getCurrentAnswerByPronounToSave = (
+  {
+    pairId,
+    pronoun,
+  }: {
+    pairId: string;
+    pronoun: string;
+  },
+  prevCurrentAnswer: IVerbAnswer | null
+): IVerbAnswer => {
+  if (!prevCurrentAnswer) {
+    return {
+      ...DefaultAnswer,
+      pronoun,
+      pronounIdPair: pairId,
+    };
+  }
+  return { ...prevCurrentAnswer, pronoun, pronounIdPair: pairId };
+};
+
+const getCurrentAnswerByVerbToSave = (
+  {
+    pairId,
+    verb,
+  }: {
+    pairId: string;
+    verb: string;
+  },
+  prevCurrentAnswer: IVerbAnswer | null
+): IVerbAnswer => {
+  if (!prevCurrentAnswer) {
+    return {
+      ...DefaultAnswer,
+      verb,
+      verbIdPair: pairId,
+    };
+  }
+  return { ...prevCurrentAnswer, verb, verbIdPair: pairId };
+};
+
 const Helpers = {
   getShuffledData,
   getCalculatedMark,
   getFinishedAnswers,
   analyzeAnswers,
+  getCurrentAnswerByPronounToSave,
+  getCurrentAnswerByVerbToSave,
 };
 
 export default Helpers;

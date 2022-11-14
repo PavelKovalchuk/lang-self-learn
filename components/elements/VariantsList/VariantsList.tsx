@@ -17,7 +17,7 @@ const VariantsList: FC<IPropsVariantsList> = ({
   ariaLabelGroup,
 }) => {
   return (
-    <ButtonGroup aria-label={ariaLabelGroup} vertical>
+    <ButtonGroup aria-label={ariaLabelGroup}>
       {pairsData.map((item) => {
         const answerData: IVerbAnswer | undefined = answers.find(
           (answer) => answer[variantType] === item.text
@@ -32,6 +32,7 @@ const VariantsList: FC<IPropsVariantsList> = ({
             variant={variant}
             onClick={onClickHandler(item.pairId, item.text)}
             disabled={isSelected}
+            className="me-2"
           >
             {item.text}
           </Button>

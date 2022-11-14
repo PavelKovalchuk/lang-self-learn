@@ -1,5 +1,5 @@
 import { IVerbsDataDocument } from 'types';
 
-export interface IPropsRegularVerbs {
+export interface IPropsPronounToVerb {
   verbs: IVerbsDataDocument[];
 }

@@ -19,7 +19,7 @@ interface IPropsConjugateVerbsPage {
 const UserId = 1;
 const Language = 'es';
 
-const RegularVerbs = dynamic(() => import('components/exercises/RegularVerbs'), { ssr: false });
+const PronounToVerb = dynamic(() => import('components/exercises/PronounToVerb'), { ssr: false });
 
 const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs }) => {
   return (
@@ -36,7 +36,7 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs }) => {
           </Col>
 
           <Col sm={12}>
-            <RegularVerbs verbs={verbs} />
+            <PronounToVerb verbs={verbs} />
           </Col>
         </Row>
       </Container>

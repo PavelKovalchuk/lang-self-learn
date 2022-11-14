@@ -1,16 +1,14 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 import { IVerbAnswer } from 'types';
-
-import { AnswerList, CardMark, VariantsList } from 'components/elements';
+import { AnswerList, CardMark, SimpleButton, VariantsList } from 'components/elements';
 
 // import styles from './choosePairCard.module.scss';
 import { IPropsChoosePairCard, IShuffledData } from './model';
 import Helpers from './helpers';
-import { DefaultAnswer } from './constants';
 
 const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
@@ -59,32 +57,16 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
 
   const onClickPronounHandler = useCallback(
     (pairId: string, pronoun: string) => () => {
-      setCurrentAnswer((prevCurrentAnswer) => {
-        if (!prevCurrentAnswer) {
-          return {
-            ...DefaultAnswer,
-            pronoun,
-            pronounIdPair: pairId,
-          };
-        }
-        return { ...prevCurrentAnswer, pronoun, pronounIdPair: pairId };
-      });
+      setCurrentAnswer((prev) =>
+        Helpers.getCurrentAnswerByPronounToSave({ pairId, pronoun }, prev)
+      );
     },
     []
   );
 
   const onClickVerbHandler = useCallback(
     (pairId: string, verb: string) => () => {
-      setCurrentAnswer((prevCurrentAnswer) => {
-        if (!prevCurrentAnswer) {
-          return {
-            ...DefaultAnswer,
-            verb,
-            verbIdPair: pairId,
-          };
-        }
-        return { ...prevCurrentAnswer, verb, verbIdPair: pairId };
-      });
+      setCurrentAnswer((prev) => Helpers.getCurrentAnswerByVerbToSave({ pairId, verb }, prev));
     },
     []
   );
@@ -102,56 +84,77 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
   }, []);
 
   return (
-    <Row>
-      <Col sm={12}>
-        <Button variant="dark" onClick={onClickResetHandler} disabled={!answers.length}>
-          Reset
-        </Button>
-      </Col>
+    <Card>
+      <Card.Header>
+        <Card.Title as="h5" className="text-sm-center">
+          {verbData.indefinite.verb}
+        </Card.Title>
+        <Card.Subtitle as="p" className="text-muted text-sm-center">
+          {verbData.indefinite.translation}
+        </Card.Subtitle>
+      </Card.Header>
 
-      {isFinishedTest ? (
-        <Col sm={12}>
-          <CardMark mark={mark} correctAnswer={correctAnswers} allAnswer={answers.length} />
-        </Col>
-      ) : null}
-
-      {answers.length ? (
-        <Col sm={12}>
-          <AnswerList
-            answers={answers}
-            variants={verbData.verbs}
-            isFinishedTest={isFinishedTest}
-            onRemoveItemHandler={onClickAnswerHandler}
-          />
-        </Col>
-      ) : null}
-
-      <Col sm={12}>
-        <div>
-          {shuffledData?.pronouns?.length ? (
-            <VariantsList
-              variantType="pronoun"
-              ariaLabelGroup="pronouns"
-              pairsData={shuffledData.pronouns}
-              onClickHandler={onClickPronounHandler}
-              currentAnswer={currentAnswer}
-              answers={answers}
-            />
+      <Card.Body>
+        <Row>
+          {isFinishedTest ? (
+            <Col sm={12} className="mb-3">
+              <CardMark mark={mark} correctAnswer={correctAnswers} allAnswer={answers.length} />
+            </Col>
           ) : null}
 
-          {shuffledData?.verbs?.length ? (
-            <VariantsList
-              variantType="verb"
-              ariaLabelGroup="verbs"
-              pairsData={shuffledData.verbs}
-              onClickHandler={onClickVerbHandler}
-              currentAnswer={currentAnswer}
-              answers={answers}
-            />
+          <Col sm={12} className="mb-3">
+            <Row>
+              <Col sm={12} className="mb-5">
+                {shuffledData?.pronouns?.length ? (
+                  <VariantsList
+                    variantType="pronoun"
+                    ariaLabelGroup="pronouns"
+                    pairsData={shuffledData.pronouns}
+                    onClickHandler={onClickPronounHandler}
+                    currentAnswer={currentAnswer}
+                    answers={answers}
+                  />
+                ) : null}
+              </Col>
+              <Col sm={12}>
+                {shuffledData?.verbs?.length ? (
+                  <VariantsList
+                    variantType="verb"
+                    ariaLabelGroup="verbs"
+                    pairsData={shuffledData.verbs}
+                    onClickHandler={onClickVerbHandler}
+                    currentAnswer={currentAnswer}
+                    answers={answers}
+                  />
+                ) : null}
+              </Col>
+            </Row>
+          </Col>
+
+          {answers.length ? (
+            <Col sm={{ span: 6, offset: 3 }} className="mb-3">
+              <AnswerList
+                answers={answers}
+                variants={verbData.verbs}
+                isFinishedTest={isFinishedTest}
+                onRemoveItemHandler={onClickAnswerHandler}
+              />
+            </Col>
           ) : null}
-        </div>
-      </Col>
-    </Row>
+        </Row>
+      </Card.Body>
+
+      <Card.Footer>
+        <Row>
+          <Col sm={{ span: 6, offset: 3 }} className="mb-3">
+            <SimpleButton title="Reset" onClick={onClickResetHandler} disabled={!answers.length} />
+          </Col>
+          <Col sm={{ span: 6, offset: 3 }}>
+            <SimpleButton title="Next" onClick={onClickResetHandler} disabled={!answers.length} />
+          </Col>
+        </Row>
+      </Card.Footer>
+    </Card>
   );
 };
 
