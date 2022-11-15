@@ -1,8 +1,7 @@
 import BaseCarousel from './BaseCarousel';
-import SwitchesList from './SwitchesList';
 import ToastModal from './ToastModal';
 import { IBaseToastModal } from './ToastModal/model';
 
-export { ToastModal, BaseCarousel, SwitchesList };
+export { ToastModal, BaseCarousel };
 
 export interface IBaseToastModalData extends IBaseToastModal {}

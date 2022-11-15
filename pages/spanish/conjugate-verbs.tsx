@@ -1,5 +1,4 @@
 import { GetStaticPropsResult, NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import Link from 'next/link';
 import Container from 'react-bootstrap/Container';
