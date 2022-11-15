@@ -23,6 +23,7 @@ const getShuffledData = (variants: IVerbData[]): IShuffledData => {
 
 const getCalculatedMark = (correctAnswers: number, numberVariants: number): number => {
   const percentage = (correctAnswers / numberVariants) * 100;
+
   if (percentage < 30 && percentage >= 0) {
     return 1;
   }

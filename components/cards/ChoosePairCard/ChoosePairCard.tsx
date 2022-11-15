@@ -10,26 +10,31 @@ import { AnswerList, CardMark, SimpleButton, VariantsList } from 'components/ele
 import { IPropsChoosePairCard, IShuffledData } from './model';
 import Helpers from './helpers';
 
-const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
+const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData, onFinishCardHandler, isToReset }) => {
   const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<IVerbAnswer | null>(null);
   const [shuffledData, setShuffledData] = useState<IShuffledData | null>(null);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
+  const [mark, setMark] = useState<number>(0);
 
   const isFinishedTest = useMemo(() => {
     return answers.length === verbData.verbs.length;
   }, [answers, verbData.verbs.length]);
 
-  const mark = useMemo(() => {
-    if (!isFinishedTest) {
-      return 0;
-    }
-    return Helpers.getCalculatedMark(correctAnswers, verbData.verbs.length);
-  }, [correctAnswers, verbData.verbs.length, isFinishedTest]);
+  const onClickResetHandler = useCallback(() => {
+    setCurrentAnswer(null);
+    setAnswers([]);
+  }, []);
 
   useEffect(() => {
     setShuffledData(Helpers.getShuffledData(verbData.verbs));
   }, []);
+
+  useEffect(() => {
+    if (isToReset) {
+      onClickResetHandler();
+    }
+  }, [isToReset]);
 
   useEffect(() => {
     if (!currentAnswer) {
@@ -43,15 +48,14 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     }
   }, [currentAnswer]);
 
-  const onFinishTestHandler = useCallback(() => {
-    const { corrects, results } = Helpers.getFinishedAnswers(answers);
-    setAnswers(results);
-    setCorrectAnswers(corrects);
-  }, [answers]);
-
   useEffect(() => {
     if (isFinishedTest) {
-      onFinishTestHandler();
+      const { corrects, results } = Helpers.getFinishedAnswers(answers);
+      setAnswers(results);
+      setCorrectAnswers(corrects);
+      const calculatedMark = Helpers.getCalculatedMark(corrects, verbData.verbs.length);
+      setMark(calculatedMark);
+      onFinishCardHandler(calculatedMark);
     }
   }, [isFinishedTest]);
 
@@ -78,11 +82,6 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
     [answers]
   );
 
-  const onClickResetHandler = useCallback(() => {
-    setCurrentAnswer(null);
-    setAnswers([]);
-  }, []);
-
   return (
     <Card>
       <Card.Header>
@@ -104,7 +103,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
 
           <Col sm={12} className="mb-3">
             <Row>
-              <Col sm={12} className="mb-5">
+              <Col sm={12} className="mb-5 d-flex justify-content-sm-center">
                 {shuffledData?.pronouns?.length ? (
                   <VariantsList
                     variantType="pronoun"
@@ -116,7 +115,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
                   />
                 ) : null}
               </Col>
-              <Col sm={12}>
+              <Col sm={12} className="d-flex justify-content-sm-center">
                 {shuffledData?.verbs?.length ? (
                   <VariantsList
                     variantType="verb"
@@ -147,10 +146,11 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData }) => {
       <Card.Footer>
         <Row>
           <Col sm={{ span: 6, offset: 3 }} className="mb-3">
-            <SimpleButton title="Reset" onClick={onClickResetHandler} disabled={!answers.length} />
-          </Col>
-          <Col sm={{ span: 6, offset: 3 }}>
-            <SimpleButton title="Next" onClick={onClickResetHandler} disabled={!answers.length} />
+            <SimpleButton
+              title="Reset Card"
+              onClick={onClickResetHandler}
+              disabled={!answers.length}
+            />
           </Col>
         </Row>
       </Card.Footer>

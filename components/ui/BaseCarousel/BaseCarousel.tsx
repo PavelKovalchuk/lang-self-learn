@@ -4,12 +4,17 @@ import Carousel from 'react-bootstrap/Carousel';
 // import styles from './baseCarousel.module.scss';
 import { IPropsBaseCarousel } from './model';
 
-const BaseCarousel: FC<IPropsBaseCarousel> = ({ items, className }) => {
-  // const [elementToRender, setElementToRender] = useState<any>(null);
-
+const BaseCarousel: FC<IPropsBaseCarousel> = ({ items, className, activeIndex }) => {
   return (
-    <Carousel interval={null} fade className={className} indicators={false}>
-      {items.map(({ component, id }) => {
+    <Carousel
+      interval={null}
+      fade
+      className={className}
+      indicators={false}
+      activeIndex={activeIndex}
+      controls={false}
+    >
+      {items?.map(({ component, id }) => {
         return <Carousel.Item key={id}>{component}</Carousel.Item>;
       })}
     </Carousel>
