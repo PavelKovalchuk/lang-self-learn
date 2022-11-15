@@ -1,0 +1,27 @@
+@import '~styles/base';
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.navigationList {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 0 35px;
+  justify-content: center;
+}
+
+.navigationItem {
+  position: relative;
+  display: flex;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid var(--color-grey-700);
+  align-items: center;
+  justify-content: center;
+  font-size: var(--size-5);
+  margin: 0 10px;
+}

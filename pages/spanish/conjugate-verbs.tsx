@@ -6,22 +6,22 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { IBaseApiResponse, IVerbsDataDocument } from 'types';
+import { IBaseApiResponse, IVerbsDataDocument, IGroupsDataDocument } from 'types';
 import { getRequest } from 'utils';
 import { HTTP_REQUEST_URL } from 'variables';
 
-import Layout from 'components/layout/Layout';
+import { Layout } from 'components/layout';
+import { StartPronounToVerb } from 'components/screens';
 
 interface IPropsConjugateVerbsPage {
   verbs: IVerbsDataDocument[];
+  verbsGroups: IGroupsDataDocument[];
 }
 
 const UserId = 1;
 const Language = 'es';
 
-const PronounToVerb = dynamic(() => import('components/exercises/PronounToVerb'), { ssr: false });
-
-const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs }) => {
+const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs, verbsGroups }) => {
   return (
     <Layout>
       <Head>
@@ -36,7 +36,7 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs }) => {
           </Col>
 
           <Col sm={12}>
-            <PronounToVerb verbs={verbs} />
+            <StartPronounToVerb verbsGroups={verbsGroups} />
           </Col>
         </Row>
       </Container>
@@ -50,9 +50,18 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsConju
     userId: String(UserId),
   });
 
+  const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
+    HTTP_REQUEST_URL.VERBS_GROUPS,
+    {
+      language: Language,
+      userId: String(UserId),
+    }
+  );
+
   return {
     props: {
       verbs: verbsPayload,
+      verbsGroups: verbsGroupsPayload,
     },
   };
 }
