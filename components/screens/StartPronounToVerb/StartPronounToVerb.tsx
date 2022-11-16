@@ -9,7 +9,7 @@ import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 
 import { SwitchesList } from 'components/forms';
 import { PronounToVerb } from 'components/exercises';
-import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { IBaseToastModalData, Loader, ToastModal } from 'components/ui';
 
 // import styles from './startPronounToVerb.module.scss';
 import { IPropsStartPronounToVerb } from './model';
@@ -108,8 +108,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     <>
       <Row>
         <Col sm={12}>
-          // TODO: create loader component
-          {isLoading ? 'LOADING' : null}
+          {isLoading ? <Loader /> : null}
           {!isLoading && verbsGroups?.[0]?.groups?.length && !verbs.length ? (
             <SwitchesList
               items={verbsGroups[0].groups.map((item) => {
