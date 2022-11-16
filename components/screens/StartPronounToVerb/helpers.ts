@@ -49,8 +49,6 @@ const getUrlToSet = (selectedVerbsGroupsIds: string[], pathname?: string): strin
 const setUrlParams = (selectedVerbsGroupsIds: string[]): void => {
   let url = getUrlToSet(selectedVerbsGroupsIds);
 
-  console.log('url', url);
-
   if (!url) {
     url = getRemovedParamFromLocationQueryString(URL_PARAMS.VERBS_GROUPS);
   }

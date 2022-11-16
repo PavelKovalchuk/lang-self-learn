@@ -1,4 +1,5 @@
 import { FC, FormEvent, useCallback, useState, useMemo, useEffect } from 'react';
+import useSWR from 'swr';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -13,7 +14,7 @@ import { IBaseToastModalData, ToastModal } from 'components/ui';
 import { IPropsStartPronounToVerb } from './model';
 import Helpers from './helpers';
 import { DefaultToastMessage } from './constants';
-import { URL_PARAMS } from 'variables';
+import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 
 const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, verbsGroups }) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
@@ -23,7 +24,22 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const queryUrlParam = getLocationQueryStringParam(URL_PARAMS.VERBS_GROUPS, 'string');
+  const fetcher = async () => {
+    const queryUrlParam = getLocationQueryStringParam(URL_PARAMS.VERBS_GROUPS, 'string');
+    const verbsGroupsParam = convertUrlArrayToArray(queryUrlParam);
+
+    if (!verbsGroupsParam?.length) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setSelectedVerbsGroupsIds(verbsGroupsParam);
+    await onSubmitHandler(verbsGroupsParam);
+    setIsLoading(false);
+  };
+
+  useSWR(HTTP_REQUEST_URL.VERBS_BY_GROUPS, fetcher);
 
   const isActiveSubmit = useMemo(() => {
     return Boolean(selectedVerbsGroupsIds.length);
@@ -39,31 +55,8 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   );
 
   useEffect(() => {
-    const verbsGroupsParam = convertUrlArrayToArray(queryUrlParam);
-
-    console.log('**** useEffect: verbsGroupsParam', verbsGroupsParam);
-
-    const fetchData = async () => {
-      // set state with the result if `isSubscribed` is true
-      setSelectedVerbsGroupsIds(verbsGroupsParam);
-      await onSubmitHandler(verbsGroupsParam);
-      setIsLoading(false);
-    };
-
-    if (verbsGroupsParam) {
-      setIsLoading(true);
-      fetchData().catch(console.error);
-    }
-  }, []);
-
-  /* console.log('------------');
-  console.log('selectedVerbsGroupsIds', selectedVerbsGroupsIds);
-  console.log('verbs', verbs); */
-
-  // TODO: revert it and test
-  /* useEffect(() => {
     Helpers.setUrlParams(selectedVerbsGroupsIds);
-  }, [selectedVerbsGroupsIds]); */
+  }, [selectedVerbsGroupsIds]);
 
   const saveSelectedVerbsGroupsHandler = useCallback(
     (id: string) => () => {
@@ -79,8 +72,6 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   );
 
   const onSubmitHandler = useCallback(async (ids: string[]) => {
-    console.log('-----REQUEST-------');
-
     const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
       language,
       userId: String(userId),
@@ -117,6 +108,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     <>
       <Row>
         <Col sm={12}>
+          // TODO: create loader component
           {isLoading ? (
             'LOADING'
           ) : verbsGroups?.[0]?.groups?.length && !verbs.length ? (
