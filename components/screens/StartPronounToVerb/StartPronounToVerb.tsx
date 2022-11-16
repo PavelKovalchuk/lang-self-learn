@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 
 import { IBaseApiResponse, IVerbsDataDocument } from 'types';
 import { convertUrlArrayToArray, getLocationQueryStringParam } from 'utils';
+import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 
 import { SwitchesList } from 'components/forms';
 import { PronounToVerb } from 'components/exercises';
@@ -14,7 +15,6 @@ import { IBaseToastModalData, ToastModal } from 'components/ui';
 import { IPropsStartPronounToVerb } from './model';
 import Helpers from './helpers';
 import { DefaultToastMessage } from './constants';
-import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 
 const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, verbsGroups }) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
@@ -23,6 +23,21 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     DefaultToastMessage
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const onSubmitHandler = useCallback(async (ids: string[]) => {
+    const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
+      language,
+      userId: String(userId),
+      selectedVerbsGroupsIds: ids,
+    });
+
+    if (result === 'ok') {
+      setVerbs(payload);
+      setToastModalResult({ ...DefaultToastMessage, type: 'success', message: 'Congrats!' });
+    } else {
+      setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
+    }
+  }, []);
 
   const fetcher = async () => {
     const queryUrlParam = getLocationQueryStringParam(URL_PARAMS.VERBS_GROUPS, 'string');
@@ -39,7 +54,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     setIsLoading(false);
   };
 
-  useSWR(HTTP_REQUEST_URL.VERBS_BY_GROUPS, fetcher);
+  useSWR(HTTP_REQUEST_URL.VERBS_BY_GROUPS, fetcher, { revalidateOnFocus: false });
 
   const isActiveSubmit = useMemo(() => {
     return Boolean(selectedVerbsGroupsIds.length);
@@ -71,21 +86,6 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     []
   );
 
-  const onSubmitHandler = useCallback(async (ids: string[]) => {
-    const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
-      language,
-      userId: String(userId),
-      selectedVerbsGroupsIds: ids,
-    });
-
-    if (result === 'ok') {
-      setVerbs(payload);
-      setToastModalResult({ ...DefaultToastMessage, type: 'success', message: 'Congrats!' });
-    } else {
-      setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
-    }
-  }, []);
-
   const handleSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -109,9 +109,8 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
       <Row>
         <Col sm={12}>
           // TODO: create loader component
-          {isLoading ? (
-            'LOADING'
-          ) : verbsGroups?.[0]?.groups?.length && !verbs.length ? (
+          {isLoading ? 'LOADING' : null}
+          {!isLoading && verbsGroups?.[0]?.groups?.length && !verbs.length ? (
             <SwitchesList
               items={verbsGroups[0].groups.map((item) => {
                 return {
@@ -125,13 +124,14 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
               isActiveSubmit={isActiveSubmit}
               formTitle="Select verbs groups to train"
             />
-          ) : (
+          ) : null}
+          {!isLoading && verbs.length ? (
             <PronounToVerb
               verbs={verbs}
               onReturnHandlerCallback={onReturnHandlerCallback}
               verbsGroupsTitles={selectedVerbsGroupsTitles}
             />
-          )}
+          ) : null}
         </Col>
       </Row>
       <ToastModal

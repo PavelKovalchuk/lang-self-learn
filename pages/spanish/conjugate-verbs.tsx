@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { IBaseApiResponse, IVerbsDataDocument, IGroupsDataDocument } from 'types';
+import { IBaseApiResponse, IGroupsDataDocument } from 'types';
 import { getRequest } from 'utils';
 import { HTTP_REQUEST_URL } from 'variables';
 
@@ -13,14 +13,13 @@ import { Layout } from 'components/layout';
 import { StartPronounToVerb } from 'components/screens';
 
 interface IPropsConjugateVerbsPage {
-  verbs: IVerbsDataDocument[];
   verbsGroups: IGroupsDataDocument[];
 }
 
 const UserId = 1;
 const Language = 'es';
 
-const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs, verbsGroups }) => {
+const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbsGroups }) => {
   return (
     <Layout>
       <Head>
@@ -44,11 +43,6 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs, verbsGr
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsConjugateVerbsPage>> {
-  const { payload: verbsPayload }: IBaseApiResponse = await getRequest(HTTP_REQUEST_URL.VERBS, {
-    language: Language,
-    userId: String(UserId),
-  });
-
   const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
     HTTP_REQUEST_URL.VERBS_GROUPS,
     {
@@ -59,7 +53,6 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsConju
 
   return {
     props: {
-      verbs: verbsPayload,
       verbsGroups: verbsGroupsPayload,
     },
   };

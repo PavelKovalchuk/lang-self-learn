@@ -58,11 +58,11 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
       <Col sm={12}>
         <p> TODO: add themes </p>
         <h2>
-          Themes:{' '}
+          Themes:
           {verbsGroupsTitles.map((item, index) => {
             return (
               <i key={item}>
-                {index > 0 ? ', ' : ''}
+                {index > 0 ? ', ' : ' '}
                 {item}
               </i>
             );
