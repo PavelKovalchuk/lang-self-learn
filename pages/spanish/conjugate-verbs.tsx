@@ -35,7 +35,7 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbs, verbsGr
           </Col>
 
           <Col sm={12}>
-            <StartPronounToVerb verbsGroups={verbsGroups} />
+            <StartPronounToVerb userId={UserId} language={Language} verbsGroups={verbsGroups} />
           </Col>
         </Row>
       </Container>

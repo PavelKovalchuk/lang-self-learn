@@ -1,5 +1,5 @@
-import { IGroupsDataDocument } from 'types';
+import { IBaseAppUserData, IGroupsDataDocument } from 'types';
 
-export interface IPropsStartPronounToVerb {
+export interface IPropsStartPronounToVerb extends IBaseAppUserData {
   verbsGroups: IGroupsDataDocument[];
 }

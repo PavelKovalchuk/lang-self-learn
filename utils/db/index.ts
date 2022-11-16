@@ -17,3 +17,7 @@ export async function connectToDatabase(): Promise<MongoClient> {
 export const getFindByUser = (userId: string | string[] | undefined): { userId: number } => {
   return { userId: parseInt(String(userId), 10) };
 };
+
+export const convertStringToArray = (str: string | string[] | undefined): string[] => {
+  return String(str).split(',');
+};

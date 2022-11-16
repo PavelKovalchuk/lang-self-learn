@@ -11,7 +11,11 @@ import styles from './pronounToVerb.module.scss';
 import { IPropsPronounToVerb } from './model';
 import Helpers from './helpers';
 
-const PronounToVerb: FC<IPropsPronounToVerb> = ({ verbs }) => {
+const PronounToVerb: FC<IPropsPronounToVerb> = ({
+  verbs,
+  verbsGroupsTitles,
+  onReturnHandlerCallback,
+}) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [marks, setMarks] = useState<number[]>([]);
   const [isToResetCards, setIsToResetCards] = useState<boolean>(false);
@@ -53,7 +57,17 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({ verbs }) => {
     <Row className={styles.container}>
       <Col sm={12}>
         <p> TODO: add themes </p>
-        <h2>Themes: a, b</h2>
+        <h2>
+          Themes:{' '}
+          {verbsGroupsTitles.map((item, index) => {
+            return (
+              <i key={item}>
+                {index > 0 ? ', ' : ''}
+                {item}
+              </i>
+            );
+          })}
+        </h2>
         <p>{`Word ${activeIndex + 1}/${verbs.length}`}</p>
         {marks.length ? <p>{`Average mark: ${averageMark}`}</p> : null}
       </Col>
@@ -78,6 +92,7 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({ verbs }) => {
       <Col sm={12}>
         <FormActions>
           {[
+            <SimpleButton key="return" title="Return" onClick={onReturnHandlerCallback} />,
             <SimpleButton
               key="restartRound"
               title="Restart Round"

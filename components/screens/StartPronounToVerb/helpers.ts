@@ -1,8 +1,12 @@
-import { IBaseApiResponse, IVerbData } from 'types';
-import { postRequest } from 'utils';
-import { HTTP_REQUEST_URL } from 'variables';
-
-import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
+import { IBaseApiResponse, IGroupsDataDocument } from 'types';
+import {
+  generateLocationQueryString,
+  generateUrlParamsArray,
+  getRemovedParamFromLocationQueryString,
+  getRequest,
+  setUrl,
+} from 'utils';
+import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 
 const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string[] => {
   const filteredItems = prevData.filter((item) => item !== id);
@@ -12,32 +16,61 @@ const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string
   return [...prevData, id];
 };
 
+const getSelectedVerbsGroupsTitles = (
+  isGroupsExists: boolean,
+  verbsGroups: IGroupsDataDocument[],
+  selectedVerbsGroupsIds: string[]
+): string[] => {
+  return isGroupsExists
+    ? verbsGroups[0].groups
+        .filter((item) => {
+          return selectedVerbsGroupsIds.includes(item.id);
+        })
+        .map((item) => item.word)
+    : [];
+};
+
+const getUrlToSet = (selectedVerbsGroupsIds: string[], pathname?: string): string | null => {
+  /*  const chosenFilterIds = chosenFilterItems.map((item: IChosenFilterItem) =>
+    encodeFilterIdParam({ sectionId: item.sectionId, itemId: String(item.itemId) })
+  ); */
+
+  if (!selectedVerbsGroupsIds.length) {
+    return null;
+  }
+
+  return generateLocationQueryString(
+    URL_PARAMS.VERBS_GROUPS,
+    generateUrlParamsArray(selectedVerbsGroupsIds),
+    pathname
+  );
+};
+
+const setUrlParams = (selectedVerbsGroupsIds: string[]): void => {
+  let url = getUrlToSet(selectedVerbsGroupsIds);
+
+  console.log('url', url);
+
+  if (!url) {
+    url = getRemovedParamFromLocationQueryString(URL_PARAMS.VERBS_GROUPS);
+  }
+
+  setUrl(url || '');
+};
+
 const makeSubmitRequest = async ({
   language,
   userId,
-  indefinite,
-  verbs,
   selectedVerbsGroupsIds,
-  pronounsGroupId,
 }: {
   language: string;
-  userId: number;
-  indefinite: IIndefiniteVerbData;
-  verbs: IVerbData[];
+  userId: string;
   selectedVerbsGroupsIds: string[];
-  pronounsGroupId: string;
 }): Promise<IBaseApiResponse> => {
-  const result = await postRequest(HTTP_REQUEST_URL.VERBS, {
-    params: {
-      language,
-    },
-    data: {
-      userId,
-      indefinite,
-      verbs,
-      selectedVerbsGroupsIds,
-      pronounsGroupId,
-    },
+  const result = await getRequest(HTTP_REQUEST_URL.VERBS_BY_GROUPS, {
+    language,
+    userId,
+    selectedVerbsGroupsIds,
   });
 
   return result;
@@ -46,6 +79,9 @@ const makeSubmitRequest = async ({
 const Helpers = {
   getSelectedVerbsGroupsIdsToSave,
   makeSubmitRequest,
+  getSelectedVerbsGroupsTitles,
+  getUrlToSet,
+  setUrlParams,
 };
 
 export default Helpers;
