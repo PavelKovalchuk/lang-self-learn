@@ -1,12 +1,14 @@
-import { IBaseApiResponse, IGroupsDataDocument } from 'types';
+import { IBaseApiResponse, IFinishRoundVerbResults, IGroupsDataDocument } from 'types';
 import {
   generateLocationQueryString,
   generateUrlParamsArray,
+  getAverageMark,
   getRemovedParamFromLocationQueryString,
   getRequest,
   setUrl,
 } from 'utils';
 import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
+import { ICalculatedData } from './model';
 
 const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string[] => {
   const filteredItems = prevData.filter((item) => item !== id);
@@ -31,10 +33,6 @@ const getSelectedVerbsGroupsTitles = (
 };
 
 const getUrlToSet = (selectedVerbsGroupsIds: string[], pathname?: string): string | null => {
-  /*  const chosenFilterIds = chosenFilterItems.map((item: IChosenFilterItem) =>
-    encodeFilterIdParam({ sectionId: item.sectionId, itemId: String(item.itemId) })
-  ); */
-
   if (!selectedVerbsGroupsIds.length) {
     return null;
   }
@@ -74,12 +72,34 @@ const makeSubmitRequest = async ({
   return result;
 };
 
+const getCalculatedData = (results: IFinishRoundVerbResults[]): ICalculatedData => {
+  const data: ICalculatedData = {
+    marks: [],
+    questions: 0,
+    corrects: 0,
+    points: 0,
+    averageMark: 0,
+  };
+
+  results.forEach((item) => {
+    data.marks.push(item.mark);
+    data.questions += item.questions;
+    data.corrects += item.corrects;
+    data.points += item.points;
+  });
+
+  data.averageMark = getAverageMark(data.marks);
+
+  return data;
+};
+
 const Helpers = {
   getSelectedVerbsGroupsIdsToSave,
   makeSubmitRequest,
   getSelectedVerbsGroupsTitles,
   getUrlToSet,
   setUrlParams,
+  getCalculatedData,
 };
 
 export default Helpers;

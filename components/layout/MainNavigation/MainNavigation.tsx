@@ -2,6 +2,8 @@ import { FC } from 'react';
 import Link from 'next/link';
 // import { useSession, signOut } from 'next-auth/client';
 
+import { APP_ROUTS } from 'variables';
+
 import Logo from 'components/layout/Logo';
 
 import classes from './mainNavigation.module.scss';
@@ -18,7 +20,7 @@ const MainNavigation: FC<IPropsMainNavigation> = () => {
       <nav>
         <ul>
           <li>
-            <Link href="/spanish">Spanish</Link>
+            <Link href={APP_ROUTS.SPANISH}>Spanish</Link>
           </li>
         </ul>
       </nav>

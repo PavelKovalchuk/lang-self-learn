@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import { IBaseApiResponse, IVerbData } from 'types';
+import { APP_ROUTS } from 'variables';
 
 import {
   FormActions,
@@ -155,7 +156,7 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
                 }))}
               />
             ) : (
-              <Link href="/spanish/add-pronouns">Create Pronouns Groups</Link>
+              <Link href={APP_ROUTS.ADD_PRONOUNS}>Create Pronouns Groups</Link>
             ),
           ]}
         </FormActions>
@@ -177,7 +178,7 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
             </Col>
           </Row>
         ) : (
-          <Link href="/spanish/verbs-groups">Create Verbs Groups</Link>
+          <Link href={APP_ROUTS.VERBS_GROUPS}>Create Verbs Groups</Link>
         )}
 
         <IndefiniteVerb saveIndefiniteHandler={saveIndefiniteHandler} isToClear={isToClearAll} />

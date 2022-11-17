@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 
 import { IBaseApiResponse, IGroupsDataDocument } from 'types';
 import { getRequest } from 'utils';
-import { HTTP_REQUEST_URL } from 'variables';
+import { APP_ROUTS, HTTP_REQUEST_URL } from 'variables';
 
 import { Layout } from 'components/layout';
 import { StartPronounToVerb } from 'components/screens';
@@ -30,7 +30,7 @@ const ConjugateVerbsPage: NextPage<IPropsConjugateVerbsPage> = ({ verbsGroups })
       <Container fluid>
         <Row>
           <Col sm={12}>
-            <Link href="/spanish/add-verb">Add verb if you do not have any</Link>
+            <Link href={APP_ROUTS.ADD_VERB}>Add verb if you do not have any</Link>
           </Col>
 
           <Col sm={12}>

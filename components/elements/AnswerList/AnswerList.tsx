@@ -3,6 +3,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import { TrashFill, CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 
+import { MARKS_TO_COLORS_MAP, MARKS } from 'variables';
+
 import styles from './answerList.module.scss';
 import { IPropsAnswerList } from './model';
 
@@ -34,9 +36,9 @@ const AnswerList: FC<IPropsAnswerList> = ({
               {isFinishedTest ? (
                 <span>
                   {item.isCorrect ? (
-                    <CheckCircleFill color="rgba(var(--bs-success-rgb)" size={24} />
+                    <CheckCircleFill color={MARKS_TO_COLORS_MAP[MARKS.FINE]} size={24} />
                   ) : (
-                    <XCircleFill color="rgba(var(--bs-danger-rgb)" size={24} />
+                    <XCircleFill color={MARKS_TO_COLORS_MAP[MARKS.BAD]} size={24} />
                   )}
                 </span>
               ) : null}

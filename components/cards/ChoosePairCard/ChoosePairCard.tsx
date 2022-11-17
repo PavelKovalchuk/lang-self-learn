@@ -10,7 +10,12 @@ import { AnswerList, CardMark, SimpleButton, VariantsList } from 'components/ele
 import { IPropsChoosePairCard, IShuffledData } from './model';
 import Helpers from './helpers';
 
-const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData, onFinishCardHandler, isToReset }) => {
+const ChoosePairCard: FC<IPropsChoosePairCard> = ({
+  verbData,
+  onFinishCardHandler,
+  onResetCardHandler,
+  isToReset,
+}) => {
   const [answers, setAnswers] = useState<IVerbAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<IVerbAnswer | null>(null);
   const [shuffledData, setShuffledData] = useState<IShuffledData | null>(null);
@@ -24,6 +29,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData, onFinishCardHandle
   const onClickResetHandler = useCallback(() => {
     setCurrentAnswer(null);
     setAnswers([]);
+    onResetCardHandler(verbData._id);
   }, []);
 
   useEffect(() => {
@@ -55,7 +61,14 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData, onFinishCardHandle
       setCorrectAnswers(corrects);
       const calculatedMark = Helpers.getCalculatedMark(corrects, verbData.verbs.length);
       setMark(calculatedMark);
-      onFinishCardHandler(calculatedMark);
+      onFinishCardHandler(
+        Helpers.getFinishRoundVerbResults({
+          answers: results,
+          mark: calculatedMark,
+          correctAnswers: corrects,
+          verbData,
+        })
+      );
     }
   }, [isFinishedTest]);
 

@@ -1,4 +1,9 @@
-import { IAbstractWordsPairData, IVerbsDataDocument } from 'types';
+import {
+  IAbstractWordsPairData,
+  IFinishRoundVerbResults,
+  IVerbAnswer,
+  IVerbsDataDocument,
+} from 'types';
 
 /* eslint-disable no-unused-vars */
 
@@ -7,8 +12,16 @@ export interface IShuffledData {
   verbs: IAbstractWordsPairData[];
 }
 
+export interface IFinishRoundVerbResultsParam {
+  answers: IVerbAnswer[];
+  mark: number;
+  correctAnswers: number;
+  verbData: IVerbsDataDocument;
+}
+
 export interface IPropsChoosePairCard {
   verbData: IVerbsDataDocument;
-  onFinishCardHandler: (mark: number) => void;
+  onResetCardHandler: (id: string) => void;
+  onFinishCardHandler: (params: IFinishRoundVerbResults) => void;
   isToReset: boolean;
 }

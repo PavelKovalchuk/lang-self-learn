@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { APP_ROUTS } from 'variables';
+
 import Layout from 'components/layout/Layout';
 
 interface IPropsSpanishHomePage {}
@@ -29,24 +31,24 @@ const SpanishHomePage: NextPage<IPropsSpanishHomePage> = () => {
         <Row className="mb-4">
           <Col sm={4}>
             <div>
-              <Link href="/spanish/conjugate-verbs">Conjugate Verbs</Link>
+              <Link href={APP_ROUTS.CONJUGATE}>Conjugate Verbs</Link>
             </div>
           </Col>
           <Col sm={4}>
             <div>
-              <Link href="/spanish/add-verb">Add verb</Link>
+              <Link href={APP_ROUTS.ADD_VERB}>Add verb</Link>
             </div>
           </Col>
           <Col sm={4}>
             <div>
-              <Link href="/spanish/add-pronouns">Add Pronouns</Link>
+              <Link href={APP_ROUTS.ADD_PRONOUNS}>Add Pronouns</Link>
             </div>
           </Col>
         </Row>
         <Row className="mb-4">
           <Col sm={4}>
             <div>
-              <Link href="/spanish/verbs-groups">Verbs Groups</Link>
+              <Link href={APP_ROUTS.VERBS_GROUPS}>Verbs Groups</Link>
             </div>
           </Col>
           <Col sm={4}>

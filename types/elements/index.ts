@@ -32,3 +32,17 @@ export interface IGroupData {
   label: string;
   id: string;
 }
+
+export interface IAnswerMarkData {
+  title: string;
+  mark: number;
+}
+
+export interface IFinishRoundVerbResults {
+  mark: number;
+  id: string;
+  title: string;
+  questions: number;
+  corrects: number;
+  points: number;
+}

@@ -2,6 +2,8 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { IFinishRoundVerbResults } from 'types';
+
 import { ChoosePairCard } from 'components/cards';
 import { BaseCarousel } from 'components/ui';
 import { SimpleButton } from 'components/elements';
@@ -15,15 +17,16 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
   verbs,
   verbsGroupsTitles,
   onReturnHandlerCallback,
+  onFinishHandlerCallback,
 }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [marks, setMarks] = useState<number[]>([]);
   const [isToResetCards, setIsToResetCards] = useState<boolean>(false);
   const [isDisabledNext, setDisabledNext] = useState<boolean>(true);
+  const [finishResults, setFinishResults] = useState<IFinishRoundVerbResults[]>([]);
 
   const averageMark = useMemo(() => {
-    return Helpers.getCalculatedMark(marks);
-  }, [marks]);
+    return Helpers.getCalculatedMark(finishResults);
+  }, [finishResults]);
 
   useEffect(() => {
     if (isToResetCards) {
@@ -42,21 +45,31 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
     []
   );
 
-  const onFinishCardHandler = useCallback((mark: number) => {
-    setMarks((prevMarks) => [...prevMarks, mark]);
+  const onRestartRoundHandler = useCallback(() => {
+    setActiveIndex(0);
+    setFinishResults([]);
+    setIsToResetCards(true);
+  }, []);
+
+  const onFinishCardHandler = useCallback((param: IFinishRoundVerbResults) => {
+    setFinishResults((prevFinishResults) => [...prevFinishResults, { ...param }]);
     setDisabledNext(false);
+  }, []);
+
+  const onResetCardHandler = useCallback((id: string) => {
+    setFinishResults((prevFinishResults) => Helpers.removeCardFinishResults(id, prevFinishResults));
   }, []);
 
   const onFinishRoundHandler = useCallback(() => {
     setActiveIndex(0);
-    setMarks([]);
+    setFinishResults([]);
     setIsToResetCards(true);
-  }, []);
+    onFinishHandlerCallback(finishResults);
+  }, [finishResults]);
 
   return (
     <Row className={styles.container}>
       <Col sm={12}>
-        <p> TODO: add themes </p>
         <h2>
           Themes:
           {verbsGroupsTitles.map((item, index) => {
@@ -69,7 +82,7 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
           })}
         </h2>
         <p>{`Word ${activeIndex + 1}/${verbs.length}`}</p>
-        {marks.length ? <p>{`Average mark: ${averageMark}`}</p> : null}
+        {averageMark ? <p>{`Average mark: ${averageMark}`}</p> : null}
       </Col>
 
       <Col sm={12}>
@@ -96,7 +109,7 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
             <SimpleButton
               key="restartRound"
               title="Restart Round"
-              onClick={onFinishRoundHandler}
+              onClick={onRestartRoundHandler}
             />,
             activeIndex + 1 === verbs.length ? (
               <SimpleButton
@@ -129,6 +142,7 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
                     key={verb._id}
                     verbData={verb}
                     onFinishCardHandler={onFinishCardHandler}
+                    onResetCardHandler={onResetCardHandler}
                     isToReset={isToResetCards}
                   />
                 </div>

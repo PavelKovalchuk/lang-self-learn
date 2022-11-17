@@ -1,0 +1,16 @@
+@import '~styles/base';
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+}

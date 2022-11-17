@@ -1,8 +1,9 @@
-import { IVerbData, IVerbAnswer } from 'types';
+import { IVerbData, IVerbAnswer, IFinishRoundVerbResults } from 'types';
 import { shuffleArray } from 'utils';
+import { MARKS, POINT_RATIOS } from 'variables';
 import { DefaultAnswer } from './constants';
 
-import { IShuffledData } from './model';
+import { IFinishRoundVerbResultsParam, IShuffledData } from './model';
 
 const getShuffledData = (variants: IVerbData[]): IShuffledData => {
   return {
@@ -24,19 +25,19 @@ const getShuffledData = (variants: IVerbData[]): IShuffledData => {
 const getCalculatedMark = (correctAnswers: number, numberVariants: number): number => {
   const percentage = (correctAnswers / numberVariants) * 100;
 
-  if (percentage < 30 && percentage >= 0) {
-    return 1;
+  if (percentage < 10 && percentage >= 0) {
+    return MARKS.TERRIBLE;
   }
-  if (percentage < 50 && percentage > 30) {
-    return 2;
+  if (percentage < 40 && percentage > 10) {
+    return MARKS.BAD;
   }
-  if (percentage < 70 && percentage > 50) {
-    return 3;
+  if (percentage < 60 && percentage > 40) {
+    return MARKS.MEDIUM;
   }
-  if (percentage < 90 && percentage > 70) {
-    return 4;
+  if (percentage < 80 && percentage > 60) {
+    return MARKS.GOOD;
   }
-  return 5;
+  return MARKS.FINE;
 };
 
 const getFinishedAnswers = (
@@ -113,6 +114,22 @@ const getCurrentAnswerByVerbToSave = (
   return { ...prevCurrentAnswer, verb, verbIdPair: pairId };
 };
 
+const getFinishRoundVerbResults = ({
+  answers,
+  mark,
+  correctAnswers,
+  verbData,
+}: IFinishRoundVerbResultsParam): IFinishRoundVerbResults => {
+  return {
+    mark,
+    id: verbData._id,
+    title: verbData.indefinite.verb,
+    questions: answers.length,
+    corrects: correctAnswers,
+    points: POINT_RATIOS.CHOOSE_PAIR_CARD * correctAnswers,
+  };
+};
+
 const Helpers = {
   getShuffledData,
   getCalculatedMark,
@@ -120,6 +137,7 @@ const Helpers = {
   analyzeAnswers,
   getCurrentAnswerByPronounToSave,
   getCurrentAnswerByVerbToSave,
+  getFinishRoundVerbResults,
 };
 
 export default Helpers;
