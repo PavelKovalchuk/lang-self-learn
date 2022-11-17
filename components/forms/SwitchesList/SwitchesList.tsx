@@ -16,7 +16,7 @@ const SwitchesList: FC<IPropsSwitchesList> = ({
   formTitle,
 }) => {
   return (
-    <Row>
+    <Row data-test="SwitchesList">
       <Col sm={12}>
         <Form noValidate onSubmit={handleSubmit}>
           <FormTitle title={formTitle} />

@@ -6,7 +6,7 @@ import { IPropsLoader } from './model';
 
 const Loader: FC<IPropsLoader> = () => {
   return (
-    <div className={styles.container}>
+    <div data-test="Loader" className={styles.container}>
       <Spinner animation="grow" />
     </div>
   );

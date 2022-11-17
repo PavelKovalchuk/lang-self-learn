@@ -127,7 +127,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
 
   return (
     <>
-      <Row>
+      <Row data-test="StartPronounToVerb">
         <Col sm={12}>
           {isLoading ? <Loader /> : null}
           {!isLoading && verbsGroups?.[0]?.groups?.length && !verbs.length ? (

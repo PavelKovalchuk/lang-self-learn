@@ -13,7 +13,7 @@ const MainNavigation: FC<IPropsMainNavigation> = () => {
   // const [session, loading] = useSession();
 
   return (
-    <header className={classes.header}>
+    <header data-test="MainNavigation" className={classes.header}>
       <Link href="/">
         <Logo />
       </Link>

@@ -16,7 +16,12 @@ const ToastModal: FC<IPropsToastModal> = ({ title, message, type, isShown, onClo
 
   return elementToRender
     ? ReactDOM.createPortal(
-        <ToastContainer className="p-3" containerPosition="fixed" position="top-start">
+        <ToastContainer
+          data-test="ToastModal"
+          className="p-3"
+          containerPosition="fixed"
+          position="top-start"
+        >
           <Toast show={isShown} onClose={onClose} bg={type} delay={9000} autohide>
             <Toast.Header>
               <strong className="me-auto">{title}</strong>

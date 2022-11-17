@@ -22,7 +22,7 @@ const FinishExerciseModal: FC<IPropsFinishExerciseModal> = ({
 }) => {
   return (
     <BaseModal title="Result of the round" isShown={isShown} onClose={onClose}>
-      <Row>
+      <Row data-test="FinishExerciseModal">
         <Col sm={12} className="mb-3">
           <ListGroup>
             {results.map((item) => {

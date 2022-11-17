@@ -32,7 +32,7 @@ const WordTranslation: FC<IPropsWordTranslation> = ({
   }, []);
 
   return (
-    <Row id={`word-data-${id}`}>
+    <Row data-test="WordTranslation" id={`word-data-${id}`}>
       <Col sm={6}>
         <Form.Control
           name="word"

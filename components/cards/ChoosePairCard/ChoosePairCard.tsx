@@ -96,7 +96,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({
   );
 
   return (
-    <Card>
+    <Card data-test="ChoosePairCard">
       <Card.Header>
         <Card.Title as="h5" className="text-sm-center">
           {verbData.indefinite.verb}

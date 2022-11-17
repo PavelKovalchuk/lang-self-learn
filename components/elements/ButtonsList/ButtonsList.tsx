@@ -12,7 +12,7 @@ const ButtonsList: FC<IPropsButtonsList> = ({
   selectedIds,
 }) => {
   return (
-    <ButtonGroup aria-label={ariaLabelGroup}>
+    <ButtonGroup data-test="ButtonsList" aria-label={ariaLabelGroup}>
       {items.map((item) => {
         const isSelected = selectedIds.find((id) => id === item.id);
         const variant = isSelected ? 'info' : 'dark';

@@ -115,7 +115,7 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
 
   return (
     <>
-      <Form noValidate onSubmit={handleSubmit}>
+      <Form data-test="AddGroupForm" noValidate onSubmit={handleSubmit}>
         <FormTitle title="Add a verbs groups data to your dictionary" />
 
         <FormActions>

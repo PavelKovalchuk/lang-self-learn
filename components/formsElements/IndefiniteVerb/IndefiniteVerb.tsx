@@ -26,7 +26,7 @@ const IndefiniteVerb: FC<IPropsIndefiniteVerb> = ({ isToClear, saveIndefiniteHan
   }, []);
 
   return (
-    <Row className="mb-5">
+    <Row data-test="IndefiniteVerb" className="mb-5">
       <Col sm={{ span: 6, offset: 3 }} className="mb-2">
         <Form.Control
           name="indefiniteVerb"

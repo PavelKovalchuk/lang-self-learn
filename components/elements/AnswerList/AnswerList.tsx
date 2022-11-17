@@ -17,7 +17,7 @@ const AnswerList: FC<IPropsAnswerList> = ({
   return (
     <>
       <h4>Selected Pairs</h4>
-      <ListGroup>
+      <ListGroup data-test="AnswerList">
         {answers.map((item) => {
           const variantByPronoun = variants.find((variant) => {
             return variant.pronoun === item.pronoun;

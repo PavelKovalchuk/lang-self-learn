@@ -19,7 +19,7 @@ const SimpleDropdown: FC<IPropsSimpleDropdown> = ({
   }, [activeItemId]);
 
   return (
-    <Dropdown>
+    <Dropdown data-test="SimpleDropdown">
       <Toggle id={id} variant="dark" className="w-100">
         {activeItem ? activeItem.title : title}
       </Toggle>

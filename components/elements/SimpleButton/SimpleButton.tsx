@@ -7,7 +7,14 @@ import { IPropsSimpleButton } from './model';
 
 const SimpleButton: FC<IPropsSimpleButton> = ({ title, onClick, disabled = false }) => {
   return (
-    <Button variant="dark" type="button" className="w-100" onClick={onClick} disabled={disabled}>
+    <Button
+      data-test="SimpleButton"
+      variant="dark"
+      type="button"
+      className="w-100"
+      onClick={onClick}
+      disabled={disabled}
+    >
       {title}
     </Button>
   );

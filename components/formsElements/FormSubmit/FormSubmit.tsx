@@ -8,7 +8,7 @@ import { IPropsFormSubmit } from './model';
 
 const FormSubmit: FC<IPropsFormSubmit> = ({ title, isActiveSubmit }) => {
   return (
-    <Row>
+    <Row data-test="FormSubmit">
       <Col sm={{ span: 6, offset: 3 }}>
         <Button variant="dark" type="submit" className="w-100" disabled={!isActiveSubmit}>
           {title}

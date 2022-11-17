@@ -7,6 +7,7 @@ import { IPropsBaseCarousel } from './model';
 const BaseCarousel: FC<IPropsBaseCarousel> = ({ items, className, activeIndex }) => {
   return (
     <Carousel
+      data-test="BaseCarousel"
       interval={null}
       fade
       className={className}

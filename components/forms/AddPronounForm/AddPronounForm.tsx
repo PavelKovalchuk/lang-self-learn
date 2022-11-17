@@ -109,7 +109,7 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
 
   return (
     <>
-      <Form noValidate onSubmit={handleSubmit}>
+      <Form data-test="AddPronounForm" noValidate onSubmit={handleSubmit}>
         <FormTitle title="Add a pronoun data to your dictionary" />
 
         <Row className="mb-3">

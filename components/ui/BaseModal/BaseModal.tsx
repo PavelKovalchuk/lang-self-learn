@@ -7,7 +7,7 @@ import { IPropsBaseModal } from './model';
 
 const BaseModal: FC<IPropsBaseModal> = ({ title, isShown, onClose, children }) => {
   return (
-    <Modal show={isShown} onHide={onClose}>
+    <Modal data-test="BaseModal" show={isShown} onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

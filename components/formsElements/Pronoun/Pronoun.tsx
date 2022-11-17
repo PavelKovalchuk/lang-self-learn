@@ -32,7 +32,7 @@ const Pronoun: FC<IPropsPronoun> = ({
   }, []);
 
   return (
-    <Row id={`pronoun-data-${id}`} className="mb-3">
+    <Row data-test="Pronoun" id={`pronoun-data-${id}`} className="mb-3">
       <Col sm={5}>
         <Form.Control
           name="pronoun"

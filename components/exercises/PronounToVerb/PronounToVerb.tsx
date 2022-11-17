@@ -68,7 +68,7 @@ const PronounToVerb: FC<IPropsPronounToVerb> = ({
   }, [finishResults]);
 
   return (
-    <Row className={styles.container}>
+    <Row data-test="PronounToVerb" className={styles.container}>
       <Col sm={12}>
         <h2>
           Themes:

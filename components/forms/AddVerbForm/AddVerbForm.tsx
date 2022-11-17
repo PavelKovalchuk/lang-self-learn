@@ -137,7 +137,7 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
 
   return (
     <>
-      <Form noValidate onSubmit={handleSubmit}>
+      <Form data-test="AddVerbForm" noValidate onSubmit={handleSubmit}>
         <FormTitle title="Add a verb data to your dictionary" />
 
         <FormActions>

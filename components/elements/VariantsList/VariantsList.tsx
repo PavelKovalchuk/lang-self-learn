@@ -17,7 +17,7 @@ const VariantsList: FC<IPropsVariantsList> = ({
   ariaLabelGroup,
 }) => {
   return (
-    <ButtonGroup aria-label={ariaLabelGroup}>
+    <ButtonGroup data-test="VariantsList" aria-label={ariaLabelGroup}>
       {pairsData.map((item) => {
         const answerData: IVerbAnswer | undefined = answers.find(
           (answer) =>

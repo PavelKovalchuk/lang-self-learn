@@ -59,7 +59,7 @@ const WordTranslationLabel: FC<IPropsWordTranslationLabel> = ({
   }, []);
 
   return (
-    <Row id={`word-data-${id}`} className="mb-3">
+    <Row data-test="WordTranslationLabel" id={`word-data-${id}`} className="mb-3">
       <Col sm={4}>
         <Form.Control
           name="word"

@@ -14,7 +14,7 @@ const FormActions: FC<IPropsFormActions> = ({ children }) => {
   }
 
   return (
-    <Row className="mb-4 mt-3">
+    <Row data-test="FormActions" className="mb-4 mt-3">
       {children.map((child, index) => {
         return (
           <Col key={index.toString()} sm={12} md={mdOffset}>

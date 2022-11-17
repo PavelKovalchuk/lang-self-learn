@@ -6,7 +6,7 @@ import { IPropsCardMark } from './model';
 const CardMark: FC<IPropsCardMark> = ({ mark, correctAnswer, allAnswer }) => {
   return (
     <>
-      <h4>{`Your mark is: ${mark}.`}</h4>
+      <h4 data-test="CardMark">{`Your mark is: ${mark}.`}</h4>
       <p>{`Correct ${correctAnswer} out of ${allAnswer}.`}</p>
     </>
   );

@@ -7,7 +7,7 @@ import { IPropsFormTitle } from './model';
 
 const FormTitle: FC<IPropsFormTitle> = ({ title }) => {
   return (
-    <Row>
+    <Row data-test="FormTitle">
       <Col sm={12}>
         <h2>{title}</h2>
       </Col>
