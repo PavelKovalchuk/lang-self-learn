@@ -50,7 +50,7 @@ const ChoosePairCard: FC<IPropsChoosePairCard> = ({ verbData, onFinishCardHandle
 
   useEffect(() => {
     if (isFinishedTest) {
-      const { corrects, results } = Helpers.getFinishedAnswers(answers);
+      const { corrects, results } = Helpers.getFinishedAnswers(answers, verbData.verbs);
       setAnswers(results);
       setCorrectAnswers(corrects);
       const calculatedMark = Helpers.getCalculatedMark(corrects, verbData.verbs.length);

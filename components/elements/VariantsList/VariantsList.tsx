@@ -20,15 +20,18 @@ const VariantsList: FC<IPropsVariantsList> = ({
     <ButtonGroup aria-label={ariaLabelGroup}>
       {pairsData.map((item) => {
         const answerData: IVerbAnswer | undefined = answers.find(
-          (answer) => answer[variantType] === item.text
+          (answer) =>
+            answer[variantType] === item.text && answer[`${variantType}IdPair`] === item.pairId
         );
         const isSelected = Boolean(answerData);
-        const isCurrent = currentAnswer?.[variantType] === item.text;
+        const isCurrent =
+          currentAnswer?.[variantType] === item.text &&
+          currentAnswer[`${variantType}IdPair`] === item.pairId;
         const variant = Helpers.getButtonVariants(isCurrent, answerData);
 
         return (
           <Button
-            key={item.text}
+            key={`${item.text}-${item.pairId}`}
             variant={variant}
             onClick={onClickHandler(item.pairId, item.text)}
             disabled={isSelected}

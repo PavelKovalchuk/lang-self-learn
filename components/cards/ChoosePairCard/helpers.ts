@@ -40,11 +40,16 @@ const getCalculatedMark = (correctAnswers: number, numberVariants: number): numb
 };
 
 const getFinishedAnswers = (
-  answers: IVerbAnswer[]
+  answers: IVerbAnswer[],
+  variants: IVerbData[]
 ): { results: IVerbAnswer[]; corrects: number } => {
   let corrects = 0;
   const results: IVerbAnswer[] = answers.map((answer) => {
-    const isCorrect = answer.verbIdPair === answer.pronounIdPair;
+    const availableVerbs = variants.filter((item) => {
+      return item.verb === answer.verb && item.pronoun === answer.pronoun;
+    });
+    const isCorrect = !!availableVerbs.length;
+
     if (isCorrect) {
       corrects += 1;
     }

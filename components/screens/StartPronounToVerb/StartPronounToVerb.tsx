@@ -124,6 +124,8 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
               formTitle="Select verbs groups to train"
             />
           ) : null}
+          // TODO: add finish logic // 1. save data in verbs (lastTrained, nextTrained, mark) // 2.
+          screen with overall verbs results
           {!isLoading && verbs.length ? (
             <PronounToVerb
               verbs={verbs}
