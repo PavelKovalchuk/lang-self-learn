@@ -1,10 +1,16 @@
-import { IBaseApiResponse, IFinishRoundVerbResults, IGroupsDataDocument } from 'types';
+import {
+  IBaseApiResponse,
+  IFinishRoundVerbResults,
+  IGroupsDataDocument,
+  IVerbsTrainedData,
+} from 'types';
 import {
   generateLocationQueryString,
   generateUrlParamsArray,
   getAverageMark,
   getRemovedParamFromLocationQueryString,
   getRequest,
+  putRequest,
   setUrl,
 } from 'utils';
 import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
@@ -72,6 +78,25 @@ const makeSubmitRequest = async ({
   return result;
 };
 
+const makeSaveTrainingsRequest = async ({
+  language,
+  verbsToUpdate,
+}: {
+  language: string;
+  verbsToUpdate: IVerbsTrainedData[];
+}): Promise<IBaseApiResponse> => {
+  const result = await putRequest(HTTP_REQUEST_URL.VERBS_TRAININGS, {
+    params: {
+      language,
+    },
+    data: {
+      verbsToUpdate,
+    },
+  });
+
+  return result;
+};
+
 const getCalculatedData = (results: IFinishRoundVerbResults[]): ICalculatedData => {
   const data: ICalculatedData = {
     marks: [],
@@ -100,6 +125,7 @@ const Helpers = {
   getUrlToSet,
   setUrlParams,
   getCalculatedData,
+  makeSaveTrainingsRequest,
 };
 
 export default Helpers;

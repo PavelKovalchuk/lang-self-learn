@@ -20,9 +20,19 @@ export interface IGroupsDataDocument extends IBaseDocument, IBaseUserDataDocumen
   groups: IGroupData[];
 }
 
-export interface IVerbsDataDocument extends IBaseDocument, IBaseUserDataDocument {
+export interface IVerbsTrainedData extends IBaseDocument {
+  lastDateTrained: string;
+  averageMark: number | null;
+  marks: { [key: string]: number | null };
+}
+
+export interface IVerbsDataDocument
+  extends IBaseDocument,
+    IBaseUserDataDocument,
+    IVerbsTrainedData {
   indefinite: IIndefiniteVerbData;
   verbs: IVerbData[];
   selectedVerbsGroupsIds: string[];
   pronounsGroupId: string;
+  createdAt: string; // calculated on the backend
 }

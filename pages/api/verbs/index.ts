@@ -14,7 +14,7 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResp
   try {
     const result = await db
       .collection(`${BaseCollectionNames.VERBS}${params.language}`)
-      .insertOne(data);
+      .insertOne({ ...data, createdAt: new Date() });
     payload.result = result.insertedId.toString();
   } catch (error) {
     client.close();
