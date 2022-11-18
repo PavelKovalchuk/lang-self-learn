@@ -37,7 +37,7 @@ const getCalculatedMark = (correctAnswers: number, numberVariants: number): numb
   if (percentage < 80 && percentage > 60) {
     return MARKS.GOOD;
   }
-  return MARKS.FINE;
+  return MARKS.GREAT;
 };
 
 const getFinishedAnswers = (

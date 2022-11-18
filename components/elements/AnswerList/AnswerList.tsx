@@ -36,7 +36,7 @@ const AnswerList: FC<IPropsAnswerList> = ({
               {isFinishedTest ? (
                 <span>
                   {item.isCorrect ? (
-                    <CheckCircleFill color={MARKS_TO_COLORS_MAP[MARKS.FINE]} size={24} />
+                    <CheckCircleFill color={MARKS_TO_COLORS_MAP[MARKS.GREAT]} size={24} />
                   ) : (
                     <XCircleFill color={MARKS_TO_COLORS_MAP[MARKS.BAD]} size={24} />
                   )}
