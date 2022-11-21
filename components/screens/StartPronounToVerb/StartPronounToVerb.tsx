@@ -7,10 +7,11 @@ import Col from 'react-bootstrap/Col';
 import {
   IBaseApiResponse,
   IFinishRoundVerbResults,
+  IUserTrainingData,
   IVerbsDataDocument,
   IVerbsTrainedData,
 } from 'types';
-import { convertUrlArrayToArray, getLocationQueryStringParam } from 'utils';
+import { convertUrlArrayToArray, getBackendFormatDate, getLocationQueryStringParam } from 'utils';
 import { APP_ROUTS, HTTP_REQUEST_URL, TRAININGS_TYPE, URL_PARAMS } from 'variables';
 
 import { SwitchesList } from 'components/forms';
@@ -49,6 +50,16 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     const { result }: IBaseApiResponse = await Helpers.makeSaveTrainingsRequest({
       language,
       verbsToUpdate,
+    });
+
+    if (result !== 'ok') {
+      setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
+    }
+  }, []);
+
+  const updateUserTrainingsHandler = useCallback(async (data: IUserTrainingData) => {
+    const { result }: IBaseApiResponse = await Helpers.makeSaveUserTrainingsRequest({
+      data,
     });
 
     if (result !== 'ok') {
@@ -130,6 +141,8 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     setFinishResults(param);
     setIsLoading(true);
 
+    // TODO: calculate averageMark && averagePoints
+
     // 1.Save statistics to verb
     const verbsToUpdate: IVerbsTrainedData[] = param.map((item) => ({
       _id: item.id,
@@ -139,9 +152,25 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     }));
     await updateVerbsHandler(verbsToUpdate);
 
-    setIsLoading(false);
-
     // 2.Save statistics to user
+    const userTraining: IUserTrainingData = {
+      language,
+      userId,
+      lastUpdated: '',
+      averagePoints: null,
+      trainings: [
+        {
+          date: '',
+          points: param.reduce((accumulator, object) => {
+            return accumulator + object.points;
+          }, 0),
+          type: TRAININGS_TYPE.PRONOUN_TO_VERB,
+        },
+      ],
+    };
+    await updateUserTrainingsHandler(userTraining);
+
+    setIsLoading(false);
 
     // 3. Finish actions
     onReturnHandlerCallback();

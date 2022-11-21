@@ -2,6 +2,7 @@ import {
   IBaseApiResponse,
   IFinishRoundVerbResults,
   IGroupsDataDocument,
+  IUserTrainingData,
   IVerbsTrainedData,
 } from 'types';
 import {
@@ -97,6 +98,19 @@ const makeSaveTrainingsRequest = async ({
   return result;
 };
 
+const makeSaveUserTrainingsRequest = async ({
+  data,
+}: {
+  data: IUserTrainingData;
+}): Promise<IBaseApiResponse> => {
+  const result = await putRequest(HTTP_REQUEST_URL.USER_TRAININGS, {
+    params: {},
+    data,
+  });
+
+  return result;
+};
+
 const getCalculatedData = (results: IFinishRoundVerbResults[]): ICalculatedData => {
   const data: ICalculatedData = {
     marks: [],
@@ -126,6 +140,7 @@ const Helpers = {
   setUrlParams,
   getCalculatedData,
   makeSaveTrainingsRequest,
+  makeSaveUserTrainingsRequest,
 };
 
 export default Helpers;

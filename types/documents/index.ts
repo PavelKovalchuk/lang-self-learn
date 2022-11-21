@@ -2,6 +2,7 @@ import { IGroupData, IPronounData, IVerbData } from 'types/elements';
 
 import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
 import { IWordTranslationData } from 'components/formsElements/WordTranslation';
+import { IUserTrainingData } from 'types/training';
 
 export interface IBaseDocument {
   _id: string;
@@ -36,3 +37,5 @@ export interface IVerbsDataDocument
   pronounsGroupId: string;
   createdAt: string; // calculated on the backend
 }
+
+export interface IUserTrainedDocument extends IUserTrainingData, IBaseDocument {}

@@ -4,6 +4,7 @@ export const BaseCollectionNames = {
   VERBS_GROUPS: 'verbs-groups-',
   PRONOUNS: 'pronouns-',
   VERBS: 'verbs-',
+  USER_TRAININGS: 'user-trainings-',
 };
 
 export async function connectToDatabase(): Promise<MongoClient> {
