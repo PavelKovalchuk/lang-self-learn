@@ -15,7 +15,7 @@ import {
   setUrl,
 } from 'utils';
 import { HTTP_REQUEST_URL, TRAININGS_TYPE, URL_PARAMS } from 'variables';
-import { ICalculatedData } from './model';
+import { ICalculatedData, IGetUserTrainingToUpdateParam } from './model';
 
 const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string[] => {
   const filteredItems = prevData.filter((item) => item !== id);
@@ -141,22 +141,24 @@ const getVerbsToUpdate = (param: IFinishRoundVerbResults[]): IVerbsTrainedData[]
   }));
 };
 
-const getUserTrainingToUpdate = (
-  param: IFinishRoundVerbResults[],
-  language: string,
-  userId: number
-): IUserTrainingData => {
+const getUserTrainingToUpdate = ({
+  language,
+  userId,
+  param,
+}: IGetUserTrainingToUpdateParam): IUserTrainingData => {
+  const points = param.reduce((accumulator, object) => {
+    return accumulator + object.points;
+  }, 0);
+
   return {
     language,
     userId,
-    lastUpdated: '', // calculated on the backend
-    averagePoints: null,
+    lastUpdated: new Date(), // calculated on the backend
+    sumPoints: 0,
     trainings: [
       {
         date: '', // calculated on the backend
-        points: param.reduce((accumulator, object) => {
-          return accumulator + object.points;
-        }, 0),
+        points,
         type: TRAININGS_TYPE.PRONOUN_TO_VERB,
       },
     ],

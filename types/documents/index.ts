@@ -38,4 +38,4 @@ export interface IVerbsDataDocument
   createdAt: string; // calculated on the backend
 }
 
-export interface IUserTrainedDocument extends IUserTrainingData, IBaseDocument {}
+export interface IUserTrainingDocument extends IUserTrainingData, IBaseDocument {}

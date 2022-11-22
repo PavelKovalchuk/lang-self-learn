@@ -19,6 +19,13 @@ export const getFindByUser = (userId: string | string[] | undefined): { userId: 
   return { userId: parseInt(String(userId), 10) };
 };
 
+export const getFindByUserAndLanguage = (
+  userId: string | string[] | undefined,
+  language: string | string[] | undefined
+): { userId: number; language: string } => {
+  return { userId: parseInt(String(userId), 10), language: String(language) };
+};
+
 export const convertStringToArray = (str: string | string[] | undefined): string[] => {
   return String(str).split(',');
 };

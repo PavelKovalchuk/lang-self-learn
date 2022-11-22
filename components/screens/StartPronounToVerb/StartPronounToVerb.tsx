@@ -21,7 +21,12 @@ import { DefaultToastMessage } from './constants';
 import useMemoData from './useMemoData';
 import useRequests from './useRequests';
 
-const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, verbsGroups }) => {
+const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
+  userId,
+  language,
+  verbsGroups,
+  userTraining,
+}) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
   const [selectedVerbsGroupsIds, setSelectedVerbsGroupsIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -101,12 +106,19 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     setFinishResults(param);
     setIsLoading(true);
 
-    // TODO: calculate averageMark && averagePoints
+    console.log('userTraining', userTraining);
+    // TODO: calculate averageMark
 
     // 1.Save statistics to verb
     await updateVerbsHandler(Helpers.getVerbsToUpdate(param));
     // 2.Save statistics to user
-    await updateUserTrainingsHandler(Helpers.getUserTrainingToUpdate(param, language, userId));
+    await updateUserTrainingsHandler(
+      Helpers.getUserTrainingToUpdate({
+        param,
+        language,
+        userId,
+      })
+    );
 
     // 3. Finish actions
     setIsLoading(false);
