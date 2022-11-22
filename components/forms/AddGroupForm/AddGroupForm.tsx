@@ -3,8 +3,9 @@ import Form from 'react-bootstrap/Form';
 
 import { sortArrayById } from 'utils';
 import { IBaseApiResponse, IGroupData } from 'types';
+import { useToastState } from 'hooks';
 import { FormActions, FormSubmit, FormTitle, WordTranslationLabel } from 'components/formsElements';
-import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { ToastModal } from 'components/ui';
 import { SimpleButton } from 'components/elements';
 
 // import styles from './addPronounForm.module.scss';
@@ -17,9 +18,10 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
   const [isToRestore, setIsToRestore] = useState<boolean>(false);
   const [isTouched, setIsTouched] = useState<boolean>(false);
   const [groups, setGroups] = useState<IGroupData[]>([]);
-  const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
-    DefaultToastMessage
-  );
+
+  const { toastModalResult, setToastModalResult, onCloseToastModal } = useToastState({
+    defaultMessage: DefaultToastMessage,
+  });
 
   const isSavedGroupsExists = useMemo(() => {
     return Boolean(groupsData?.[0]?.groups?.length);
@@ -108,10 +110,6 @@ const AddGroupForm: FC<IPropsAddGroupForm> = ({ userId, language, groupAPI, grou
     },
     [groups]
   );
-
-  const onCloseToastModal = useCallback(() => {
-    setToastModalResult({ ...DefaultToastMessage });
-  }, []);
 
   return (
     <>

@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 
 import { sortArrayById } from 'utils';
 import { IPronounData, IBaseApiResponse } from 'types';
+import { useToastState } from 'hooks';
 import {
   FormActions,
   FormSubmit,
@@ -12,7 +13,7 @@ import {
   Pronoun,
   WordTranslation,
 } from 'components/formsElements';
-import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { ToastModal } from 'components/ui';
 import { SimpleButton } from 'components/elements';
 import { IWordTranslationData } from 'components/formsElements/WordTranslation';
 
@@ -25,9 +26,10 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
   const [pronounGroup, setPronounGroup] = useState<IWordTranslationData>(DefaultPronounGroup);
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
   const [pronouns, setPronouns] = useState<IPronounData[]>([]);
-  const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
-    DefaultToastMessage
-  );
+
+  const { toastModalResult, setToastModalResult, onCloseToastModal } = useToastState({
+    defaultMessage: DefaultToastMessage,
+  });
 
   useEffect(() => {
     // reset the flag after the reset all btn clicked
@@ -50,10 +52,6 @@ const AddPronounForm: FC<IPropsAddPronounForm> = ({ userId, language }) => {
     },
     []
   );
-
-  const onCloseToastModal = useCallback(() => {
-    setToastModalResult({ ...DefaultToastMessage });
-  }, []);
 
   const savePronounHandler = useCallback(
     (id: string, pronoun: string, translation: string) => () => {

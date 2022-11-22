@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 
 import { IBaseApiResponse, IVerbData } from 'types';
 import { APP_ROUTS } from 'variables';
+import { useToastState } from 'hooks';
 
 import {
   FormActions,
@@ -15,7 +16,7 @@ import {
   PronounVerb,
 } from 'components/formsElements';
 import { ButtonsList, SimpleButton, SimpleDropdown } from 'components/elements';
-import { IBaseToastModalData, ToastModal } from 'components/ui';
+import { ToastModal } from 'components/ui';
 import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
 
 // import styles from './addVerbForm.module.scss';
@@ -29,9 +30,10 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
   const [pronounsGroupId, setPronounsGroupId] = useState<string>('');
   const [isToClearAll, setIsToClearAll] = useState<boolean>(false);
   const [indefinite, setIndefinite] = useState<IIndefiniteVerbData>(DefaultIndefiniteData);
-  const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
-    DefaultToastMessage
-  );
+
+  const { toastModalResult, setToastModalResult, onCloseToastModal } = useToastState({
+    defaultMessage: DefaultToastMessage,
+  });
 
   const isActiveSubmit = useMemo(() => {
     return Helpers.checkActiveSubmit({
@@ -130,10 +132,6 @@ const AddVerbForm: FC<IPropsAddVerbForm> = ({ pronounsGroups, verbsGroups, userI
     },
     [verbs, indefinite, selectedVerbsGroupsIds, pronounsGroupId]
   );
-
-  const onCloseToastModal = useCallback(() => {
-    setToastModalResult({ ...DefaultToastMessage });
-  }, []);
 
   return (
     <>

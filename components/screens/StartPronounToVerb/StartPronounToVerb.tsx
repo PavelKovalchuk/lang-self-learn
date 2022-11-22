@@ -1,28 +1,25 @@
-import { FC, FormEvent, useCallback, useState, useMemo, useEffect } from 'react';
+import { FC, FormEvent, useCallback, useState, useEffect } from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import {
-  IBaseApiResponse,
-  IFinishRoundVerbResults,
-  IUserTrainingData,
-  IVerbsDataDocument,
-  IVerbsTrainedData,
-} from 'types';
-import { convertUrlArrayToArray, getBackendFormatDate, getLocationQueryStringParam } from 'utils';
-import { APP_ROUTS, HTTP_REQUEST_URL, TRAININGS_TYPE, URL_PARAMS } from 'variables';
+import { IFinishRoundVerbResults, IVerbsDataDocument } from 'types';
+import { convertUrlArrayToArray, getLocationQueryStringParam } from 'utils';
+import { APP_ROUTS, HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
+import { useToastState } from 'hooks';
 
 import { SwitchesList } from 'components/forms';
 import { PronounToVerb } from 'components/exercises';
-import { IBaseToastModalData, Loader, ToastModal } from 'components/ui';
+import { Loader, ToastModal } from 'components/ui';
 import { FinishExerciseModal } from 'components/modals';
 
 // import styles from './startPronounToVerb.module.scss';
 import { IPropsStartPronounToVerb } from './model';
 import Helpers from './helpers';
 import { DefaultToastMessage } from './constants';
+import useMemoData from './useMemoData';
+import useRequests from './useRequests';
 
 const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, verbsGroups }) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
@@ -30,44 +27,19 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isShowModalResult, setIsShowModalResult] = useState<boolean>(false);
   const [finishResults, setFinishResults] = useState<IFinishRoundVerbResults[]>([]);
-  const [toastModalResult, setToastModalResult] = useState<IBaseToastModalData>(
-    DefaultToastMessage
-  );
 
-  const loadVerbsHandler = useCallback(async (ids: string[]) => {
-    const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
-      language,
-      userId: String(userId),
-      selectedVerbsGroupsIds: ids,
-    });
+  const { toastModalResult, setToastModalResult, onCloseToastModal } = useToastState({
+    defaultMessage: DefaultToastMessage,
+  });
 
-    if (result === 'ok') {
-      setVerbs(payload);
-    }
-  }, []);
+  const { loadVerbsHandler, updateVerbsHandler, updateUserTrainingsHandler } = useRequests({
+    language,
+    userId,
+    setVerbs,
+    setToastModalResult,
+  });
 
-  const updateVerbsHandler = useCallback(async (verbsToUpdate: IVerbsTrainedData[]) => {
-    const { result }: IBaseApiResponse = await Helpers.makeSaveTrainingsRequest({
-      language,
-      verbsToUpdate,
-    });
-
-    if (result !== 'ok') {
-      setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
-    }
-  }, []);
-
-  const updateUserTrainingsHandler = useCallback(async (data: IUserTrainingData) => {
-    const { result }: IBaseApiResponse = await Helpers.makeSaveUserTrainingsRequest({
-      data,
-    });
-
-    if (result !== 'ok') {
-      setToastModalResult({ ...DefaultToastMessage, type: 'danger', message: 'Error occurs.' });
-    }
-  }, []);
-
-  const fetcher = async () => {
+  const initFetcher = async () => {
     const queryUrlParam = getLocationQueryStringParam(URL_PARAMS.VERBS_GROUPS, 'string');
     const verbsGroupsParam = convertUrlArrayToArray(queryUrlParam);
 
@@ -83,24 +55,12 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   };
 
   const router = useRouter();
-  useSWR(HTTP_REQUEST_URL.VERBS_BY_GROUPS, fetcher, { revalidateOnFocus: false });
-
-  const isActiveSubmit = useMemo(() => {
-    return Boolean(selectedVerbsGroupsIds.length);
-  }, [selectedVerbsGroupsIds]);
-
-  const isGroupsExists = useMemo(() => {
-    return Boolean(verbsGroups?.[0]?.groups?.length);
-  }, [verbsGroups]);
-
-  const calculatedData = useMemo(() => {
-    return finishResults.length ? Helpers.getCalculatedData(finishResults) : null;
-  }, [finishResults]);
-
-  const selectedVerbsGroupsTitles = useMemo(
-    () => Helpers.getSelectedVerbsGroupsTitles(isGroupsExists, verbsGroups, selectedVerbsGroupsIds),
-    [isGroupsExists, selectedVerbsGroupsIds]
-  );
+  useSWR(HTTP_REQUEST_URL.VERBS_BY_GROUPS, initFetcher, { revalidateOnFocus: false });
+  const { isActiveSubmit, calculatedData, selectedVerbsGroupsTitles } = useMemoData({
+    selectedVerbsGroupsIds,
+    verbsGroups,
+    finishResults,
+  });
 
   useEffect(() => {
     Helpers.setUrlParams(selectedVerbsGroupsIds);
@@ -144,42 +104,15 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
     // TODO: calculate averageMark && averagePoints
 
     // 1.Save statistics to verb
-    const verbsToUpdate: IVerbsTrainedData[] = param.map((item) => ({
-      _id: item.id,
-      lastDateTrained: '',
-      averageMark: null,
-      marks: { [TRAININGS_TYPE.PRONOUN_TO_VERB]: item.mark },
-    }));
-    await updateVerbsHandler(verbsToUpdate);
-
+    await updateVerbsHandler(Helpers.getVerbsToUpdate(param));
     // 2.Save statistics to user
-    const userTraining: IUserTrainingData = {
-      language,
-      userId,
-      lastUpdated: '',
-      averagePoints: null,
-      trainings: [
-        {
-          date: '',
-          points: param.reduce((accumulator, object) => {
-            return accumulator + object.points;
-          }, 0),
-          type: TRAININGS_TYPE.PRONOUN_TO_VERB,
-        },
-      ],
-    };
-    await updateUserTrainingsHandler(userTraining);
-
-    setIsLoading(false);
+    await updateUserTrainingsHandler(Helpers.getUserTrainingToUpdate(param, language, userId));
 
     // 3. Finish actions
+    setIsLoading(false);
     onReturnHandlerCallback();
     router.push(APP_ROUTS.CONJUGATE);
     setIsShowModalResult(true);
-  }, []);
-
-  const onCloseToastModal = useCallback(() => {
-    setToastModalResult({ ...DefaultToastMessage });
   }, []);
 
   return (
@@ -187,6 +120,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
       <Row data-test="StartPronounToVerb">
         <Col sm={12}>
           {isLoading ? <Loader /> : null}
+
           {!isLoading && verbsGroups?.[0]?.groups?.length && !verbs.length ? (
             <SwitchesList
               items={verbsGroups[0].groups.map((item) => {
@@ -202,8 +136,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
               formTitle="Select verbs groups to train"
             />
           ) : null}
-          TODO: add finish logic // 1. save data in verbs (lastTrained, nextTrained, mark) // 2.
-          screen with overall verbs results
+
           {!isLoading && verbs.length ? (
             <PronounToVerb
               verbs={verbs}

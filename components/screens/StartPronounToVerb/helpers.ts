@@ -14,7 +14,7 @@ import {
   putRequest,
   setUrl,
 } from 'utils';
-import { HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
+import { HTTP_REQUEST_URL, TRAININGS_TYPE, URL_PARAMS } from 'variables';
 import { ICalculatedData } from './model';
 
 const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string[] => {
@@ -132,6 +132,37 @@ const getCalculatedData = (results: IFinishRoundVerbResults[]): ICalculatedData 
   return data;
 };
 
+const getVerbsToUpdate = (param: IFinishRoundVerbResults[]): IVerbsTrainedData[] => {
+  return param.map((item) => ({
+    _id: item.id,
+    lastDateTrained: '', // calculated on the backend
+    averageMark: null,
+    marks: { [TRAININGS_TYPE.PRONOUN_TO_VERB]: item.mark },
+  }));
+};
+
+const getUserTrainingToUpdate = (
+  param: IFinishRoundVerbResults[],
+  language: string,
+  userId: number
+): IUserTrainingData => {
+  return {
+    language,
+    userId,
+    lastUpdated: '', // calculated on the backend
+    averagePoints: null,
+    trainings: [
+      {
+        date: '', // calculated on the backend
+        points: param.reduce((accumulator, object) => {
+          return accumulator + object.points;
+        }, 0),
+        type: TRAININGS_TYPE.PRONOUN_TO_VERB,
+      },
+    ],
+  };
+};
+
 const Helpers = {
   getSelectedVerbsGroupsIdsToSave,
   makeSubmitRequest,
@@ -141,6 +172,8 @@ const Helpers = {
   getCalculatedData,
   makeSaveTrainingsRequest,
   makeSaveUserTrainingsRequest,
+  getVerbsToUpdate,
+  getUserTrainingToUpdate,
 };
 
 export default Helpers;

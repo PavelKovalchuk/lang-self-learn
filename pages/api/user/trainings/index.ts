@@ -12,22 +12,20 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const payload: { result: WithId<Document> | null } = { result: null };
 
   try {
-    const result = await db
-      .collection(`${BaseCollectionNames.USER_TRAININGS}${data.userId}`)
-      .findOneAndUpdate(
-        { userId: data.userId, language: data.language },
-        {
-          $set: {
-            ...data,
-            lastUpdated: new Date(),
-            trainings: data.trainings.map((item) => ({
-              ...item,
-              date: new Date(),
-            })),
-          },
+    const result = await db.collection(`${BaseCollectionNames.USER_TRAININGS}`).findOneAndUpdate(
+      { userId: data.userId, language: data.language },
+      {
+        $set: {
+          ...data,
+          lastUpdated: new Date(),
+          trainings: data.trainings.map((item) => ({
+            ...item,
+            date: new Date(),
+          })),
         },
-        { upsert: true, returnDocument: 'after' }
-      );
+      },
+      { upsert: true, returnDocument: 'after' }
+    );
     payload.result = result.value;
   } catch (error) {
     client.close();
