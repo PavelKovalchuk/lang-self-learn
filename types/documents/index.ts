@@ -1,8 +1,10 @@
+import { ObjectId } from 'mongodb';
+
 import { IGroupData, IPronounData, IVerbData } from 'types/elements';
+import { IUserTrainingData } from 'types/training';
 
 import { IIndefiniteVerbData } from 'components/formsElements/IndefiniteVerb';
 import { IWordTranslationData } from 'components/formsElements/WordTranslation';
-import { IUserTrainingData } from 'types/training';
 
 export interface IBaseDocument {
   _id: string;
@@ -22,15 +24,12 @@ export interface IGroupsDataDocument extends IBaseDocument, IBaseUserDataDocumen
 }
 
 export interface IVerbsTrainedData extends IBaseDocument {
-  lastDateTrained: string;
+  lastDateTrained: string | Date;
   averageMark: number | null;
-  marks: { [key: string]: number | null };
+  marks: { [key: string]: number };
 }
 
-export interface IVerbsDataDocument
-  extends IBaseDocument,
-    IBaseUserDataDocument,
-    IVerbsTrainedData {
+export interface IVerbsDataDocument extends IBaseUserDataDocument, IVerbsTrainedData {
   indefinite: IIndefiniteVerbData;
   verbs: IVerbData[];
   selectedVerbsGroupsIds: string[];
@@ -39,3 +38,14 @@ export interface IVerbsDataDocument
 }
 
 export interface IUserTrainingDocument extends IUserTrainingData, IBaseDocument {}
+
+// General helpers
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+// BackEnd
+export type ModifiedObjectId<Type> = Modify<
+  Type,
+  {
+    _id: ObjectId;
+  }
+>;

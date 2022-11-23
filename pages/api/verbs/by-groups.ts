@@ -1,8 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { IBaseApiResponse, IVerbsDataDocument } from 'types';
+import { IBaseApiResponse, IVerbsDataDocument, ModifiedObjectId } from 'types';
 import {
   BaseCollectionNames,
   connectToDatabase,
@@ -14,11 +12,11 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { language, userId, selectedVerbsGroupsIds } = req.query;
   const client = await connectToDatabase();
   const db = client.db();
-  let payload: WithId<IVerbsDataDocument>[] = [];
+  let payload: ModifiedObjectId<IVerbsDataDocument>[] = [];
 
   try {
     const result = await db
-      .collection<IVerbsDataDocument>(`${BaseCollectionNames.VERBS}${language}`)
+      .collection<ModifiedObjectId<IVerbsDataDocument>>(`${BaseCollectionNames.VERBS}${language}`)
       .find({
         ...getFindByUser(userId),
         selectedVerbsGroupsIds: { $in: convertStringToArray(selectedVerbsGroupsIds) },

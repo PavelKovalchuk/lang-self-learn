@@ -1,8 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { IBaseApiResponse, IPronounDataDocument } from 'types';
+import { IBaseApiResponse, IPronounDataDocument, ModifiedObjectId } from 'types';
 import { BaseCollectionNames, connectToDatabase, getFindByUser } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
@@ -13,7 +11,9 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResp
 
   try {
     const result = await db
-      .collection(`${BaseCollectionNames.PRONOUNS}${params.language}`)
+      .collection<ModifiedObjectId<IPronounDataDocument>>(
+        `${BaseCollectionNames.PRONOUNS}${params.language}`
+      )
       .insertOne(data);
     payload.result = result.insertedId.toString();
   } catch (error) {
@@ -31,11 +31,13 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const client = await connectToDatabase();
   const db = client.db();
 
-  let payload: WithId<IPronounDataDocument>[] = [];
+  let payload: ModifiedObjectId<IPronounDataDocument>[] = [];
 
   try {
     const result = await db
-      .collection<IPronounDataDocument>(`${BaseCollectionNames.PRONOUNS}${language}`)
+      .collection<ModifiedObjectId<IPronounDataDocument>>(
+        `${BaseCollectionNames.PRONOUNS}${language}`
+      )
       .find(getFindByUser(userId))
       .toArray();
 

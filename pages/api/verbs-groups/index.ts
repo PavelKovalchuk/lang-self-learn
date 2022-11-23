@@ -1,8 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId, Document } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { IBaseApiResponse, IGroupsDataDocument } from 'types';
+import { IBaseApiResponse, IGroupsDataDocument, ModifiedObjectId } from 'types';
 import { BaseCollectionNames, connectToDatabase, getFindByUser } from 'utils/db';
 
 const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
@@ -13,7 +11,9 @@ const handlePost = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResp
 
   try {
     const result = await db
-      .collection(`${BaseCollectionNames.VERBS_GROUPS}${params.language}`)
+      .collection<ModifiedObjectId<IGroupsDataDocument>>(
+        `${BaseCollectionNames.VERBS_GROUPS}${params.language}`
+      )
       .insertOne(data);
     payload.result = result.insertedId.toString();
   } catch (error) {
@@ -30,11 +30,13 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { params, data } = req.body;
   const client = await connectToDatabase();
   const db = client.db();
-  const payload: { result: WithId<Document> | null } = { result: null };
+  const payload: { result: ModifiedObjectId<IGroupsDataDocument> | null } = { result: null };
 
   try {
     const result = await db
-      .collection(`${BaseCollectionNames.VERBS_GROUPS}${params.language}`)
+      .collection<ModifiedObjectId<IGroupsDataDocument>>(
+        `${BaseCollectionNames.VERBS_GROUPS}${params.language}`
+      )
       .findOneAndUpdate(
         { userId: data.userId },
         { $set: data },
@@ -55,11 +57,13 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { language, userId } = req.query;
   const client = await connectToDatabase();
   const db = client.db();
-  let payload: WithId<IGroupsDataDocument>[] = [];
+  let payload: ModifiedObjectId<IGroupsDataDocument>[] = [];
 
   try {
     const result = await db
-      .collection<IGroupsDataDocument>(`${BaseCollectionNames.VERBS_GROUPS}${language}`)
+      .collection<ModifiedObjectId<IGroupsDataDocument>>(
+        `${BaseCollectionNames.VERBS_GROUPS}${language}`
+      )
       .find(getFindByUser(userId))
       .toArray();
 

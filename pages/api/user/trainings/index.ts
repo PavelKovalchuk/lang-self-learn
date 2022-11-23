@@ -1,23 +1,28 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { WithId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { IBaseApiResponse, IUserTrainingData, IUserTrainingDocument } from 'types';
+import {
+  IBaseApiResponse,
+  IUserTrainingData,
+  IUserTrainingDocument,
+  ModifiedObjectId,
+} from 'types';
 import { BaseCollectionNames, connectToDatabase, getFindByUserAndLanguage } from 'utils/db';
+import { TRAININGS_DAYS_TO_KEEP } from 'variables';
 
 const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
   const { data }: { data: IUserTrainingData } = req.body;
   const client = await connectToDatabase();
   const db = client.db();
-  const payload: { result: WithId<IUserTrainingDocument> | null } = { result: null };
+  const payload: { result: ModifiedObjectId<IUserTrainingDocument> | null } = { result: null };
+  const baseCollection = `${BaseCollectionNames.USER_TRAININGS}`;
 
   try {
     const oldData = await db
-      .collection<IUserTrainingDocument>(`${BaseCollectionNames.USER_TRAININGS}`)
+      .collection<ModifiedObjectId<IUserTrainingDocument>>(baseCollection)
       .findOne({ userId: data.userId, language: data.language });
 
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 7);
+    startDate.setDate(startDate.getDate() - TRAININGS_DAYS_TO_KEEP);
 
     // Save only last 7 days trainings
     const allTrainings = [
@@ -29,12 +34,12 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
     ];
 
     const trainingToSave = allTrainings.filter((item) => {
-      const time = item.date.getTime();
+      const time = item.date instanceof Date && item.date.getTime();
       return startDate.getTime() < time && time < new Date().getTime();
     });
 
     const result = await db
-      .collection<IUserTrainingDocument>(`${BaseCollectionNames.USER_TRAININGS}`)
+      .collection<ModifiedObjectId<IUserTrainingDocument>>(baseCollection)
       .findOneAndUpdate(
         { userId: data.userId, language: data.language },
         {
@@ -62,11 +67,11 @@ const handleGet = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
   const { language, userId } = req.query;
   const client = await connectToDatabase();
   const db = client.db();
-  let payload: WithId<IUserTrainingDocument>[] = [];
+  let payload: ModifiedObjectId<IUserTrainingDocument>[] = [];
 
   try {
     const result = await db
-      .collection<IUserTrainingDocument>(`${BaseCollectionNames.USER_TRAININGS}`)
+      .collection<ModifiedObjectId<IUserTrainingDocument>>(`${BaseCollectionNames.USER_TRAININGS}`)
       .find(getFindByUserAndLanguage(userId, language))
       .toArray();
 

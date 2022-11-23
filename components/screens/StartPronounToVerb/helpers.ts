@@ -157,7 +157,7 @@ const getUserTrainingToUpdate = ({
     sumPoints: 0,
     trainings: [
       {
-        date: '', // calculated on the backend
+        date: new Date(), // calculated on the backend
         points,
         type: TRAININGS_TYPE.PRONOUN_TO_VERB,
       },
