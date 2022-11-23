@@ -8,7 +8,7 @@ import { IBaseApiResponse, IPronounDataDocument, IGroupsDataDocument } from 'typ
 import { HTTP_REQUEST_URL } from 'variables';
 import { getRequest } from 'utils';
 
-import Layout from 'components/layout/Layout';
+import { LayoutMain } from 'components/layout/';
 import { AddVerbForm } from 'components/forms';
 
 interface IPropsAddVerbPage {
@@ -21,7 +21,7 @@ const Language = 'es';
 
 const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups, verbsGroups }) => {
   return (
-    <Layout>
+    <LayoutMain>
       <Head>
         <title>Add Verb</title>
         <meta name="description" content="AddVerbPage" />
@@ -41,7 +41,7 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups, verbsGroups 
           </Col>
         </Row>
       </Container>
-    </Layout>
+    </LayoutMain>
   );
 };
 

@@ -24,7 +24,6 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - TRAININGS_DAYS_TO_KEEP);
 
-    // Save only last 7 days trainings
     const allTrainings = [
       ...(oldData?.trainings.length ? oldData.trainings : []),
       ...data.trainings.map((item) => ({
@@ -33,10 +32,15 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
       })),
     ];
 
-    const trainingToSave = allTrainings.filter((item) => {
+    // Save only last 7 days trainings
+    const trainings = allTrainings.filter((item) => {
       const time = item.date instanceof Date && item.date.getTime();
       return startDate.getTime() < time && time < new Date().getTime();
     });
+
+    const sumPoints = trainings.reduce((accumulator, object) => {
+      return accumulator + object.points;
+    }, 0);
 
     const result = await db
       .collection<ModifiedObjectId<IUserTrainingDocument>>(baseCollection)
@@ -46,8 +50,8 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
           $set: {
             ...data,
             lastUpdated: new Date(),
-            sumPoints: Number(oldData?.sumPoints) + Number(data?.trainings?.[0].points),
-            trainings: trainingToSave,
+            sumPoints,
+            trainings,
           },
         },
         { upsert: true, returnDocument: 'after' }

@@ -8,7 +8,7 @@ import { IBaseApiResponse, IGroupsDataDocument } from 'types';
 import { HTTP_REQUEST_URL } from 'variables';
 import { getRequest } from 'utils';
 
-import Layout from 'components/layout/Layout';
+import { LayoutMain } from 'components/layout';
 import { AddGroupForm } from 'components/forms';
 
 interface IPropsAddVerbsGroupsPage {
@@ -20,7 +20,7 @@ const Language = 'es';
 
 const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ verbsGroups }) => {
   return (
-    <Layout>
+    <LayoutMain>
       <Head>
         <title>Add Verbs Groups</title>
         <meta name="description" content="Add Verbs Groups" />
@@ -40,7 +40,7 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ verbsGroups })
           </Col>
         </Row>
       </Container>
-    </Layout>
+    </LayoutMain>
   );
 };
 

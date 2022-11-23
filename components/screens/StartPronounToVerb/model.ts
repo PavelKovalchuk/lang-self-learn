@@ -5,7 +5,6 @@ import {
   IFinishRoundVerbResults,
   IGroupsDataDocument,
   IUserTrainingData,
-  IUserTrainingDocument,
   IVerbsDataDocument,
   IVerbsTrainedData,
 } from 'types';
@@ -24,7 +23,6 @@ export interface ICalculatedData {
 
 export interface IPropsStartPronounToVerb extends IBaseAppUserData {
   verbsGroups: IGroupsDataDocument[];
-  userTraining?: IUserTrainingDocument;
 }
 
 export interface IUseMemoDataParam {

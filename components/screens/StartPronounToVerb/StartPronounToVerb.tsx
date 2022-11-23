@@ -25,7 +25,6 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
   userId,
   language,
   verbsGroups,
-  userTraining,
 }) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
   const [selectedVerbsGroupsIds, setSelectedVerbsGroupsIds] = useState<string[]>([]);
@@ -105,9 +104,6 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
   const onFinishHandlerCallback = useCallback(async (param: IFinishRoundVerbResults[]) => {
     setFinishResults(param);
     setIsLoading(true);
-
-    console.log('userTraining', userTraining);
-    // TODO: calculate averageMark
 
     // 1.Save statistics to verb
     await updateVerbsHandler(Helpers.getVerbsToUpdate(param));

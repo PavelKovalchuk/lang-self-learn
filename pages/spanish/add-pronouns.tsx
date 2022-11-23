@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 
 import { IPronounDataDocument } from 'types';
 
-import Layout from 'components/layout/Layout';
+import { LayoutMain } from 'components/layout';
 import { AddPronounForm } from 'components/forms';
 
 interface IPropsAddPronounsPage {
@@ -18,7 +18,7 @@ const Language = 'es';
 
 const AddPronounsPage: NextPage<IPropsAddPronounsPage> = () => {
   return (
-    <Layout>
+    <LayoutMain>
       <Head>
         <title>Add Pronoun</title>
         <meta name="description" content="Add Pronouns Page" />
@@ -33,7 +33,7 @@ const AddPronounsPage: NextPage<IPropsAddPronounsPage> = () => {
           </Col>
         </Row>
       </Container>
-    </Layout>
+    </LayoutMain>
   );
 };
 

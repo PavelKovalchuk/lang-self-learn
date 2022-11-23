@@ -1,5 +1,6 @@
 import MainNavigation from 'components/layout/MainNavigation';
 import Logo from 'components/layout/Logo';
-import Layout from 'components/layout/Layout';
+import LayoutMain from 'components/layout/LayoutMain.tsx';
+import TrainingStatistics from './TrainingStatistics';
 
-export { Layout, Logo, MainNavigation };
+export { LayoutMain, Logo, MainNavigation, TrainingStatistics };
