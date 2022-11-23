@@ -153,11 +153,11 @@ const getUserTrainingToUpdate = ({
   return {
     language,
     userId,
-    lastUpdated: new Date(), // calculated on the backend
+    lastUpdated: '', // calculated on the backend
     sumPoints: 0,
     trainings: [
       {
-        date: new Date(), // calculated on the backend
+        date: '', // calculated on the backend
         points,
         type: TRAININGS_TYPE.PRONOUN_TO_VERB,
       },
