@@ -21,14 +21,11 @@ import { DefaultToastMessage } from './constants';
 import useMemoData from './useMemoData';
 import useRequests from './useRequests';
 
-const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
-  userId,
-  language,
-  verbsGroups,
-}) => {
+const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, verbsGroups }) => {
   const [verbs, setVerbs] = useState<IVerbsDataDocument[]>([]);
   const [selectedVerbsGroupsIds, setSelectedVerbsGroupsIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoadingVerbs, setIsLoadingVerbs] = useState<boolean>(false);
   const [isShowModalResult, setIsShowModalResult] = useState<boolean>(false);
   const [finishResults, setFinishResults] = useState<IFinishRoundVerbResults[]>([]);
 
@@ -87,7 +84,9 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       event.stopPropagation();
+      setIsLoadingVerbs(true);
       await loadVerbsHandler(selectedVerbsGroupsIds);
+      setIsLoadingVerbs(false);
     },
     [selectedVerbsGroupsIds]
   );
@@ -142,6 +141,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({
               handleSubmit={onLoadVerbs}
               isActiveSubmit={isActiveSubmit}
               formTitle="Select verbs groups to train"
+              isLoading={isLoadingVerbs}
             />
           ) : null}
 

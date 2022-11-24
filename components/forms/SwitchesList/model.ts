@@ -13,4 +13,5 @@ export interface IPropsSwitchesList {
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   isActiveSubmit: boolean;
   formTitle: string;
+  isLoading: boolean;
 }

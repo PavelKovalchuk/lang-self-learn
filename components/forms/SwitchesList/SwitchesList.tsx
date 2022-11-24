@@ -14,6 +14,7 @@ const SwitchesList: FC<IPropsSwitchesList> = ({
   handleSubmit,
   isActiveSubmit,
   formTitle,
+  isLoading,
 }) => {
   return (
     <Row data-test="SwitchesList">
@@ -37,7 +38,12 @@ const SwitchesList: FC<IPropsSwitchesList> = ({
             })}
           </Row>
 
-          <FormSubmit title="Submit" isActiveSubmit={isActiveSubmit} />
+          <FormSubmit
+            title="Submit"
+            isActiveSubmit={isActiveSubmit && !isLoading}
+            withLoading
+            isLoading={isLoading}
+          />
         </Form>
       </Col>
     </Row>
