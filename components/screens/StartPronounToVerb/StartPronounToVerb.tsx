@@ -5,8 +5,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { IFinishRoundVerbResults, IVerbsDataDocument } from 'types';
-import { convertUrlArrayToArray, getLocationQueryStringParam } from 'utils';
-import { APP_ROUTS, HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
+import {
+  convertUrlArrayToArray,
+  convertUrlSpecificArrayToArray,
+  getLocationQueryStringParam,
+} from 'utils';
+import { APP_ROUTS, CUSTOM_VERBS_CATEGORIES_MAP, HTTP_REQUEST_URL, URL_PARAMS } from 'variables';
 import { useToastState } from 'hooks';
 
 import { SwitchesList } from 'components/forms';
@@ -17,7 +21,7 @@ import { FinishExerciseModal } from 'components/modals';
 // import styles from './startPronounToVerb.module.scss';
 import { IPropsStartPronounToVerb } from './model';
 import Helpers from './helpers';
-import { DefaultToastMessage } from './constants';
+import { CustomVerbsCategories, DefaultToastMessage } from './constants';
 import useMemoData from './useMemoData';
 import useRequests from './useRequests';
 
@@ -43,15 +47,19 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
   const initFetcher = async () => {
     const queryUrlParam = getLocationQueryStringParam(URL_PARAMS.VERBS_GROUPS, 'string');
     const verbsGroupsParam = convertUrlArrayToArray(queryUrlParam);
+    const customVerbsGroupsParam = convertUrlSpecificArrayToArray(
+      queryUrlParam,
+      CUSTOM_VERBS_CATEGORIES_MAP
+    );
 
-    if (!verbsGroupsParam?.length) {
+    if (!verbsGroupsParam?.length && !customVerbsGroupsParam?.length) {
       setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
-    setSelectedVerbsGroupsIds(verbsGroupsParam);
-    await loadVerbsHandler(verbsGroupsParam);
+    setSelectedVerbsGroupsIds([...verbsGroupsParam, ...customVerbsGroupsParam]);
+    await loadVerbsHandler(verbsGroupsParam, customVerbsGroupsParam);
     setIsLoading(false);
   };
 
@@ -85,7 +93,8 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
       event.preventDefault();
       event.stopPropagation();
       setIsLoadingVerbs(true);
-      await loadVerbsHandler(selectedVerbsGroupsIds);
+      const { items, customItems } = Helpers.filterVerbsGroupsIds(selectedVerbsGroupsIds);
+      await loadVerbsHandler(items, customItems);
       setIsLoadingVerbs(false);
     },
     [selectedVerbsGroupsIds]
@@ -137,6 +146,7 @@ const StartPronounToVerb: FC<IPropsStartPronounToVerb> = ({ userId, language, ve
                   value: item.word,
                 };
               })}
+              customItems={CustomVerbsCategories}
               onChangeItemHandler={saveSelectedVerbsGroupsHandler}
               handleSubmit={onLoadVerbs}
               isActiveSubmit={isActiveSubmit}

@@ -4,3 +4,4 @@ export * from './marks';
 export * from './maps';
 export * from './routs';
 export * from './trainings';
+export * from './verbs';

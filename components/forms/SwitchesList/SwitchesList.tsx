@@ -10,6 +10,7 @@ import { IPropsSwitchesList } from './model';
 
 const SwitchesList: FC<IPropsSwitchesList> = ({
   items,
+  customItems,
   onChangeItemHandler,
   handleSubmit,
   isActiveSubmit,
@@ -37,6 +38,24 @@ const SwitchesList: FC<IPropsSwitchesList> = ({
               );
             })}
           </Row>
+
+          {customItems?.length ? (
+            <Row className="mb-3 mt-3">
+              {customItems?.map((item) => {
+                return (
+                  <Col key={item.id} sm={3}>
+                    <Form.Check
+                      type="switch"
+                      id={item.id}
+                      label={item.label}
+                      value={item.value}
+                      onChange={onChangeItemHandler(item.id)}
+                    />
+                  </Col>
+                );
+              })}
+            </Row>
+          ) : null}
 
           <FormSubmit
             title="Submit"

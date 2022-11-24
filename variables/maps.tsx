@@ -2,6 +2,7 @@ import { CheckCircleFill, XCircleFill } from 'react-bootstrap-icons';
 
 import { MARKS } from './marks';
 import { TRAININGS_TYPE } from './trainings';
+import { VERBS_GROUPS_TYPE } from './verbs';
 
 export const MARKS_TO_COLORS_MAP = {
   [MARKS.GREAT]: 'var(--color-success-500)',
@@ -21,4 +22,8 @@ export const MARKS_TO_ICONS_MAP = {
 
 export const NAMES_TO_TRAINING_TYPES_MAP = {
   [TRAININGS_TYPE.PRONOUN_TO_VERB]: 'Pronoun To Verb',
+};
+
+export const CUSTOM_VERBS_CATEGORIES_MAP = {
+  [VERBS_GROUPS_TYPE.SMALLER_MARK_PRONOUN_TO_VERB]: 'withSmallerPronounToVerbMark',
 };

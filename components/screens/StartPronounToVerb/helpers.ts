@@ -14,8 +14,14 @@ import {
   putRequest,
   setUrl,
 } from 'utils';
-import { HTTP_REQUEST_URL, TRAININGS_TYPE, URL_PARAMS } from 'variables';
-import { ICalculatedData, IGetUserTrainingToUpdateParam } from './model';
+import {
+  HTTP_REQUEST_URL,
+  TRAININGS_TYPE,
+  URL_PARAMS,
+  CUSTOM_VERBS_CATEGORIES_MAP,
+} from 'variables';
+
+import { ICalculatedData, IFilteredVerbsGroupsIds, IGetUserTrainingToUpdateParam } from './model';
 
 const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string[] => {
   const filteredItems = prevData.filter((item) => item !== id);
@@ -23,6 +29,23 @@ const getSelectedVerbsGroupsIdsToSave = (id: string, prevData: string[]): string
     return [...filteredItems];
   }
   return [...prevData, id];
+};
+
+const filterVerbsGroupsIds = (ids: string[]): IFilteredVerbsGroupsIds => {
+  const result: IFilteredVerbsGroupsIds = {
+    items: [],
+    customItems: [],
+  };
+  const customIds = Object.values(CUSTOM_VERBS_CATEGORIES_MAP);
+  ids.forEach((item) => {
+    if (customIds.indexOf(item) > -1) {
+      result.customItems.push(item);
+    } else {
+      result.items.push(item);
+    }
+  });
+
+  return result;
 };
 
 const getSelectedVerbsGroupsTitles = (
@@ -65,15 +88,18 @@ const makeSubmitRequest = async ({
   language,
   userId,
   selectedVerbsGroupsIds,
+  customGroupsIds,
 }: {
   language: string;
   userId: string;
   selectedVerbsGroupsIds: string[];
+  customGroupsIds: string[];
 }): Promise<IBaseApiResponse> => {
   const result = await getRequest(HTTP_REQUEST_URL.VERBS_BY_GROUPS, {
     language,
     userId,
     selectedVerbsGroupsIds,
+    customGroupsIds,
   });
 
   return result;
@@ -176,6 +202,7 @@ const Helpers = {
   makeSaveUserTrainingsRequest,
   getVerbsToUpdate,
   getUserTrainingToUpdate,
+  filterVerbsGroupsIds,
 };
 
 export default Helpers;

@@ -9,6 +9,7 @@ export interface ISwitchesListItemFields {
 }
 export interface IPropsSwitchesList {
   items: ISwitchesListItemFields[];
+  customItems?: ISwitchesListItemFields[];
   onChangeItemHandler: (id: string) => () => void;
   handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
   isActiveSubmit: boolean;

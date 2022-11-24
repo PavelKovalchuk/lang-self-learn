@@ -44,6 +44,17 @@ export interface IGetUserTrainingToUpdateParam {
   userId: number;
 }
 
+export interface ICustomVerbsCategory {
+  id: string;
+  label: string;
+  value: string;
+}
+
+export interface IFilteredVerbsGroupsIds {
+  items: string[];
+  customItems: string[];
+}
+
 // Requests
 export interface IUseRequestsParam {
   language: string;
@@ -53,7 +64,7 @@ export interface IUseRequestsParam {
 }
 
 export interface IUseRequestsResult {
-  loadVerbsHandler: (ids: string[]) => Promise<void>;
+  loadVerbsHandler: (ids: string[], customItems: string[]) => Promise<void>;
   updateVerbsHandler: (verbsToUpdate: IVerbsTrainedData[]) => Promise<void>;
   updateUserTrainingsHandler: (data: IUserTrainingData) => Promise<void>;
 }

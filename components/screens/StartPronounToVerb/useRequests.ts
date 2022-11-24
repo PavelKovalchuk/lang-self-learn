@@ -12,11 +12,12 @@ const useRequests = ({
   setVerbs,
   setToastModalResult,
 }: IUseRequestsParam): IUseRequestsResult => {
-  const loadVerbsHandler = useCallback(async (ids: string[]) => {
+  const loadVerbsHandler = useCallback(async (groupsIds: string[], customGroupsIds: string[]) => {
     const { result, payload }: IBaseApiResponse = await Helpers.makeSubmitRequest({
       language,
       userId: String(userId),
-      selectedVerbsGroupsIds: ids,
+      selectedVerbsGroupsIds: groupsIds,
+      customGroupsIds,
     });
 
     if (result === 'ok') {

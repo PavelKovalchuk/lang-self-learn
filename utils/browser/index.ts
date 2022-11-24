@@ -1,3 +1,5 @@
+import { CUSTOM_VERBS_CATEGORIES_MAP } from 'variables';
+
 export const isBrowser = () => typeof window !== 'undefined';
 
 export const getLocationPath = () => (isBrowser() ? window.location.pathname : null);
@@ -59,6 +61,32 @@ export const getRemovedParamFromLocationQueryString = (param: string): string | 
 export const generateUrlParamsArray = (arrData: string[]): string =>
   encodeURIComponent(JSON.stringify(arrData));
 
+export const convertUrlSpecificArrayToArray = (
+  str: string,
+  mapData: { [key: string]: string }
+): string[] => {
+  if (!str) {
+    return [];
+  }
+
+  const arrBySplit = str.replace(/[\[\]']+/g, '').split(',');
+
+  if (!arrBySplit.length) {
+    return [];
+  }
+
+  const items: string[] = [];
+
+  arrBySplit.forEach((item) => {
+    const cleanItem = item.replace(/[\"/]+/g, '');
+    if (mapData[cleanItem]) {
+      items.push(cleanItem);
+    }
+  });
+
+  return items;
+};
+
 export const convertUrlArrayToArray = (str: string): string[] => {
   if (!str) {
     return [];
@@ -70,5 +98,8 @@ export const convertUrlArrayToArray = (str: string): string[] => {
     return [];
   }
 
-  return arrBySplit.map((item) => String(item).match(/\d+/)?.[0]).map((item) => String(item));
+  return arrBySplit
+    .map((item) => String(item).match(/\d+/)?.[0])
+    .filter((item) => !!item)
+    .map((item) => String(item));
 };
