@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import {
   IBaseApiResponse,
+  IUserTraining,
   IUserTrainingData,
   IUserTrainingDocument,
   ModifiedObjectId,
@@ -9,11 +10,44 @@ import {
 import { BaseCollectionNames, connectToDatabase, getFindByUserAndLanguage } from 'utils/db';
 import { TRAININGS_DAYS_TO_KEEP } from 'variables';
 
+const getTrainingsToUpdate = (
+  newTrainings: IUserTraining[],
+  oldTrainings?: IUserTraining[]
+): IUserTraining[] => {
+  const trainings: IUserTraining[] = [];
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - TRAININGS_DAYS_TO_KEEP);
+  const startDateTime = startDate.getTime();
+  const endDateTime = new Date().getTime();
+
+  if (oldTrainings?.length) {
+    oldTrainings
+      .filter((item) => {
+        const time = item.date instanceof Date && item.date.getTime();
+        return startDateTime < time && time <= endDateTime;
+      })
+      .forEach((item) => {
+        trainings.push(item);
+      });
+  }
+
+  newTrainings.forEach((item) => {
+    trainings.push({
+      ...item,
+      date: new Date(),
+    });
+  });
+
+  return trainings;
+};
+
 const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiResponse>) => {
   const { data }: { data: IUserTrainingData } = req.body;
   const client = await connectToDatabase();
   const db = client.db();
-  const payload: { result: ModifiedObjectId<IUserTrainingDocument> | null } = { result: null };
+  const payload: { result: ModifiedObjectId<IUserTrainingDocument> | null } = {
+    result: null,
+  };
   const baseCollection = `${BaseCollectionNames.USER_TRAININGS}`;
 
   try {
@@ -21,26 +55,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
       .collection<ModifiedObjectId<IUserTrainingDocument>>(baseCollection)
       .findOne({ userId: data.userId, language: data.language });
 
-    const startDate = new Date();
-    startDate.setDate(startDate.getDate() - TRAININGS_DAYS_TO_KEEP);
-
-    const allTrainings = [
-      ...(oldData?.trainings.length ? oldData.trainings : []),
-      ...data.trainings.map((item) => ({
-        ...item,
-        date: new Date(),
-      })),
-    ];
-
-    // Save only last 7 days trainings
-    const trainings = allTrainings.filter((item) => {
-      const time = item.date instanceof Date && item.date.getTime();
-      return startDate.getTime() < time && time < new Date().getTime();
-    });
-
-    const sumPoints = trainings.reduce((accumulator, object) => {
-      return accumulator + object.points;
-    }, 0);
+    const trainings = getTrainingsToUpdate(data.trainings, oldData?.trainings);
 
     const result = await db
       .collection<ModifiedObjectId<IUserTrainingDocument>>(baseCollection)
@@ -50,7 +65,9 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse<IBaseApiRespo
           $set: {
             ...data,
             lastUpdated: new Date(),
-            sumPoints,
+            sumPoints: trainings.reduce((accumulator, object) => {
+              return accumulator + object.points;
+            }, 0),
             trainings,
           },
         },
