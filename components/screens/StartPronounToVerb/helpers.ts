@@ -20,6 +20,7 @@ import {
   URL_PARAMS,
   CUSTOM_VERBS_CATEGORIES_MAP,
 } from 'variables';
+import { CustomVerbsCategories } from './constants';
 
 import { ICalculatedData, IFilteredVerbsGroupsIds, IGetUserTrainingToUpdateParam } from './model';
 
@@ -53,13 +54,19 @@ const getSelectedVerbsGroupsTitles = (
   verbsGroups: IGroupsDataDocument[],
   selectedVerbsGroupsIds: string[]
 ): string[] => {
-  return isGroupsExists
+  const customCategoriesTitles = CustomVerbsCategories.filter((item) =>
+    selectedVerbsGroupsIds.includes(item.id)
+  ).map((item) => item.label);
+
+  const verbsGroupsTitles = isGroupsExists
     ? verbsGroups[0].groups
         .filter((item) => {
           return selectedVerbsGroupsIds.includes(item.id);
         })
         .map((item) => item.word)
     : [];
+
+  return [...customCategoriesTitles, ...verbsGroupsTitles];
 };
 
 const getUrlToSet = (selectedVerbsGroupsIds: string[], pathname?: string): string | null => {
