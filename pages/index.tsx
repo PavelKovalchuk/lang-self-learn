@@ -4,12 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { BaseCollectionNames, connectToDatabase, getFindByUserAndLanguage } from 'utils/db';
-import { IUserTrainingDocument, ModifiedObjectId } from 'types';
+import { IUserTrainingDocument } from 'types';
 
 import { LayoutMain } from 'components/layout';
 
 import styles from 'pages/index.module.scss';
+import { getUserTrainingsStaticProps } from 'utils/staticProps';
 
 interface IPropsHomePage {
   userTraining?: IUserTrainingDocument;
@@ -56,35 +56,11 @@ const HomePage: NextPage<IPropsHomePage> = ({ userTraining }) => {
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsHomePage>> {
-  const userId = String(UserId);
-  const language = Language;
-  const client = await connectToDatabase();
-  const db = client.db();
-
-  let userTrainingPayload: IUserTrainingDocument[] = [];
-
-  try {
-    const result = await db
-      .collection<ModifiedObjectId<IUserTrainingDocument>>(`${BaseCollectionNames.USER_TRAININGS}`)
-      .find(getFindByUserAndLanguage(userId, language))
-      .toArray();
-
-    userTrainingPayload = result.map((item) => ({
-      ...item,
-      _id: item._id.toString(),
-      lastUpdated: item.lastUpdated.toString(),
-      trainings: item.trainings.map((training) => ({
-        ...training,
-        date: training.date.toString(),
-      })),
-    }));
-  } catch (error) {
-    client.close();
-  }
+  const userTraining = await getUserTrainingsStaticProps(String(UserId), Language);
 
   return {
     props: {
-      userTraining: userTrainingPayload?.[0],
+      userTraining,
     },
   };
 }

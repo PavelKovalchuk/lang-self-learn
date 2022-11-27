@@ -4,12 +4,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { IBaseApiResponse, IPronounDataDocument, IGroupsDataDocument } from 'types';
-import { HTTP_REQUEST_URL } from 'variables';
-import { getRequest } from 'utils';
+import { IPronounDataDocument, IGroupsDataDocument } from 'types';
 
 import { LayoutMain } from 'components/layout/';
 import { AddVerbForm } from 'components/forms';
+import { getPronounsGroupsStaticProps, getVerbsGroupsStaticProps } from 'utils/staticProps';
 
 interface IPropsAddVerbPage {
   pronounsGroups: IPronounDataDocument[];
@@ -46,26 +45,13 @@ const AddVerbPage: NextPage<IPropsAddVerbPage> = ({ pronounsGroups, verbsGroups 
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbPage>> {
-  const { payload: pronounsPayload }: IBaseApiResponse = await getRequest(
-    HTTP_REQUEST_URL.PRONOUN,
-    {
-      language: Language,
-      userId: String(UserId),
-    }
-  );
-
-  const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
-    HTTP_REQUEST_URL.VERBS_GROUPS,
-    {
-      language: Language,
-      userId: String(UserId),
-    }
-  );
+  const pronounsGroups = await getPronounsGroupsStaticProps(String(UserId), Language);
+  const verbsGroups = await getVerbsGroupsStaticProps(String(UserId), Language);
 
   return {
     props: {
-      pronounsGroups: pronounsPayload,
-      verbsGroups: verbsGroupsPayload,
+      pronounsGroups,
+      verbsGroups,
     },
   };
 }

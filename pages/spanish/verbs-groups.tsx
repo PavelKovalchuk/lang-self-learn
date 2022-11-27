@@ -4,12 +4,12 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { IBaseApiResponse, IGroupsDataDocument } from 'types';
+import { IGroupsDataDocument } from 'types';
 import { HTTP_REQUEST_URL } from 'variables';
-import { getRequest } from 'utils';
 
 import { LayoutMain } from 'components/layout';
 import { AddGroupForm } from 'components/forms';
+import { getVerbsGroupsStaticProps } from 'utils/staticProps';
 
 interface IPropsAddVerbsGroupsPage {
   verbsGroups: IGroupsDataDocument[];
@@ -45,17 +45,11 @@ const AddVerbsGroupsPage: NextPage<IPropsAddVerbsGroupsPage> = ({ verbsGroups })
 };
 
 export async function getStaticProps(): Promise<GetStaticPropsResult<IPropsAddVerbsGroupsPage>> {
-  const { payload: verbsGroupsPayload }: IBaseApiResponse = await getRequest(
-    HTTP_REQUEST_URL.VERBS_GROUPS,
-    {
-      language: Language,
-      userId: String(UserId),
-    }
-  );
+  const verbsGroups = await getVerbsGroupsStaticProps(String(UserId), Language);
 
   return {
     props: {
-      verbsGroups: verbsGroupsPayload,
+      verbsGroups,
     },
   };
 }
